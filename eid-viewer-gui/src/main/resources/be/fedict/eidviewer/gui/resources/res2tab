@@ -1,0 +1,44 @@
+#!/usr/bin/python
+import os
+
+def add_lang(filename,langcode):
+	lang_fn="%s_%s.properties" % (filename,langcode)
+	fd=open(lang_fn)
+	for line in fd:
+		if(line<>""):
+			pair=line.rstrip().split("=")
+			if len(pair)==2:
+				keys[pair[0]][langcode]=pair[1].rstrip()
+			if len(pair)==1:
+				try:
+					keys[pair[0]][langcode]=""
+				except KeyError:
+					pass
+					
+	
+files = os.listdir(".")
+for file in files:
+	extpos=file.find(".properties")
+	if extpos>0 and file.find("_BE")<0:
+		keys={}
+		name=file[:extpos]
+		fd=open(file)
+		for line in fd:
+			if line<>"":
+				pair=line.rstrip().split("=")
+				if len(pair)==2:
+					keys[pair[0]]={"en_US":pair[1].rstrip()}
+				if len(pair)==1:
+					try:
+						keys[pair[0]]={"en_US":""}
+					except KeyError:
+						pass
+
+		add_lang(name,"nl_BE")
+		add_lang(name,"fr_BE")
+		add_lang(name,"de_BE")
+
+		wfd=open("%s.tab" % (name),"w")
+		for key in sorted(keys.keys()):
+			wfd.write("%s\t%s\t%s\t%s\t%s\n" % (key,keys[key]["en_US"],keys[key]["nl_BE"],keys[key]["fr_BE"],keys[key]["de_BE"]))
+		wfd.close()
