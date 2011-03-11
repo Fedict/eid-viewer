@@ -1,0 +1,18 @@
+Source: eid-viewer
+Priority: optional
+Maintainer: Frank Mariën <frank.marien@fedict.be>
+Build-Depends: debhelper (>= 7.0.50), autotools-dev
+Standards-Version: 3.8.3
+Section: libs
+Homepage: http://code.google.com/p/eid-mw/
+
+Package: eid-viewer
+Section: java
+Provides: beidgui
+Replaces: beidgui
+Conflicts: beidgui
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Graphical interface to Belgian Electronic Identity Card
+ This package contains a graphical application to read data from the
+ Belgian electronic identity card.
