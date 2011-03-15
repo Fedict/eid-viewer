@@ -37,7 +37,7 @@ import be.fedict.eidviewer.gui.helper.EidFilePreviewAccessory;
 import be.fedict.eidviewer.gui.helper.EidFileView;
 import be.fedict.eidviewer.gui.helper.ImageUtilities;
 import be.fedict.eidviewer.lib.Eid;
-import be.fedict.eidviewer.lib.EidFactory;
+import be.fedict.eidviewer.lib.PCSCEidImpl;
 import java.awt.Component;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
@@ -108,7 +108,7 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View, Observ
         openAction = actionMap.get("openFile");    // NOI18N
         closeAction = actionMap.get("closeFile");   // NOI18N
         saveAction = actionMap.get("saveFile");    // NOI18N
-        eid = EidFactory.getEidImpl(this, coreMessages);
+        eid = new PCSCEidImpl(this, coreMessages);
         eidController = new EidController(eid);
 
         trustServiceController = new TrustServiceController(ViewerPrefs.getTrustServiceURL());

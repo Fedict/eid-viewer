@@ -30,14 +30,14 @@ public class AppTest extends TestCase
     }
 
     /**
-     * Rigourous Test :-)
+     * Basic Test
      */
     public void testApp()
     {
         TestView    testView=new TestView();
         Messages    testMessages=new Messages(Locale.ENGLISH);
 
-        Eid eid=EidFactory.getEidImpl(testView,testMessages);
+        Eid eid=new PCSCEidImpl(testView,testMessages);
         assertNotNull(eid);
 
         try
