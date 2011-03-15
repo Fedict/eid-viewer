@@ -4,25 +4,30 @@ AC_CONFIG_SRCDIR([pom.xml])
 AC_CANONICAL_HOST
 AM_INIT_AUTOMAKE([1.9 foreign tar-pax])
 
-# Checks for programs.
-AC_CHECK_PROGS(JAVAC,[javac],[missing])
-AS_VAR_IF([JAVAC],[missing],AC_MSG_ERROR([Java compiler is required.]),AC_SUBST(JAVAC))
+AC_MSG_CHECKING([pre-built jars])
+AC_ARG_WITH([jars],
+AC_HELP_STRING([--with-jars=DIR],[pre-built jars archive path]),
+[],
+[with_jars=no])
+AC_MSG_RESULT([$with_jars])
 
-AC_CHECK_PROGS(MVN,[mvn],[missing])
-AS_VAR_IF([MVN],[missing],AC_MSG_ERROR([Maven2 is required.]),AC_SUBST(MVN))
+AS_VAR_IF([with_jars],[no],
+[
+	AC_CHECK_PROGS(JAVAC,[javac],[missing])
+	AS_VAR_IF([JAVAC],[missing],AC_MSG_ERROR([Java compiler is required.]),AC_SUBST(JAVAC))
 
-linux="no"
-osx="no"
-win32="no"
+	AC_CHECK_PROGS(MVN,[mvn],[missing])
+	AS_VAR_IF([MVN],[missing],AC_MSG_ERROR([Maven2 or higher is required.]),AC_SUBST(MVN))
+],
+[
+	AC_CHECK_PROGS(TAR,[tar],[missing])
+	AS_VAR_IF([TAR],[missing],AC_MSG_ERROR([TAR Archiver is required]),AC_SUBST(TAR))
+	AC_MSG_WARN([working from pre-built jars])
+])
 
-AS_CASE([$host],
-  [*-*-linux*],[linux=true],
-  [*-*-darwin*],[osx=true],
-  [*-mingw*|*-winnt*],[win32=true])
-
-AM_CONDITIONAL([LINUX],[test x$linux = xtrue])
-AM_CONDITIONAL([OSX],[test x$osx = xtrue])
-AM_CONDITIONAL([WIN32],[test x$win32 = xtrue])
+AM_CONDITIONAL(PREBUILT,test x$with_jars != xno)
+AC_SUBST([PREBUILT_PATH],[$with_jars])
+AM_CONDITIONAL(COMPILE,test x$with_jars = xno)
 
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
