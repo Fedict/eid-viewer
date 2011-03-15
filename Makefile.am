@@ -1,4 +1,4 @@
-EXTRA_DIST = pom.xml eid-viewer-package eid-viewer-lib eid-viewer-gui
+EXTRA_DIST = pom.xml eid-viewer-package eid-viewer-lib eid-viewer-gui debian
 
 if COMPILE
 #########
