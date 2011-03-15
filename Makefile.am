@@ -11,7 +11,8 @@ clean-local:
 	cd $(srcdir) ; $(MVN) clean
 
 install-data-local:
-	cd $(srcdir) ; cp -r eid-viewer-package/target/package-4.0.0/eid-viewer $(DESTDIR)$(datadir)
+	mkdir -p $(DESTDIR)$(datadir) $(DESTDIR)$(bindir)
+	cd $(srcdir) ; cp -r eid-viewer-package/target/package-4.0.0/eid-viewer $(DESTDIR)$(datadir)/eid-viewer
 	chmod -R 0755 $(DESTDIR)$(datadir)/eid-viewer/
 	ln -sf $(DESTDIR)$(datadir)/eid-viewer/eid-viewer.sh $(DESTDIR)$(bindir)/eid-viewer
 
@@ -32,6 +33,7 @@ clean-local:
 	cd $(srcdir) ; rm -Rf eid-viewer-4.0.0*
 
 install-data-local:
+	mkdir -p $(DESTDIR)$(datadir) $(DESTDIR)$(bindir)
 	cd $(srcdir) ; cp -r eid-viewer-4.0.0/ $(DESTDIR)$(datadir)/eid-viewer
 	chmod -R 0755 $(DESTDIR)$(datadir)/eid-viewer/
 	ln -sf $(DESTDIR)$(datadir)/eid-viewer/eid-viewer.sh $(DESTDIR)$(bindir)/eid-viewer
