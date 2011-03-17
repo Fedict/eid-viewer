@@ -1,7 +1,11 @@
-EXTRA_DIST = pom.xml eid-viewer-package eid-viewer-lib eid-viewer-gui debian
-
 if COMPILE
 #########
+
+EXTRA_DIST = pom.xml eid-viewer-package eid-viewer-lib eid-viewer-gui debian build-debian.sh svn_revision
+BUILT_SOURCES=svn_revision
+
+svn_revision:
+	svnversion > svn_revision
 
 all: pom.xml eid-viewer-package eid-viewer-lib eid-viewer-gui
 	cd $(srcdir) ; chmod -R u+w eid-viewer-package eid-viewer-lib eid-viewer-gui
