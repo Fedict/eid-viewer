@@ -86,6 +86,7 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View, Observ
     private CertificatesPanel certificatesPanel;
     private CardPanel cardPanel;
     private PreferencesPanel preferencesPanel;
+    private AboutPanel aboutPanel;
     private LogPanel logPanel;
     private javax.swing.Action printAction, openAction, saveAction, closeAction;
 
@@ -326,10 +327,12 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View, Observ
         cardPanel = new CardPanel();
         certificatesPanel = new CertificatesPanel();
         preferencesPanel = new PreferencesPanel();
+        aboutPanel = new AboutPanel();
         tabPanel.add(identityPanel, bundle.getString("IDENTITY"));
         tabPanel.add(cardPanel, bundle.getString("CARD"));
         tabPanel.add(certificatesPanel, bundle.getString("CERTIFICATES"));
         tabPanel.add(preferencesPanel, bundle.getString("PREFERENCES"));
+        tabPanel.add(aboutPanel, bundle.getString("ABOUT"));
 
         if(ViewerPrefs.getShowLogTab())
             showLog(true);
@@ -538,7 +541,7 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View, Observ
                 logPanel=new LogPanel();
                 logPanel.start();
                 tabPanel.add(logPanel, bundle.getString("LOG"));
-                tabPanel.insertTab(bundle.getString("LOG"),null,logPanel,bundle.getString("LOG"),4);
+                tabPanel.insertTab(bundle.getString("LOG"),null,logPanel,bundle.getString("LOG"),5);
             }
         }
         else
