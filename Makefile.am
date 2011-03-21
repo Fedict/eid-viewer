@@ -1,7 +1,7 @@
 if COMPILE
 #########
 
-EXTRA_DIST = pom.xml eid-viewer-package eid-viewer-lib eid-viewer-gui debian build-debian.sh svn_revision README
+EXTRA_DIST = pom.xml eid-viewer-package eid-viewer-lib eid-viewer-gui debian rpm build-debian.sh svn_revision README
 BUILT_SOURCES=svn_revision
 
 svn_revision:
