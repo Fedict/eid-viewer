@@ -73,6 +73,7 @@ EOF
 %{__install} -d -m0755 %{buildroot}%{_datadir}/applications/
 desktop-file-install \
     --dir %{buildroot}%{_datadir}/applications \
+    --vendor "FedICT" \
     eid-viewer.desktop
 
 %clean
