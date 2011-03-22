@@ -9,7 +9,7 @@ License: LGPL
 Group: Applications/Communications
 URL: http://eid.belgium.be/
 
-Source0: http://eidmw.yourict.net/dist/eid-mw/viewer/eid-viewer-%{version}-%{revision}.tar.gz
+Source0: http://dist.apsu.be/eid-mw/viewer/eid-viewer-%{version}-%{revision}.tar.gz
 Source1: eid-viewer.png
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -58,17 +58,17 @@ Icon=eid-viewer
 Categories=Application;Utility;
 EOF
 
-%configure %{?configureoptions}
-
 %build
 
 %install
 %{__rm} -rf %{buildroot}
+
 %{__install} -Dp -m0755 eid-viewer.sh %{buildroot}%{_bindir}/eid-viewer
 %{__install} -d -m0755 %{buildroot}%{_datadir}/eid-viewer/lib/
-%{__cp} -av README README-eid-viewer.txt
+%{__cp} -av README.txt README-eid-viewer.txt
 %{__cp} -av *.jar %{buildroot}%{_datadir}/eid-viewer/
 %{__cp} -av lib/*.jar %{buildroot}%{_datadir}/eid-viewer/lib/
+
 %{__install} -Dp -m0644 %{SOURCE1} %{buildroot}%{_datadir}/icons/eid-viewer.png
 %{__install} -d -m0755 %{buildroot}%{_datadir}/applications/
 desktop-file-install \
@@ -90,7 +90,7 @@ desktop-file-install \
 
 %changelog
 * Mon Mar 21 2011 Frank Marien <frank@apsu.be> - 4.0.0-0.R
-- Made revision dynamic to allow for continuous build
+- Dynamic Revision for continuous builds
 
 * Thu Mar 17 2011 Dag Wieers <dag@wieers.com> - 4.0.0-0.6
 - Split eid-mw and eid-viewer packages.
