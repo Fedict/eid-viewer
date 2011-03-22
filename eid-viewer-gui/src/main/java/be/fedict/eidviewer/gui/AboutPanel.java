@@ -29,6 +29,7 @@ public class AboutPanel extends javax.swing.JPanel
     public AboutPanel()
     {
         initComponents();
+        aboutText.setText("<html><h1>eID Viewer 4.0.0</h1><br/>(C) Copyright 2010-2011 FedICT</html>");
     }
 
     /** This method is called from within the constructor to
@@ -42,7 +43,7 @@ public class AboutPanel extends javax.swing.JPanel
         java.awt.GridBagConstraints gridBagConstraints;
 
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        aboutText = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
 
         setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 255, 204), 24, true));
@@ -52,13 +53,13 @@ public class AboutPanel extends javax.swing.JPanel
         jLabel1.setName("jLabel1"); // NOI18N
         add(jLabel1, new java.awt.GridBagConstraints());
 
-        jLabel2.setText("eID Viewer 4.0.0 (C) 2010-2011 FedICT");
-        jLabel2.setName("jLabel2"); // NOI18N
+        aboutText.setText("eID Viewer 4.0.0 (C) 2010-2011 FedICT");
+        aboutText.setName("aboutText"); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        add(jLabel2, gridBagConstraints);
+        add(aboutText, gridBagConstraints);
 
         jLabel3.setMaximumSize(new java.awt.Dimension(16, 16));
         jLabel3.setMinimumSize(new java.awt.Dimension(16, 16));
@@ -72,8 +73,8 @@ public class AboutPanel extends javax.swing.JPanel
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel aboutText;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     // End of variables declaration//GEN-END:variables
 
