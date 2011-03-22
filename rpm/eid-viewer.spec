@@ -1,4 +1,4 @@
-%{__cp} -av *.jar %{buildroot}%{_datadir}/eid-viewer/
+# $Id$
 # Authority: dag
 
 Summary: Belgium electronic identity card viewer
