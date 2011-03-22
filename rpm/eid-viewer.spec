@@ -64,7 +64,11 @@ EOF
 
 %install
 %{__rm} -rf %{buildroot}
-%{__make} install DESTDIR="%{buildroot}"
+%{__install} -Dp -m0755 eid-viewer.sh %{buildroot}%{_bindir}/eid-viewer
+%{__install} -d -m0755 %{buildroot}%{_datadir}/eid-viewer/lib/
+%{__cp} -av README README-eid-viewer.txt
+%{__cp} -av *.jar %{buildroot}%{_datadir}/eid-viewer/
+%{__cp} -av lib/*.jar %{buildroot}%{_datadir}/eid-viewer/lib/
 %{__install} -Dp -m0644 %{SOURCE1} %{buildroot}%{_datadir}/icons/eid-viewer.png
 %{__install} -d -m0755 %{buildroot}%{_datadir}/applications/
 desktop-file-install \
