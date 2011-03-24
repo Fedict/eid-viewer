@@ -71,7 +71,7 @@ EOF
 
 %{__install} -Dp -m0644 %{SOURCE1} %{buildroot}%{_datadir}/icons/eid-viewer.png
 %{__install} -d -m0755 %{buildroot}%{_datadir}/applications/
-desktop-file-install --dir %{buildroot}%{_datadir}/applications eid-viewer.desktop
+desktop-file-install --dir %{buildroot}%{_datadir}/applications --vendor fedict eid-viewer.desktop
 
 %clean
 %{__rm} -rf %{buildroot}
