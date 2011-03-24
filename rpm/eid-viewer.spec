@@ -41,7 +41,7 @@ the government's servers.
 java -jar %{_datadir}/eid-viewer/eid-viewer-gui-4.0.0-SNAPSHOT.jar
 EOF
 
-%{__cat} <<EOF >eid-viewer.desktop
+%{__cat} <<EOF >fedict-eid-viewer.desktop
 [Desktop Entry]
 Encoding=UTF-8
 Name=eID Card Reader
@@ -82,7 +82,7 @@ desktop-file-install --dir %{buildroot}%{_datadir}/applications --vendor fedict 
 ### FIXME: Include a man-page about eid-viewer
 #%doc %{_mandir}/man8/eid-viewer.8*
 %{_bindir}/eid-viewer
-%{_datadir}/applications/eid-viewer.desktop
+%{_datadir}/applications/fedict-eid-viewer.desktop
 %{_datadir}/eid-viewer/
 %{_datadir}/icons/eid-viewer.png
 
