@@ -41,7 +41,7 @@ the government's servers.
 java -jar %{_datadir}/eid-viewer/eid-viewer-gui-4.0.0-SNAPSHOT.jar
 EOF
 
-%{__cat} <<EOF >fedict-eid-viewer.desktop
+%{__cat} <<EOF >eid-viewer.desktop
 [Desktop Entry]
 Encoding=UTF-8
 Name=eID Card Reader
