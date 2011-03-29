@@ -8,8 +8,8 @@ svn_revision:
 	svnversion > svn_revision
 
 all: pom.xml eid-viewer-package eid-viewer-lib eid-viewer-gui
-	cd $(srcdir) ; echo "version=4.0.0-`cat svn_revision`" > eid-viewer-gui/src/main/resources/be/fedict/eidviewer/gui/resources/Version.properties
 	cd $(srcdir) ; chmod -R u+w eid-viewer-package eid-viewer-lib eid-viewer-gui
+	cd $(srcdir) ; echo "version=4.0.0-`cat svn_revision`" > eid-viewer-gui/src/main/resources/be/fedict/eidviewer/gui/resources/Version.properties
 	cd $(srcdir) ; $(MVN) -e clean install
 
 clean-local:
