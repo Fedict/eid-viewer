@@ -1,4 +1,4 @@
-if COMPILE
+	cd $(srcdir) ; chmod -R u+w eid-viewer-package eid-viewer-lib eid-viewer-gui
 #########
 
 EXTRA_DIST = pom.xml eid-viewer-package eid-viewer-lib eid-viewer-gui debian rpm build-debian.sh svn_revision README
