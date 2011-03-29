@@ -18,18 +18,23 @@
 
 package be.fedict.eidviewer.gui;
 
+import java.util.ResourceBundle;
+
 /**
  *
  * @author Frank Marien
  */
 public class AboutPanel extends javax.swing.JPanel
 {
-
+    private ResourceBundle bundle;
+    
     /** Creates new form AboutPanel */
     public AboutPanel()
     {
         initComponents();
-        aboutText.setText("<html><h1>eID Viewer 4.0.0</h1><br/>(C) Copyright 2010-2011 FedICT</html>");
+        String aboutHTML=ResourceBundle.getBundle("be/fedict/eidviewer/gui/resources/AboutPanel").getString("about_html");
+        String version=ResourceBundle.getBundle("be/fedict/eidviewer/gui/resources/Version").getString("version");
+        aboutText.setText(aboutHTML.replace("__VERSION__", version));
     }
 
     /** This method is called from within the constructor to

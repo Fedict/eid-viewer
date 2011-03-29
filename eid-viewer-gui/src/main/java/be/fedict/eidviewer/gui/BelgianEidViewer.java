@@ -217,7 +217,7 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View, Observ
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setBackground(new Color(255, 255, 255));
-        setMinimumSize(new Dimension(640, 480));
+        setMinimumSize(new Dimension(800, 600));
 
         tabPanel.setName("tabPanel"); // NOI18N
         tabPanel.setPreferredSize(new Dimension(600, 512));
@@ -245,7 +245,6 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View, Observ
 
         ActionMap actionMap = Application.getInstance().getContext().getActionMap(BelgianEidViewer.class, this);
         printButton.setAction(actionMap.get("print")); // NOI18N
-        printButton.setIcon(new ImageIcon(getClass().getResource("/be/fedict/eidviewer/gui/resources/icons/print.png"))); // NOI18N
         printButton.setHideActionText(true);
         printButton.setMaximumSize(new Dimension(200, 50));
         printButton.setMinimumSize(new Dimension(50, 50));
