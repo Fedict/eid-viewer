@@ -64,6 +64,9 @@ public class AboutPanel extends javax.swing.JPanel
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipadx = 3;
+        gridBagConstraints.ipady = 3;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         add(aboutText, gridBagConstraints);
 
         jLabel3.setMaximumSize(new java.awt.Dimension(16, 16));

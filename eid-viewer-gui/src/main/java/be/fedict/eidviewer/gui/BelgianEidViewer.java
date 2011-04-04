@@ -245,6 +245,7 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View, Observ
 
         ActionMap actionMap = Application.getInstance().getContext().getActionMap(BelgianEidViewer.class, this);
         printButton.setAction(actionMap.get("print")); // NOI18N
+        printButton.setIcon(new ImageIcon(getClass().getResource("/be/fedict/eidviewer/gui/resources/icons/print.png"))); // NOI18N
         printButton.setHideActionText(true);
         printButton.setMaximumSize(new Dimension(200, 50));
         printButton.setMinimumSize(new Dimension(50, 50));

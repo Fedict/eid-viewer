@@ -177,7 +177,6 @@ public class PreferencesPanel extends javax.swing.JPanel implements Observer, Co
         httpProxyPort = new javax.swing.JTextField();
         diagnosticsPrefsPanel = new javax.swing.JPanel();
         showLogCheckbox = new javax.swing.JCheckBox();
-        showDiagnosticsCheckbox = new javax.swing.JCheckBox();
         spacer1 = new javax.swing.JLabel();
 
         setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 255, 204), 24, true));
@@ -260,17 +259,6 @@ public class PreferencesPanel extends javax.swing.JPanel implements Observer, Co
         gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
         diagnosticsPrefsPanel.add(showLogCheckbox, gridBagConstraints);
 
-        showDiagnosticsCheckbox.setText("Show Diagnostics Tab");
-        showDiagnosticsCheckbox.setEnabled(false);
-        showDiagnosticsCheckbox.setName("showDiagnosticsCheckbox"); // NOI18N
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
-        diagnosticsPrefsPanel.add(showDiagnosticsCheckbox, gridBagConstraints);
-
         spacer1.setName("spacer1"); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -290,7 +278,6 @@ public class PreferencesPanel extends javax.swing.JPanel implements Observer, Co
     private javax.swing.JLabel httpProxyPortLabel;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel proxyPrefsPanel;
-    private javax.swing.JCheckBox showDiagnosticsCheckbox;
     private javax.swing.JCheckBox showLogCheckbox;
     private javax.swing.JLabel spacer;
     private javax.swing.JLabel spacer1;
