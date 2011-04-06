@@ -29,5 +29,6 @@ AM_CONDITIONAL(PREBUILT,test x$with_jars != xno)
 AC_SUBST([PREBUILT_PATH],[$with_jars])
 AM_CONDITIONAL(COMPILE,test x$with_jars = xno)
 
-AC_CONFIG_FILES([Makefile])
+AC_CONFIG_FILES([Makefile
+		eid-viewer.desktop.sh])
 AC_OUTPUT

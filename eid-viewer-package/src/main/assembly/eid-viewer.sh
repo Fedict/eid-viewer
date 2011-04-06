@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # find the original script that this is a symlink to
-EIDVIEWER_LAUNCH_SCRIPT=`readlink $0`
+EIDVIEWER_LAUNCH_SCRIPT=`readlink -f $0`
 
 # extract its directory ; this is where the eid-viewer java classes are installed
 EIDVIEWER_HOME=`dirname $EIDVIEWER_LAUNCH_SCRIPT`

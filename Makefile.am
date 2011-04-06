@@ -19,7 +19,7 @@ install-data-local:
 	mkdir -p $(DESTDIR)$(datadir) $(DESTDIR)$(bindir)
 	cd $(srcdir) ; cp -r eid-viewer-package/target/package-4.0.0/eid-viewer $(DESTDIR)$(datadir)/eid-viewer
 	chmod -R 0755 $(DESTDIR)$(datadir)/eid-viewer/
-	ln -sf $(DESTDIR)$(datadir)/eid-viewer/eid-viewer.sh $(DESTDIR)$(bindir)/eid-viewer
+	ln -sf $(datadir)/eid-viewer/eid-viewer.sh $(DESTDIR)$(bindir)/eid-viewer
 
 #####
 endif
@@ -41,12 +41,20 @@ install-data-local:
 	mkdir -p $(DESTDIR)$(datadir) $(DESTDIR)$(bindir)
 	cd $(srcdir) ; cp -r eid-viewer-4.0.0/ $(DESTDIR)$(datadir)/eid-viewer
 	chmod -R 0755 $(DESTDIR)$(datadir)/eid-viewer/
-	ln -sf $(DESTDIR)$(datadir)/eid-viewer/eid-viewer.sh $(DESTDIR)$(bindir)/eid-viewer
+	ln -sf $(datadir)/eid-viewer/eid-viewer.sh $(DESTDIR)$(bindir)/eid-viewer
 
 ###########
 endif
 
 #######################################################
+
+eid-viewer.desktop: eid-viewer.desktop.sh
+	sh eid-viewer.desktop.sh
+
+desktopdir=@datadir@/applications
+icondir=@datadir@/icons
+desktop_DATA=eid-viewer.desktop
+icon_DATA=rpm/eid-viewer.png
 
 uninstall-local:
 	rm -Rf $(DESTDIR)$(bindir)/eid-viewer
