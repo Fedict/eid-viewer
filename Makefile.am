@@ -13,7 +13,7 @@ all: pom.xml eid-viewer-package eid-viewer-lib eid-viewer-gui
 	cd $(srcdir) ; $(MVN) -e clean install
 
 clean-local:
-	cd $(srcdir) ; $(MVN) clean
+	cd $(srcdir) ; $(MVN) clean ; rm eid-viewer.desktop
 
 install-data-local:
 	mkdir -p $(DESTDIR)$(datadir) $(DESTDIR)$(bindir)
@@ -35,7 +35,7 @@ all:
 	cd $(srcdir) ; rm -Rf eid-viewer-4.0.0/eid-viewer.exe
 
 clean-local:
-	cd $(srcdir) ; rm -Rf eid-viewer-4.0.0*
+	cd $(srcdir) ; rm -Rf eid-viewer-4.0.0* ; rm eid-viewer.desktop
 
 install-data-local:
 	mkdir -p $(DESTDIR)$(datadir) $(DESTDIR)$(bindir)
