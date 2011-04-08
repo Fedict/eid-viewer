@@ -20,6 +20,7 @@ Obsoletes: eid-mw-viewer
 BuildRequires: desktop-file-utils
 Requires: java-1.6.0-openjdk
 Requires: pcsc-lite
+Requires: ccid
 
 %description
 The eid-viewer application allows the user to read out any information from
