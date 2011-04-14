@@ -313,7 +313,7 @@
       </Constraints>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout">
-        <Property name="horizontalGap" type="int" value="32"/>
+        <Property name="horizontalGap" type="int" value="16"/>
       </Layout>
       <SubComponents>
         <Component class="javax.swing.JCheckBox" name="alwaysValidateCheckbox">

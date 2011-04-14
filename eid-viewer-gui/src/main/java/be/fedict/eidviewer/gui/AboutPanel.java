@@ -56,7 +56,10 @@ public class AboutPanel extends javax.swing.JPanel
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/be/fedict/eidviewer/gui/resources/icons/state_eidpresent.png"))); // NOI18N
         jLabel1.setName("jLabel1"); // NOI18N
-        add(jLabel1, new java.awt.GridBagConstraints());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        add(jLabel1, gridBagConstraints);
 
         aboutText.setText("eID Viewer 4.0.0 (C) 2010-2011 FedICT");
         aboutText.setName("aboutText"); // NOI18N
@@ -66,7 +69,9 @@ public class AboutPanel extends javax.swing.JPanel
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = 3;
         gridBagConstraints.ipady = 3;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
         add(aboutText, gridBagConstraints);
 
         jLabel3.setMaximumSize(new java.awt.Dimension(16, 16));

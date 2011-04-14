@@ -381,7 +381,6 @@ public class CertificatesPanel extends javax.swing.JPanel implements Observer, T
         validateNowButton = new javax.swing.JButton();
 
         setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 255, 204), 24, true));
-        setForeground(new java.awt.Color(0, 0, 0));
         setLayout(new java.awt.BorderLayout());
 
         certsDetailsSplitPane.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
@@ -571,7 +570,7 @@ public class CertificatesPanel extends javax.swing.JPanel implements Observer, T
         add(certsDetailsSplitPane, java.awt.BorderLayout.CENTER);
 
         trustPrefspanel.setName("trustPrefspanel"); // NOI18N
-        trustPrefspanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 32, 5));
+        trustPrefspanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 16, 5));
 
         alwaysValidateCheckbox.setText(bundle.getString("alwaysValidateCheckbox")); // NOI18N
         alwaysValidateCheckbox.setName("alwaysValidateCheckbox"); // NOI18N
