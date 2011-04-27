@@ -27,6 +27,8 @@ import java.awt.Image;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.security.cert.X509Certificate;
+import java.util.List;
 import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -165,8 +167,13 @@ public class EidController extends Observable implements Runnable, Observer, Eid
         try
         {
             trustServiceController.validateLater(rrnCertChain);
-            trustServiceController.validateLater(authCertChain);
-            trustServiceController.validateLater(signCertChain);
+
+            if(authCertChain!=null)
+                trustServiceController.validateLater(authCertChain);
+
+            if(signCertChain!=null)
+                trustServiceController.validateLater(signCertChain);
+            
             setState();
         }
         catch (RuntimeException rte)
@@ -385,16 +392,42 @@ public class EidController extends Observable implements Runnable, Observer, Eid
 
                 logger.fine("reading authentication chain from card..");
                 setActivity(ACTIVITY.READING_AUTH_CHAIN);
-                authCertChain = new X509CertificateChainAndTrust(TrustServiceDomains.BELGIAN_EID_AUTH_TRUST_DOMAIN, eid.getAuthnCertificateChain());
-                if (trustServiceController != null && autoValidatingTrust)
-                    trustServiceController.validateLater(authCertChain);
+                List<X509Certificate> aChain=eid.getAuthnCertificateChain();
+                if(aChain!=null)
+                {
+                    logger.fine("authentication chain found");
+                    authCertChain = new X509CertificateChainAndTrust(TrustServiceDomains.BELGIAN_EID_AUTH_TRUST_DOMAIN, aChain);
+                    if (trustServiceController != null && autoValidatingTrust)
+                    {
+                        logger.fine("enqueueing authentication chain for validation (auto-validate is on)");
+                        trustServiceController.validateLater(authCertChain);
+                    }
+                }
+                else
+                {
+                   logger.fine("no authentication chain found.");
+                }
+                
                 setState();
 
                 logger.fine("reading signing chain from card..");
                 setActivity(ACTIVITY.READING_SIGN_CHAIN);
-                signCertChain = new X509CertificateChainAndTrust(TrustServiceDomains.BELGIAN_EID_NON_REPUDIATION_TRUST_DOMAIN, eid.getSignCertificateChain());
-                if (trustServiceController != null && autoValidatingTrust)
-                    trustServiceController.validateLater(signCertChain);
+                List<X509Certificate> sChain=eid.getSignCertificateChain();
+                if(sChain!=null)
+                {
+                    logger.fine("signing chain found");
+                    signCertChain = new X509CertificateChainAndTrust(TrustServiceDomains.BELGIAN_EID_NON_REPUDIATION_TRUST_DOMAIN, sChain);
+                    if (trustServiceController != null && autoValidatingTrust)
+                    {
+                        logger.fine("enqueueing signing chain for validation (auto-validate is on)");
+                        trustServiceController.validateLater(signCertChain);
+                    }
+                }
+                else
+                {
+                   logger.fine("no signing chain found.");
+                }
+                
                 setActivity(ACTIVITY.IDLE);
 
                 logger.fine("waiting for actions or card removal..");

@@ -256,6 +256,8 @@ public class PCSCEidImpl implements Eid
 
     public List<X509Certificate> getAuthnCertificateChain() throws Exception
     {
+        if(getAuthCert()==null)     // some cards have no auth or signing certs
+            return null;
         List<X509Certificate> authnCertificateChain = new LinkedList<X509Certificate>();
         authnCertificateChain.add(getAuthCert());
         authnCertificateChain.add(getCitizenCACert());
@@ -265,6 +267,8 @@ public class PCSCEidImpl implements Eid
 
     public List<X509Certificate> getSignCertificateChain() throws Exception
     {
+        if(getSignCert()==null)     // some cards (e.g. Kids Cards) have no non-repudiation certs
+            return null;
         List<X509Certificate> authnCertificateChain = new LinkedList<X509Certificate>();
         authnCertificateChain.add(getSignCert());
         authnCertificateChain.add(getCitizenCACert());
@@ -310,12 +314,15 @@ public class PCSCEidImpl implements Eid
     private X509Certificate getCertificate(byte[] fileID) throws Exception
     {
         X509Certificate certificate = certCache.get(fileID);
-        if (certificate == null)
+        if(certificate == null)
         {
-            CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
             byte[] data = readFile(fileID);
-            certificate = (X509Certificate) certificateFactory.generateCertificate(new ByteArrayInputStream(data));
-            certCache.put(fileID, certificate);
+            if(data[0]!=0)
+            {
+                CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
+                certificate = (X509Certificate) certificateFactory.generateCertificate(new ByteArrayInputStream(data));
+                certCache.put(fileID, certificate);
+            }
         }
         return certificate;
     }

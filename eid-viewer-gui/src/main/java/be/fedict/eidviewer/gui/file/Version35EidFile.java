@@ -119,7 +119,7 @@ public class Version35EidFile
                                         case 0:
                                         {
                                             cert = (X509Certificate) certificateFactory.generateCertificate(new ByteArrayInputStream(certEntry2.data));
-                                            System.err.println(cert.getSubjectDN().getName());
+                                            //System.err.println(cert.getSubjectDN().getName());
 
                                             switch (certEntry.tag)
                                             {

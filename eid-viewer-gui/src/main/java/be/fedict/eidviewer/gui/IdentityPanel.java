@@ -26,6 +26,7 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.io.IOException;
 import java.text.DateFormat;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.Observable;
 import java.util.Observer;

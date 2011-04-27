@@ -151,7 +151,7 @@ public class EidFiles
             fis.read(buffer);
             fis.close();
             String headStr = new String(buffer, "utf-8");
-            System.err.println(headStr);
+            //System.err.println(headStr);
             if (headStr.contains("<eid>"))
             {
                 version = 4;
@@ -202,7 +202,7 @@ public class EidFiles
             fis.read(buffer);
             fis.close();
             String headStr = new String(buffer, "utf-8");
-            System.err.println(headStr);
+            //System.err.println(headStr);
             String[] fields = headStr.split(";");
             if (fields.length >= 2 && fields[1].equalsIgnoreCase("eid"))
             {
@@ -255,7 +255,7 @@ public class EidFiles
             fis.read(buffer);
             fis.close();
             String headStr = new String(buffer, "utf-8");
-            System.err.println(headStr);
+           // System.err.println(headStr);
 
             isTLVEid = (buffer[0] == 0 && buffer[1] == 1 && headStr != null && headStr.length() > 0 && headStr.contains("Belgium Root CA"));
         }

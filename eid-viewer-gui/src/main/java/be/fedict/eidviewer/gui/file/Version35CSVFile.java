@@ -117,7 +117,6 @@ public class Version35CSVFile
         line=bufferedReader.readLine();
         if(line!=null)
         {
-            System.out.println(line);
             tokenizer = new StringTokenizer(line, ";");
             while(tokenizer.hasMoreTokens())
             {

@@ -34,7 +34,7 @@ public class AboutPanel extends javax.swing.JPanel
         initComponents();
         String aboutHTML=ResourceBundle.getBundle("be/fedict/eidviewer/gui/resources/AboutPanel").getString("about_html");
         String version=ResourceBundle.getBundle("be/fedict/eidviewer/gui/resources/Version").getString("version");
-        aboutText.setText(aboutHTML.replace("__VERSION__", version));
+        aboutCopyrightText.setText(aboutHTML.replace("__VERSION__", version));
     }
 
     /** This method is called from within the constructor to
@@ -48,7 +48,7 @@ public class AboutPanel extends javax.swing.JPanel
         java.awt.GridBagConstraints gridBagConstraints;
 
         jLabel1 = new javax.swing.JLabel();
-        aboutText = new javax.swing.JLabel();
+        aboutCopyrightText = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
 
         setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 255, 204), 24, true));
@@ -61,18 +61,19 @@ public class AboutPanel extends javax.swing.JPanel
         gridBagConstraints.weighty = 1.0;
         add(jLabel1, gridBagConstraints);
 
-        aboutText.setText("eID Viewer 4.0.0 (C) 2010-2011 FedICT");
-        aboutText.setName("aboutText"); // NOI18N
+        aboutCopyrightText.setFont(new java.awt.Font("Dialog", 1, 10)); // NOI18N
+        aboutCopyrightText.setText("Copyright (C) 2010 - 2011 Fedict");
+        aboutCopyrightText.setName("aboutCopyrightText"); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.ipadx = 3;
-        gridBagConstraints.ipady = 3;
+        gridBagConstraints.ipadx = 8;
+        gridBagConstraints.ipady = 8;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        add(aboutText, gridBagConstraints);
+        add(aboutCopyrightText, gridBagConstraints);
 
         jLabel3.setMaximumSize(new java.awt.Dimension(16, 16));
         jLabel3.setMinimumSize(new java.awt.Dimension(16, 16));
@@ -86,7 +87,7 @@ public class AboutPanel extends javax.swing.JPanel
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel aboutText;
+    private javax.swing.JLabel aboutCopyrightText;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     // End of variables declaration//GEN-END:variables
