@@ -36,7 +36,6 @@ import java.util.Observer;
 import java.util.Timer;
 import java.util.TimerTask;
 import javax.imageio.ImageIO;
-import javax.smartcardio.CardException;
 
 /**
  *
@@ -59,8 +58,8 @@ public class EidController extends Observable implements Runnable, Observer, Eid
     private X509CertificateChainAndTrust signCertChain;
     private TrustServiceController trustServiceController;
     private Timer   yieldLockedTimer;
-    private long    yieldConsideredLockedAt;
-    private boolean autoValidatingTrust, yielding,loadedFromFile;
+    private long    lockAttemptStartedAt;
+    private boolean autoValidatingTrust,loadedFromFile;
 
     public EidController(Eid eid)
     {
@@ -70,13 +69,13 @@ public class EidController extends Observable implements Runnable, Observer, Eid
         this.runningAction = ACTION.NONE;
         this.autoValidatingTrust = false;
         yieldLockedTimer = new Timer("yieldLockedTimer", true);
-        yieldConsideredLockedAt=Long.MAX_VALUE;
+        lockAttemptStartedAt=Long.MAX_VALUE;
     }
 
     public void start()
     {
         logger.fine("starting..");
-        Thread me = new Thread(this);
+        Thread me = new Thread(this,"EidController");
         me.setDaemon(true);
         me.start();
         
@@ -85,13 +84,13 @@ public class EidController extends Observable implements Runnable, Observer, Eid
             @Override
             public void run()
             {
-                if(state==STATE.EID_PRESENT && (System.currentTimeMillis()>yieldConsideredLockedAt))
+                if(state==STATE.EID_PRESENT && (System.currentTimeMillis()>lockAttemptStartedAt))
                 {
                    setState(STATE.EID_YIELDED);
                 }
                 else
                 {
-                    if(state==STATE.EID_YIELDED && (System.currentTimeMillis()<yieldConsideredLockedAt))
+                    if(state==STATE.EID_YIELDED && (System.currentTimeMillis()<lockAttemptStartedAt))
                     {
                         setState(STATE.EID_PRESENT);
                     }
@@ -115,7 +114,6 @@ public class EidController extends Observable implements Runnable, Observer, Eid
         logger.fine("setting TrustServiceController");
         this.trustServiceController = trustServiceController;
         this.trustServiceController.addObserver(this);
-        this.trustServiceController.start();
         return this;
     }
 
@@ -131,11 +129,16 @@ public class EidController extends Observable implements Runnable, Observer, Eid
         
         try
         {
+            lock_card();
             eid.changePin();
         }
         catch (RuntimeException rte)
         {
             logger.log(Level.SEVERE, "ChangePin Operation Failed", rte);
+        }
+        finally
+        {
+            unlock_card();
         }
 
         runningAction = ACTION.NONE;
@@ -147,11 +150,16 @@ public class EidController extends Observable implements Runnable, Observer, Eid
 
         try
         {
+            lock_card();
             eid.verifyPin(false);
         }
         catch (RuntimeException rte)
         {
             logger.log(Level.SEVERE, "VerifyPin Operation Failed", rte);
+        }
+        finally
+        {
+            unlock_card();
         }
 
         runningAction = ACTION.NONE;
@@ -326,6 +334,40 @@ public class EidController extends Observable implements Runnable, Observer, Eid
         setChanged();
         notifyObservers();
     }
+    
+    private void lock_card() throws Exception
+    {
+        logger.fine("attempting exclusive card lock");
+        setLocking(true);
+
+        try
+        {
+            eid.yieldExclusive(false);
+            logger.fine("card lock exclusive acquired");
+        }
+        finally
+        {
+            setLocking(false);
+            logger.fine("exclusive card lock attempt complete");
+        }
+    }
+
+    private void unlock_card()  throws Exception
+    {
+        logger.fine("attempting exclusive card unlock");
+        setLocking(true);
+
+        try
+        {
+            eid.yieldExclusive(true);
+            logger.fine("card lock exclusive yielded");
+        }
+        finally
+        {
+            setLocking(false);
+            logger.fine("exclusive card unlock attempt complete");
+        }
+    }
 
     public void run()
     {
@@ -346,7 +388,10 @@ public class EidController extends Observable implements Runnable, Observer, Eid
                     logger.fine("waiting for eid card..");
                     setState(STATE.NO_EID_PRESENT);
                     eid.waitForEidPresent();
+                    
                 }
+
+                unlock_card();      // eid-applet automatically locks, so we unlock here to avoid a double lock attempt
 
                 if(isLoadedFromFile())
                 {
@@ -354,6 +399,8 @@ public class EidController extends Observable implements Runnable, Observer, Eid
                     securityClear();
                     setState(STATE.IDLE);
                 }
+
+                lock_card();        // lock the card for our exclusive access (may block)
 
                 logger.fine("reading identity from card..");
                 setStateAndActivity(STATE.EID_PRESENT, ACTIVITY.READING_IDENTITY);
@@ -430,6 +477,8 @@ public class EidController extends Observable implements Runnable, Observer, Eid
                 
                 setActivity(ACTIVITY.IDLE);
 
+                unlock_card();      // we're done for now. unlock the card
+
                 logger.fine("waiting for actions or card removal..");
 
                 while (eid.isCardStillPresent())
@@ -453,23 +502,11 @@ public class EidController extends Observable implements Runnable, Observer, Eid
                     {
                         try
                         {
-                            setYielding(true);
-                            eid.yieldExclusive(true);
                             Thread.sleep(200);
-                            eid.yieldExclusive(false);   
                         }
                         catch(InterruptedException iex)
                         {
                             logger.log(Level.SEVERE, "Activity Loop was Interrupted",iex);
-                        }
-                        catch(CardException cex)
-                        {
-                            if(eid.isCardStillPresent())
-                                logger.log(Level.SEVERE, "CardException in activity loop", cex);
-                        }
-                        finally
-                        {
-                            setYielding(false);
                         }
                     }
                 }
@@ -485,6 +522,15 @@ public class EidController extends Observable implements Runnable, Observer, Eid
             }
             catch (Exception ex)   // something failed. Clear out all data for security
             {
+                try
+                {
+                    unlock_card();  // make sure we're not even attempting to hold a lock anymore
+                }
+                catch(Exception unlockX)
+                {
+                    logger.log(Level.SEVERE, "Unlocking card in extremis failed.", unlockX);
+                }
+
                 securityClear();
                 runningAction = ACTION.NONE;
                 setState(STATE.ERROR);
@@ -617,19 +663,12 @@ public class EidController extends Observable implements Runnable, Observer, Eid
         return this;
     }
 
-    public boolean isYielding()
+    public void setLocking(boolean locking)
     {
-        return yielding;
-    }
-
-    public void setYielding(boolean yielding)
-    {
-        this.yielding = yielding;
-
-        if(yielding)
-            yieldConsideredLockedAt=1000+System.currentTimeMillis();
+        if(locking)
+            lockAttemptStartedAt=1000+System.currentTimeMillis();
         else
-            yieldConsideredLockedAt=Long.MAX_VALUE;
+            lockAttemptStartedAt=Long.MAX_VALUE;
     }
 
     public boolean isReadyForCommand()
