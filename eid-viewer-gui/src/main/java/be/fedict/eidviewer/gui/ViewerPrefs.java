@@ -43,8 +43,8 @@ public class ViewerPrefs
     public static final String          DEFAULT_LOG_LEVEL_STR           = "INFO";
     public static final Level           DEFAULT_LOG_LEVEL               = Level.INFO;
     
-    public static final String          DEFAULT_TRUSTSERVICE_PROTO      = "http";
-    public static final String          DEFAULT_TRUSTSERVICE_URI        = "trust.services.belgium.be";
+    public static final String          DEFAULT_TRUSTSERVICE_PROTO      = "https";
+    public static final String          DEFAULT_TRUSTSERVICE_URI        = "trust-ws.services.belgium.be/eid-trust-service-ws/xkms2";
     public static final String          DEFAULT_HTTP_PROXY_HOST         = "";
     public static final int             DEFAULT_HTTP_PROXY_PORT         = 8080;
     
