@@ -35,9 +35,7 @@ public class AppTest extends TestCase
     public void testApp()
     {
         TestView    testView=new TestView();
-        Messages    testMessages=new Messages(Locale.ENGLISH);
-
-        Eid eid=new PCSCEidImpl(testView,testMessages);
+        PCSCEid eid=new PCSCEid(testView,Locale.getDefault());
         assertNotNull(eid);
 
         try

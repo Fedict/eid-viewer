@@ -1,6 +1,6 @@
 /*
  * eID Middleware Project.
- * Copyright (C) 2010 FedICT.
+ * Copyright (C) 2010-2011 FedICT.
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License version
@@ -22,10 +22,13 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
-/*
+
+/**
+ *
+ * @author Frank Marien
  * PositiveIntegerDocument implements a PlainDocument, overriding insertString
  * to pre-process inputs, limiting input to maxSize digits. Set this as Document for
- * any text components ot limit their input.
+ * any text components to limit their input.
  */
 public class PositiveIntegerDocument extends PlainDocument
 {

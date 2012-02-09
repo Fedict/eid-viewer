@@ -1,6 +1,6 @@
 /*
  * eID Middleware Project.
- * Copyright (C) 2010 FedICT.
+ * Copyright (C) 2010-2011 FedICT.
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License version
@@ -18,6 +18,11 @@
 
 package be.fedict.eidviewer.gui;
 
+import be.fedict.eidviewer.gui.helper.ProxyUtils;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.prefs.Preferences;
 
@@ -27,16 +32,21 @@ import java.util.prefs.Preferences;
  */
 public class ViewerPrefs
 {
+    public static final int             PROXY_DIRECT                     = 0;
+    public static final int             PROXY_SYSTEM                     = 1;
+    public static final int             PROXY_SPECIFIC                   = 2;
+    
     public static final String          AUTO_VALIDATE_TRUST              = "auto_validate_trust";
     public static final String          TRUSTSERVICE_PROTO               = "trust_service_proto";
     public static final String          TRUSTSERVICE_URI                 = "trust_service_uri";
-    public static final String          HTTP_PROXY_ENABLE                = "enable_http_proxy";
+    public static final String          HTTP_PROXY_TYPE                  = "http_proxy_type";
     public static final String          HTTP_PROXY_HOST                  = "http_proxy_host";
     public static final String          HTTP_PROXY_PORT                  = "http_proxy_port";
     public static final String          SHOW_LOG_TAB                     = "show_log_tab";
     public static final String          LOG_LEVEL                        = "log_level";
-
-    public static final boolean         DEFAULT_HTTP_PROXY_ENABLE       = false;
+    public static final String          LOCALE_LANGUAGE                  = "locale_language";
+    public static final String          LOCALE_COUNTRY                   = "locale_country";
+    
     public static final boolean         DEFAULT_AUTO_VALIDATE_TRUST     = false;
 
     public static final boolean         DEFAULT_SHOW_LOG_TAB            = false;
@@ -45,8 +55,14 @@ public class ViewerPrefs
     
     public static final String          DEFAULT_TRUSTSERVICE_PROTO      = "https";
     public static final String          DEFAULT_TRUSTSERVICE_URI        = "trust-ws.services.belgium.be/eid-trust-service-ws/xkms2";
+    public static final int             DEFAULT_HTTP_PROXY_TYPE         = PROXY_SYSTEM;
     public static final String          DEFAULT_HTTP_PROXY_HOST         = "";
     public static final int             DEFAULT_HTTP_PROXY_PORT         = 8080;
+    
+    public static final String          DEFAULT_LOCALE_LANGUAGE         = "en";
+    public static final String          DEFAULT_LOCALE_COUNTRY          = "US";
+    
+    
     
     private static final String         COLON_SLASH_SLASH               = "://";
     
@@ -85,39 +101,40 @@ public class ViewerPrefs
     {
         return getTrustServiceProto() + COLON_SLASH_SLASH + getTrustServiceURI();
     }
-
-    public static void setUseHTTPProxy(boolean use)
+    
+    public static int getProxyType()
     {
-        if(getPrefs()==null)
+        validateProxy();
+        return getProxyTypeSet();
+    }
+    
+    public static void setProxyType(int type)
+    {
+         if(getPrefs()==null)
             return;
-        getPrefs().putBoolean(HTTP_PROXY_ENABLE, use);
+        getPrefs().putInt(HTTP_PROXY_TYPE, type);
     }
-
-    public static boolean getUseHTTPProxy()
-    {
-        return getPrefs()!=null?getPrefs().getBoolean(HTTP_PROXY_ENABLE, DEFAULT_HTTP_PROXY_ENABLE):DEFAULT_HTTP_PROXY_ENABLE;
-    }
-
-    public static void setHTTPProxyHost(String host)
+    
+    public static void setSpecificProxyHost(String host)
     {
          if(getPrefs()==null)
             return;
         getPrefs().put(HTTP_PROXY_HOST, host);
     }
 
-    public static String getHTTPProxyHost()
+    public static String getSpecificProxyHost()
     {
         return getPrefs()!=null?getPrefs().get(HTTP_PROXY_HOST, DEFAULT_HTTP_PROXY_HOST):DEFAULT_HTTP_PROXY_HOST;
     }
 
-     public static void setHTTPProxyPort(int port)
+     public static void setSpecificProxyPort(int port)
     {
          if(getPrefs()==null)
             return;
         getPrefs().putInt(HTTP_PROXY_PORT, port);
     }
 
-    public static int getHTTPProxyPort()
+    public static int getSpecificProxyPort()
     {
         return getPrefs()!=null?getPrefs().getInt(HTTP_PROXY_PORT, DEFAULT_HTTP_PROXY_PORT):DEFAULT_HTTP_PROXY_PORT;
     }
@@ -145,7 +162,93 @@ public class ViewerPrefs
             return;
         getPrefs().put(LOG_LEVEL, level.toString());
     }
-}
+    
+    public static void setLocale(Locale locale)
+    {
+         if(getPrefs()==null)
+            return;
+        getPrefs().put(LOCALE_LANGUAGE, locale.getLanguage());
+        getPrefs().put(LOCALE_COUNTRY, locale.getCountry());
+    }
 
-//trust.ta.belgium.be
+    public static Locale getLocale()
+    {
+        Preferences prefs=getPrefs();
+        if(prefs==null)
+            return getDefaultLocale();
+
+        String language=prefs.get(LOCALE_LANGUAGE,DEFAULT_LOCALE_LANGUAGE);
+        String country=prefs.get(LOCALE_COUNTRY,DEFAULT_LOCALE_COUNTRY);
+
+        if(language==null || country==null)
+            return getDefaultLocale();
+
+        if(isLocaleSupported(language, country))
+            return new Locale(language,country);
+        else
+            return Locale.US;
+    }
+
+    public static String getFullVersion()
+    {
+        return "eID Viewer " + getVersion();
+    }
+    
+    public static String getVersion()
+    {
+        ResourceBundle bundle=ResourceBundle.getBundle("be/fedict/eidviewer/gui/resources/Version");
+        return bundle.getString("version");
+    }
+    
+    public static Proxy getProxy()
+    {
+       validateProxy();
+       switch(getProxyType())
+       {
+           case PROXY_SPECIFIC:
+                return new Proxy(Proxy.Type.HTTP,new InetSocketAddress(getSpecificProxyHost(),getSpecificProxyPort()));
+           case PROXY_SYSTEM:
+               return ProxyUtils.getSystemProxy();    
+       }
+       return Proxy.NO_PROXY;
+    }
+    
+    public static boolean hasSystemProxy()
+    {
+        validateProxy();
+        Proxy systemProxy=ProxyUtils.getSystemProxy();
+        return (systemProxy!=null && systemProxy!=Proxy.NO_PROXY);
+    }
+
+    public static int getProxyTypeSet()
+    {
+        return getPrefs()!=null?getPrefs().getInt(HTTP_PROXY_TYPE, DEFAULT_HTTP_PROXY_TYPE):DEFAULT_HTTP_PROXY_TYPE;
+    }
+    
+    private static boolean isLocaleSupported(String language, String country)
+    {
+        String localeStr=language + "_" + country;
+        return (localeStr.equals("en_US") || localeStr.equals("nl_BE") || localeStr.equals("fr_BE") || localeStr.equals("de_BE"));
+    }
+
+    private static Locale getDefaultLocale()
+    {
+        String language=System.getProperty("user.language");
+        String country=System.getProperty("user.country");
+        if(isLocaleSupported(language, country))
+            return new Locale(language,country);
+        else
+            return Locale.US;
+    }
+    
+    private static void validateProxy()
+    {
+        if(getProxyTypeSet()==PROXY_SYSTEM)
+        {
+            Proxy systemProxy=ProxyUtils.getSystemProxy();
+            if(systemProxy==null || systemProxy==Proxy.NO_PROXY)             
+                setProxyType(PROXY_DIRECT);
+        }
+    }
+}
 

@@ -60,57 +60,12 @@
             <artifactId>eid-viewer-lib</artifactId>
             <version>4.0.0-SNAPSHOT</version>
         </dependency>
-        <dependency>
-            <groupId>org.jdesktop</groupId>
-            <artifactId>appframework</artifactId>
-            <version>1.0.3</version>
-        </dependency>
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>3.8.1</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>net.java.dev.appframework</groupId>
-            <artifactId>appframework</artifactId>
-            <version>1.03</version>
-        </dependency>
-        <dependency>
-            <groupId>org.swinglabs</groupId>
-            <artifactId>swing-worker</artifactId>
-            <version>1.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.swinglabs</groupId>
-            <artifactId>swing-layout</artifactId>
-            <version>1.0.3</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jdesktop</groupId>
-            <artifactId>beansbinding</artifactId>
-            <version>1.2.1</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>be.fedict.eid-trust-service</groupId>
-            <artifactId>eid-trust-service-client</artifactId>
-            <version>1.0.0-20110120.094452-6</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>be.fedict.eid-trust-service</groupId>
-            <artifactId>eid-trust-service-xkms2-ws</artifactId>
-            <version>1.0.0-20110120.094446-6</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.simpleframework</groupId>
-            <artifactId>simple-xml</artifactId>
-            <version>2.4.1</version>
-        </dependency>
-
-
-
     </dependencies>
 </project>
