@@ -87,7 +87,8 @@ import javax.swing.WindowConstants;
  */
 public class BelgianEidViewer extends javax.swing.JFrame implements View, Observer, DynamicLocale
 {
-    private static final Logger logger = Logger.getLogger(BelgianEidViewer.class.getName());
+	private static final long	serialVersionUID	= -4473336524368319021L;
+	private static final Logger logger = Logger.getLogger(BelgianEidViewer.class.getName());
     private ResourceBundle bundle;
     private static final String EXTENSION_PNG = ".png";
     private static final String ICONS = "/be/fedict/eidviewer/gui/resources/icons/";

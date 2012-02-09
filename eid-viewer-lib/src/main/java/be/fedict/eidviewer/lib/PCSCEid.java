@@ -122,28 +122,28 @@ public class PCSCEid
 
     public boolean isEidPresent() throws Exception
     {
-        return pcscEidImpl.isEidPresent();
+    	return pcscEidImpl.isEidPresent();  
     }
 
     public boolean hasCardReader() throws Exception
     {
-        return pcscEidImpl.hasCardReader();
+    	return pcscEidImpl.hasCardReader();
     }
 
     public void waitForCardReader() throws Exception
     {
-        pcscEidImpl.waitForCardReader();
+    	pcscEidImpl.waitForCardReader();
     }
 
     public void waitForEidPresent() throws Exception
     {
-        pcscEidImpl.waitForEidPresent();
+    	pcscEidImpl.waitForEidPresent();  
     }
 
     public void removeCard() throws Exception
     {
-        pcscEidImpl.removeCard();
-        clear();
+    	pcscEidImpl.removeCard();
+    	clear();
     }
 
     public boolean isCardStillPresent() throws Exception

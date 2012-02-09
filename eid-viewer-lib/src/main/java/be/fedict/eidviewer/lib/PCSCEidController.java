@@ -203,7 +203,6 @@ public class PCSCEidController extends Observable implements Runnable, Observer,
         setState();
     }
 
-    @Override
     public void update(Observable o, Object o1)
     {
         setState();
