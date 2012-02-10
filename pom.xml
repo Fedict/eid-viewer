@@ -248,6 +248,7 @@
     </repositories>
 
     <properties>
-        <eid-applet.version>1.0.4.Beta4</eid-applet.version>
+        <eid-applet.version>1.0.5.Beta1</eid-applet.version>
+        <trustservice.version>1.0.0.GA</trustservice.version>
     </properties>
 </project>

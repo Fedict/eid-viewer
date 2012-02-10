@@ -21,23 +21,23 @@
         <dependency>
             <groupId>be.fedict.eid-applet</groupId>
             <artifactId>eid-applet-core</artifactId>
-            <version>1.0.4.Beta6</version>
+            <version>${eid-applet.version}</version>
         </dependency>
         <dependency>
             <groupId>be.fedict.eid-applet</groupId>
             <artifactId>eid-applet-service</artifactId>
-            <version>1.0.4.Beta6</version>
+            <version>${eid-applet.version}</version>
         </dependency>
           <dependency>
             <groupId>be.fedict.eid-trust-service</groupId>
             <artifactId>eid-trust-service-client</artifactId>
-            <version>1.0.0.RC10</version>
+            <version>${trustservice.version}</version>
         </dependency>
 
         <dependency>
             <groupId>be.fedict.eid-trust-service</groupId>
             <artifactId>eid-trust-service-xkms2-ws</artifactId>
-            <version>1.0.0.RC10</version>
+            <version>${trustservice.version}</version>
         </dependency>
         
         <dependency>
