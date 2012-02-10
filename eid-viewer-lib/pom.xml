@@ -5,11 +5,11 @@
     <parent>
         <artifactId>eid-viewer</artifactId>
         <groupId>be.fedict</groupId>
-        <version>4.0.0-SNAPSHOT</version>
+        <version>4.1.0-SNAPSHOT</version>
     </parent>
     <groupId>be.fedict.eid-viewer</groupId>
     <artifactId>eid-viewer-lib</artifactId>
-    <version>4.0.0-SNAPSHOT</version>
+    <version>4.1.0-SNAPSHOT</version>
     <name>eID Viewer Library</name>
     <url>http://maven.apache.org</url>
 
@@ -47,7 +47,5 @@
         </dependency>
  
     </dependencies>
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
+
 </project>

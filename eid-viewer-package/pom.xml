@@ -5,12 +5,12 @@
     <parent>
         <groupId>be.fedict</groupId>
         <artifactId>eid-viewer</artifactId>
-        <version>4.0.0-SNAPSHOT</version>
+        <version>4.1.0-SNAPSHOT</version>
     </parent>
     <name>eID Viewer Package</name>
     <groupId>be.fedict.eid-viewer</groupId>
     <artifactId>package</artifactId>
-    <version>4.0.0</version>
+    <version>4.1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <build>
         <plugins> 
@@ -53,12 +53,12 @@
                             <outfile>target/eid-viewer.exe</outfile>
                             <icon>src/main/assembly/eid.ico</icon>
                             <versionInfo>
-                                <fileVersion>${project.version}.0</fileVersion>
-                                <txtFileVersion>eID Viewer v${project.version}.0</txtFileVersion>
+                                <fileVersion>${win32-executable.version}</fileVersion>
+                                <txtFileVersion>eID Viewer v${project.version}</txtFileVersion>
                                 <fileDescription>eID Viewer</fileDescription>
                                 <copyright>Copyright (C) 2010-2011 FedICT</copyright>
-                                <productVersion>${project.version}.0</productVersion>
-                                <txtProductVersion>eID Viewer v${project.version}.0</txtProductVersion>
+                                <productVersion>${win32-executable.version}</productVersion>
+                                <txtProductVersion>eID Viewer v${project.version}</txtProductVersion>
                                 <productName>eID Viewer</productName>
                                 <internalName>eid-viewer</internalName>
                                 <originalFilename>eid-viewer.exe</originalFilename>
@@ -153,7 +153,8 @@
         <dependency>
             <groupId>be.fedict.eid-viewer</groupId>
             <artifactId>eid-viewer-gui</artifactId>
-            <version>${project.version}-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
+    
 </project>
