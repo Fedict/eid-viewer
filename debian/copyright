@@ -8,7 +8,7 @@ Upstream Author(s):
 
 Copyright:
 
-    Copyright (C) 2010-2011 FedICT
+    Copyright (C) 2010-2012 FedICT
 
 License:
 
@@ -21,7 +21,7 @@ License version 3 can be found in `/usr/share/common-licenses/LGPL-3'.
 
 The Debian packaging is:
 
-    Copyright (C) 2010 Frank Mariën <frank.marien@fedict.be>
+    Copyright (C) 2010 FedICT <frank.marien@fedict.be>
 
 you can redistribute it and/or modify it under the terms of the GNU
 General Public License as published by the Free Software Foundation;
