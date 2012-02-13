@@ -60,16 +60,16 @@ public final class Version4XMLFileCertificates
     {
         if(authChain!=null && authChain.size()==3)
         {   
-            setAuthenticationCertificate(new String(Base64.encodeBase64(authChain.get(0).getEncoded(), false, false, 4096)).trim());
-            setCitizenCACertificate     (new String(Base64.encodeBase64(authChain.get(1).getEncoded(), false, false, 4096)).trim());
-            setRootCertificate          (new String(Base64.encodeBase64(authChain.get(2).getEncoded(), false, false, 4096)).trim());
+            setAuthenticationCertificate(new String(Base64.encodeBase64(authChain.get(0).getEncoded(),false)).trim());
+            setCitizenCACertificate     (new String(Base64.encodeBase64(authChain.get(1).getEncoded(), false)).trim());
+            setRootCertificate          (new String(Base64.encodeBase64(authChain.get(2).getEncoded(),false)).trim());
         }
 
         if(signChain!=null && signChain.size()==3)
-            setSigningCertificate(new String(Base64.encodeBase64(signChain.get(0).getEncoded(), false, false, 4096)).trim());
+            setSigningCertificate(new String(Base64.encodeBase64(signChain.get(0).getEncoded(), false)).trim());
 
         if(rrnChain!=null && rrnChain.size()==2)
-            setRRNCertificate(new String(Base64.encodeBase64(rrnChain.get(0).getEncoded(), false, false, 4096)).trim());
+            setRRNCertificate(new String(Base64.encodeBase64(rrnChain.get(0).getEncoded(), false)).trim());
     }
 
     public List<X509Certificate> toAuthChain() throws CertificateException
@@ -85,12 +85,9 @@ public final class Version4XMLFileCertificates
 
         certificateFactory = CertificateFactory.getInstance("X.509");
 
-       rootCert=(X509Certificate) certificateFactory.generateCertificate(new ByteArrayInputStream(Base64.decodeBase64(getRootCertificate())));
-       citizenCert=(X509Certificate) certificateFactory.generateCertificate(new ByteArrayInputStream(Base64.decodeBase64(getCitizenCACertificate())));
-       authenticationCert=(X509Certificate) certificateFactory.generateCertificate(new ByteArrayInputStream(Base64.decodeBase64(getAuthenticationCertificate())));
-    
-       authChain = new LinkedList<X509Certificate>();
-       authChain.add(authenticationCert);
+       rootCert=(X509Certificate) certificateFactory.generateCertificate(new ByteArrayInputStream(Base64.decodeBase64(getRootCertificate().getBytes())));
+       citizenCert=(X509Certificate) certificateFactory.generateCertificate(new ByteArrayInputStream(Base64.decodeBase64(getCitizenCACertificate().getBytes())));
+       authenticationCert=(X509Certificate) certificateFactory.generateCertificate(new ByteArrayInputStream(Base64.decodeBase64(getAuthenticationCertificate().getBytes())));
        authChain.add(citizenCert);
        authChain.add(rootCert);
 
@@ -110,9 +107,9 @@ public final class Version4XMLFileCertificates
 
         certificateFactory = CertificateFactory.getInstance("X.509");
 
-       rootCert=(X509Certificate) certificateFactory.generateCertificate(new ByteArrayInputStream(Base64.decodeBase64(getRootCertificate())));
-       citizenCert=(X509Certificate) certificateFactory.generateCertificate(new ByteArrayInputStream(Base64.decodeBase64(getCitizenCACertificate())));
-       signingCert=(X509Certificate) certificateFactory.generateCertificate(new ByteArrayInputStream(Base64.decodeBase64(getSigningCertificate())));
+       rootCert=(X509Certificate) certificateFactory.generateCertificate(new ByteArrayInputStream(Base64.decodeBase64(getRootCertificate().getBytes())));
+       citizenCert=(X509Certificate) certificateFactory.generateCertificate(new ByteArrayInputStream(Base64.decodeBase64(getCitizenCACertificate().getBytes())));
+       signingCert=(X509Certificate) certificateFactory.generateCertificate(new ByteArrayInputStream(Base64.decodeBase64(getSigningCertificate().getBytes())));
 
        signChain = new LinkedList<X509Certificate>();
        signChain.add(signingCert);
@@ -134,8 +131,8 @@ public final class Version4XMLFileCertificates
 
        certificateFactory = CertificateFactory.getInstance("X.509");
 
-       rootCert=(X509Certificate) certificateFactory.generateCertificate(new ByteArrayInputStream(Base64.decodeBase64(getRootCertificate())));
-       rrnCert=(X509Certificate) certificateFactory.generateCertificate(new ByteArrayInputStream(Base64.decodeBase64(getRRNCertificate())));
+       rootCert=(X509Certificate) certificateFactory.generateCertificate(new ByteArrayInputStream(Base64.decodeBase64(getRootCertificate().getBytes())));
+       rrnCert=(X509Certificate) certificateFactory.generateCertificate(new ByteArrayInputStream(Base64.decodeBase64(getRRNCertificate().getBytes())));
 
        rrnChain = new LinkedList<X509Certificate>();
        rrnChain.add(rrnCert);

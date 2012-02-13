@@ -141,7 +141,7 @@ public class EidQuickKeyXMLFile extends DefaultHandler
 
         if (localName.equalsIgnoreCase("fileData"))
         {
-            byte[] data=Base64.decodeBase64(getCDATA().trim());
+            byte[] data=Base64.decodeBase64(getCDATA().trim().getBytes());
             logger.finest("Base64 Data Decoded");
             
             switch (stage)

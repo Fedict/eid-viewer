@@ -282,14 +282,14 @@ public class Version35CSVFile
             break;
 
             case PHOTO:
-            eidData.setPhoto(Base64.decodeBase64(token));
+            eidData.setPhoto(Base64.decodeBase64(token.getBytes()));
             break;
 
             case AUTHCERTIFICATE:
                 logger.finer("Gathering Authentication Certificate");
                     try
                     {
-                        authenticationCert  = (X509Certificate) certificateFactory.generateCertificate(new ByteArrayInputStream(Base64.decodeBase64(token)));
+                        authenticationCert  = (X509Certificate) certificateFactory.generateCertificate(new ByteArrayInputStream(Base64.decodeBase64(token.getBytes())));
                     }
                     catch (CertificateException ex)
                     {
@@ -301,7 +301,7 @@ public class Version35CSVFile
                 logger.finer("Gathering Signing Certificate");
                     try
                     {
-                        signingCert  = (X509Certificate) certificateFactory.generateCertificate(new ByteArrayInputStream(Base64.decodeBase64(token)));
+                        signingCert  = (X509Certificate) certificateFactory.generateCertificate(new ByteArrayInputStream(Base64.decodeBase64(token.getBytes())));
                     }
                     catch (CertificateException ex)
                     {
@@ -313,7 +313,7 @@ public class Version35CSVFile
                  logger.finer("Gathering Citizen CA Certificate");
                     try
                     {
-                        citizenCert  = (X509Certificate) certificateFactory.generateCertificate(new ByteArrayInputStream(Base64.decodeBase64(token)));
+                        citizenCert  = (X509Certificate) certificateFactory.generateCertificate(new ByteArrayInputStream(Base64.decodeBase64(token.getBytes())));
                     }
                     catch (CertificateException ex)
                     {
@@ -325,7 +325,7 @@ public class Version35CSVFile
                  logger.finer("Gathering Belgian Root Certificate");
                     try
                     {
-                        rootCert  = (X509Certificate) certificateFactory.generateCertificate(new ByteArrayInputStream(Base64.decodeBase64(token)));
+                        rootCert  = (X509Certificate) certificateFactory.generateCertificate(new ByteArrayInputStream(Base64.decodeBase64(token.getBytes())));
                     }
                     catch (CertificateException ex)
                     {
@@ -337,7 +337,7 @@ public class Version35CSVFile
                  logger.finer("Gathering RRN Certificate");
                     try
                     {
-                        rrnCert  = (X509Certificate) certificateFactory.generateCertificate(new ByteArrayInputStream(Base64.decodeBase64(token)));
+                        rrnCert  = (X509Certificate) certificateFactory.generateCertificate(new ByteArrayInputStream(Base64.decodeBase64(token.getBytes())));
                     }
                     catch (CertificateException ex)
                     {

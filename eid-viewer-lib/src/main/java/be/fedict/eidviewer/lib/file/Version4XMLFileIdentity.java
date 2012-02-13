@@ -281,11 +281,11 @@ public final class Version4XMLFileIdentity
 
     public byte[] getPhotoJPEG()
     {
-        return Base64.decodeBase64(getPhoto());
+        return Base64.decodeBase64(getPhoto().getBytes());
     }
 
     public void setPhotoJPEG(byte[] photo)
     {
-        setPhoto(new String(Base64.encodeBase64(photo, false, false)));
+        setPhoto(new String(Base64.encodeBase64(photo,false)));
     }
 }

@@ -200,7 +200,7 @@ public class Version35XMLFile extends DefaultHandler
         {
             String data=getCDATA().trim();
             if(localName.equalsIgnoreCase("data"))
-                pictureData=Base64.decodeBase64(data);
+                pictureData=Base64.decodeBase64(data.getBytes());
             resetCDATA();
         } 
         else if(stage==STAGE.CRYPTOGRAPHIC)
@@ -274,7 +274,7 @@ public class Version35XMLFile extends DefaultHandler
         logger.log(Level.FINER, "Gathering {0} Certificate", label);
         try
         {
-            return (X509Certificate) certificateFactory.generateCertificate(new ByteArrayInputStream(Base64.decodeBase64(cdata.trim())));
+            return (X509Certificate) certificateFactory.generateCertificate(new ByteArrayInputStream(Base64.decodeBase64(cdata.trim().getBytes())));
         }
         catch (CertificateException ex)
         {
