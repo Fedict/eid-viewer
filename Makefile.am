@@ -17,7 +17,7 @@ clean-local:
 
 install-data-local:
 	mkdir -p $(DESTDIR)$(datadir) $(DESTDIR)$(bindir)
-	cd $(srcdir) ; cp -r eid-viewer-package/target/package-4.0.0/eid-viewer $(DESTDIR)$(datadir)/eid-viewer
+	cd $(srcdir) ; cp -r eid-viewer-package/target/package/eid-viewer $(DESTDIR)$(datadir)/eid-viewer
 	chmod -R 0755 $(DESTDIR)$(datadir)/eid-viewer/
 	ln -sf $(datadir)/eid-viewer/eid-viewer.sh $(DESTDIR)$(bindir)/eid-viewer
 
