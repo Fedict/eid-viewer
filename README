@@ -1,1 +1,25 @@
-   
+eID-Viewer is a graphical interface to the Belgian Electronic Identity Card
+use it to view, print, save data from the Belgian electronic identity card.
+
+eID Middleware Project
+Copyright (C) 2010 - 2012 Fedict
+
+By Frank Marien
+Based on eID Applet by Frank Cornelis
+
+This is free software; you can redistribute it and/or modify it
+under the terms of the GNU Lesser General Public License version
+3.0 as published by the Free Software Foundation.
+
+This software is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this software; if not, see
+http://www.gnu.org/licenses/.
+
+Official releases and support are available on http://eid.belgium.be/.
+Source code and other files are available on http://code.google.com/p/eid-viewer/.
+Source code for eID Applet is available on http://code.google.com/p/eid-applet/
