@@ -29,11 +29,11 @@ import java.util.List;
 public class X509CertificateAndTrust
 {
 
-    private X509Certificate certificate;
-    private String          trustDomain;
-    private List<String>    invalidReasons;
-    private Exception       validationException;
-    private boolean         validating, validated, trusted;
+    private 	X509Certificate certificate;
+    private 	String          trustDomain;
+    private 	List<String>    invalidReasons;
+    private 	Exception       validationException;
+    private	 	boolean         validating, validated, trusted;
 
     public X509CertificateAndTrust(X509Certificate certificate, String trustDomain)
     {
@@ -124,6 +124,6 @@ public class X509CertificateAndTrust
     @Override
     public String toString()
     {
-        return X509Utilities.getCN(certificate);
+        return X509Utilities.getHumanReadableName(certificate);
     }
 }

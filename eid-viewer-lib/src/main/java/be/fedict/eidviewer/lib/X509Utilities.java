@@ -24,6 +24,7 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
@@ -71,6 +72,25 @@ public class X509Utilities
                 return labelValue[1].trim();
         }
         return null;
+    }
+    
+    public static String getHumanReadableName(X509Certificate certificate)
+    {
+    	String commonName=getCN(certificate);
+    	ResourceBundle bundle=ResourceBundle.getBundle("be/fedict/eidviewer/lib/resources/X509Utilities");
+    	if(bundle!=null)
+    	{
+    		try
+    		{
+    			return bundle.getString(commonName);
+    		}
+    		catch(MissingResourceException mre)
+    		{
+    			// intentionally empty ; will return commonName below
+    		}
+    	}
+    	
+    	return commonName;
     }
 
     public static List<String> getKeyUsageStrings(ResourceBundle bundle, boolean[] keyUsage)

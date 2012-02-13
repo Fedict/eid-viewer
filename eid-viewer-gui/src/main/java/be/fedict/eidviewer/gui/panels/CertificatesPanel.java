@@ -151,6 +151,9 @@ public class CertificatesPanel extends JPanel implements Observer, TreeSelection
 
             if(eidController.hasSignCertChain())
                 addCerts(eidController.getSignCertChain());
+            
+            if(eidController.hasRRNCertChain())
+                addCerts(eidController.getRRNCertChain());
         }
         else
         {
@@ -199,6 +202,7 @@ public class CertificatesPanel extends JPanel implements Observer, TreeSelection
                 if(eidController.getState()==PCSCEidController.STATE.EID_PRESENT)
                     certsBusyIcon.setVisible(eidController.getActivity() == PCSCEidController.ACTIVITY.READING_AUTH_CHAIN ||
                                              eidController.getActivity() == PCSCEidController.ACTIVITY.READING_SIGN_CHAIN ||
+                                             eidController.getActivity() == PCSCEidController.ACTIVITY.READING_RRN_CHAIN ||
                                              eidController.isValidatingTrust());
                 else
                     certsBusyIcon.setVisible(false);
@@ -426,7 +430,7 @@ public class CertificatesPanel extends JPanel implements Observer, TreeSelection
         certsDetailsSplitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
 
         authCertsPanel.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
-        authCertsPanel.setMinimumSize(new java.awt.Dimension(24, 124));
+        authCertsPanel.setMinimumSize(new java.awt.Dimension(24, 148));
         authCertsPanel.setOpaque(false);
         authCertsPanel.setPreferredSize(new java.awt.Dimension(600, 124));
         authCertsPanel.setLayout(new java.awt.BorderLayout());
@@ -601,6 +605,16 @@ public class CertificatesPanel extends JPanel implements Observer, TreeSelection
         keyUsageLabel.setText(bundle.getString("keyUsageLabel")); // NOI18N
         alwaysValidateCheckbox.setText(bundle.getString("alwaysValidateCheckbox")); // NOI18N
         validateNowButton.setText(bundle.getString("validateNowButton")); // NOI18N 
+        
+        if(certificatesInTree==null)
+        	return;
+        
+	    DefaultMutableTreeNode existingNode = certificatesInTree.get("CN=RRN");
+	    if(existingNode!=null)
+	    {
+	         updateTreeNode(existingNode);
+	         updateCertificateDetail();
+        }
     }
 
 
@@ -647,11 +661,11 @@ public class CertificatesPanel extends JPanel implements Observer, TreeSelection
     private class CertAndTrustCellRenderer extends DefaultTreeCellRenderer
     {
 		private static final long	serialVersionUID	= 7097352650872290815L;
-		private Icon    certIcon, certTrustedIcon, certInvalidIcon;
-        private Color   redSelectedForeground, redForeground;
-        private Color   greenSelectedForeground, greenForeground;
-        private Color   defaultSelectedForeground, defaultForeground;
-        private Font    defaultFont,boldFont;
+		private Icon    			certIcon, certTrustedIcon, certInvalidIcon;
+        private Color   			redSelectedForeground, redForeground;
+        private Color   			greenSelectedForeground, greenForeground;
+        private Color   			defaultSelectedForeground, defaultForeground;
+        private Font    			defaultFont,boldFont;
 
         public CertAndTrustCellRenderer()
         {
