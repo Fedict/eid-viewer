@@ -41,7 +41,8 @@ import javax.swing.JPanel;
  */
 public class CardPanel extends JPanel implements Observer, DynamicLocale
 {
-    private static final Logger logger = Logger.getLogger(CardPanel.class.getName());
+	private static final long	serialVersionUID	= -9192230455179305234L;
+	private static final Logger logger = Logger.getLogger(CardPanel.class.getName());
     private ResourceBundle      bundle;
     
     private JLabel cardInfoBusyIcon;

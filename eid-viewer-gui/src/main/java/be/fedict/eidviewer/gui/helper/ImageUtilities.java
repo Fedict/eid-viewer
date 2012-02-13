@@ -31,12 +31,12 @@ import javax.swing.border.Border;
  */
 public class ImageUtilities
 {
-    public static Image getImage(Class clazz, String path)
+    public static Image getImage(Class<?> clazz, String path)
     {
         return getIcon(clazz,path).getImage();
     }
 
-    public static ImageIcon getIcon(Class clazz, String path)
+    public static ImageIcon getIcon(Class<?> clazz, String path)
     {
         return (new ImageIcon(clazz.getResource(path)));
     }

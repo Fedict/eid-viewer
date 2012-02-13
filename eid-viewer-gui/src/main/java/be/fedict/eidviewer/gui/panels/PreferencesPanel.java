@@ -39,7 +39,9 @@ import javax.swing.JTextField;
  */
 public class PreferencesPanel extends JPanel
 {
-    private ResourceBundle bundle;
+	private static final long	serialVersionUID	= 1985663938768950071L;
+
+	private ResourceBundle bundle;
     
     private JPanel          multiplePrefsSectionsPanel,proxyPrefsPanel;
     private JTextField      httpProxyHost,httpProxyPort;

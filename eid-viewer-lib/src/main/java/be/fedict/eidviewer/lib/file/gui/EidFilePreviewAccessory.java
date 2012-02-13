@@ -40,7 +40,8 @@ import javax.swing.border.LineBorder;
  */
 public class EidFilePreviewAccessory extends JPanel implements PropertyChangeListener,EidData
 {
-    private static final Logger logger = Logger.getLogger(EidFilePreviewAccessory.class.getName());
+	private static final long	serialVersionUID	= 8414465750300108216L;
+	private static final Logger logger = Logger.getLogger(EidFilePreviewAccessory.class.getName());
     private JLabel              photoLabel;
     private JLabel              nameLabel;
     private ResourceBundle      bundle;

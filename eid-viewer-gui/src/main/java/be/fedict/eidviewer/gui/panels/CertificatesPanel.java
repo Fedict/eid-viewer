@@ -71,7 +71,8 @@ import javax.swing.tree.TreeSelectionModel;
  */
 public class CertificatesPanel extends JPanel implements Observer, TreeSelectionListener, DynamicLocale
 {
-    private static final Logger                     logger=Logger.getLogger(CertificatesPanel.class.getName());
+	private static final long	serialVersionUID	= 3873882498274610172L;
+	private static final Logger                     logger=Logger.getLogger(CertificatesPanel.class.getName());
     private static final String                     ICONS = "/be/fedict/eidviewer/gui/resources/icons/";
     private ResourceBundle                          bundle;
     
@@ -645,7 +646,8 @@ public class CertificatesPanel extends JPanel implements Observer, TreeSelection
 
     private class CertAndTrustCellRenderer extends DefaultTreeCellRenderer
     {
-        private Icon    certIcon, certTrustedIcon, certInvalidIcon;
+		private static final long	serialVersionUID	= 7097352650872290815L;
+		private Icon    certIcon, certTrustedIcon, certInvalidIcon;
         private Color   redSelectedForeground, redForeground;
         private Color   greenSelectedForeground, greenForeground;
         private Color   defaultSelectedForeground, defaultForeground;

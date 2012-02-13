@@ -491,12 +491,8 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View, Observ
     
     private abstract class DynamicLocaleAbstractAction extends AbstractAction
     {
-        public DynamicLocaleAbstractAction(String text, Integer mnemonic)
-        {
-            super(text);
-            putValue(MNEMONIC_KEY, mnemonic);
-        }
-        
+		private static final long	serialVersionUID	= -2017438927248089386L;
+       
         public DynamicLocaleAbstractAction(String text)
         {
             super(text);
@@ -511,7 +507,9 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View, Observ
 
     private class AboutAction extends DynamicLocaleAbstractAction
     {
-        public AboutAction(String text)
+		private static final long	serialVersionUID	= 6061672451631370548L;
+
+		public AboutAction(String text)
         {
             super(text);
         }
@@ -524,7 +522,9 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View, Observ
     
     private class PreferencesAction extends DynamicLocaleAbstractAction
     {
-        public PreferencesAction(String text)
+		private static final long	serialVersionUID	= -7995910159254024855L;
+
+		public PreferencesAction(String text)
         {
             super(text);
         }
@@ -547,7 +547,9 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View, Observ
 
     private class PrintAction extends DynamicLocaleAbstractAction
     {
-        public PrintAction(String text, Integer mnemonic)
+		private static final long	serialVersionUID	= 7539156424813527996L;
+
+		public PrintAction(String text, Integer mnemonic)
         {
             super(text);
             putValue(MNEMONIC_KEY, mnemonic);   
@@ -595,7 +597,9 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View, Observ
 
     private class QuitAction extends DynamicLocaleAbstractAction
     {
-        public QuitAction(String text, Integer mnemonic)
+		private static final long	serialVersionUID	= 1752106249237329401L;
+
+		public QuitAction(String text, Integer mnemonic)
         {
             super(text);
             putValue(MNEMONIC_KEY, mnemonic);
@@ -610,7 +614,9 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View, Observ
     
     private class ShowHideLogAction extends DynamicLocaleAbstractAction
     {
-        public ShowHideLogAction(String text, Integer mnemonic)
+		private static final long	serialVersionUID	= 8800895193399501827L;
+
+		public ShowHideLogAction(String text, Integer mnemonic)
         {
             super(text);
             putValue(MNEMONIC_KEY, mnemonic);
@@ -625,7 +631,9 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View, Observ
 
     private class OpenFileAction extends DynamicLocaleAbstractAction
     {
-        public OpenFileAction(String text, Integer mnemonic)
+		private static final long	serialVersionUID	= -4445607438857967656L;
+
+		public OpenFileAction(String text, Integer mnemonic)
         {
             super(text);
             putValue(MNEMONIC_KEY, mnemonic);   
@@ -662,9 +670,11 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View, Observ
         }
     }
 
- private class SaveFileAction extends DynamicLocaleAbstractAction
+    private class SaveFileAction extends DynamicLocaleAbstractAction
     {
-        public SaveFileAction(String text, Integer mnemonic)
+		private static final long	serialVersionUID	= -4991039413918478765L;
+
+		public SaveFileAction(String text, Integer mnemonic)
         {
             super(text);
             putValue(MNEMONIC_KEY, mnemonic);   
@@ -711,10 +721,11 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View, Observ
         }
     }
 
-
     private class CloseFileAction extends DynamicLocaleAbstractAction
     {
-        public CloseFileAction(String text, Integer mnemonic)
+		private static final long	serialVersionUID	= -5295694046895449376L;
+
+		public CloseFileAction(String text, Integer mnemonic)
         {
             super(text);
             putValue(MNEMONIC_KEY, mnemonic);   
@@ -729,7 +740,8 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View, Observ
     
     private class LanguageAction extends DynamicLocaleAbstractAction
     {
-        private Locale          locale;
+		private static final long	serialVersionUID	= -8912334588329666310L;
+		private Locale          locale;
         private DynamicLocale   target;
         
         public LanguageAction(String text, Integer mnemonic, Locale locale, DynamicLocale target)

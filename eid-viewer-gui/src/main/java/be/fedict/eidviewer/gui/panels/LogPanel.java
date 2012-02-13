@@ -18,10 +18,6 @@
 
 package be.fedict.eidviewer.gui.panels;
 
-import be.fedict.eidviewer.gui.panels.LogPanel.ATTR;
-import be.fedict.eidviewer.gui.ViewerPrefs;
-import be.fedict.eidviewer.gui.helper.ImageUtilities;
-import be.fedict.eidviewer.lib.file.helper.TextFormatHelper;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -34,7 +30,7 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-import javax.swing.BorderFactory;
+
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -48,13 +44,18 @@ import javax.swing.text.Document;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
+import be.fedict.eidviewer.gui.ViewerPrefs;
+import be.fedict.eidviewer.gui.helper.ImageUtilities;
+
 /**
  *
  * @author Frank Marien
  */
 public class LogPanel extends JPanel
 {
-    private static final Logger viewerLogger = Logger.getLogger("be.fedict");
+	private static final long	serialVersionUID	= 2383624070620121028L;
+
+	private static final Logger viewerLogger = Logger.getLogger("be.fedict");
     
     private JPanel bottomPanel;
     private JButton clearButton;
@@ -338,5 +339,10 @@ public class LogPanel extends JPanel
         {
             this.attr = attr;
         }
+
+		public int getAttr()
+		{
+			return attr;
+		}
     };
 }

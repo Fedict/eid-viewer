@@ -39,7 +39,7 @@ public class X509Utilities
 
     static
     {
-        keyUsageStringNames=new ArrayList(9);
+        keyUsageStringNames=new ArrayList<String>(9);
         keyUsageStringNames.add("constraint_digitalSignature");
         keyUsageStringNames.add("constraint_nonRepudiation");
         keyUsageStringNames.add("constraint_keyEncipherment");
@@ -94,7 +94,7 @@ public class X509Utilities
             if (authenticationCert != null)
             {
                 logger.fine("Setting Authentication Certificate Chain");
-                List authChain = new LinkedList<X509Certificate>();
+                List<X509Certificate> authChain = new LinkedList<X509Certificate>();
                 authChain.add(authenticationCert);
                 authChain.add(citizenCert);
                 authChain.add(rootCert);
@@ -104,7 +104,7 @@ public class X509Utilities
             if (signingCert != null)
             {
                 logger.fine("Setting Signing Certificate Chain");
-                List signChain = new LinkedList<X509Certificate>();
+                List<X509Certificate> signChain = new LinkedList<X509Certificate>();
                 signChain.add(signingCert);
                 signChain.add(citizenCert);
                 signChain.add(rootCert);
@@ -114,7 +114,7 @@ public class X509Utilities
             if (rrnCert != null)
             {
                 logger.fine("Setting RRN Certificate Chain");
-                List rrnChain = new LinkedList<X509Certificate>();
+                List<X509Certificate> rrnChain = new LinkedList<X509Certificate>();
                 rrnChain.add(rrnCert);
                 rrnChain.add(rootCert);
                 eidData.setRRNCertChain(new X509CertificateChainAndTrust(TrustServiceDomains.BELGIAN_EID_NATIONAL_REGISTRY_TRUST_DOMAIN, rrnChain));

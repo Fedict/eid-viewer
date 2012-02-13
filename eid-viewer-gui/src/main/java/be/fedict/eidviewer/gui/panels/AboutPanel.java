@@ -31,7 +31,8 @@ import javax.swing.JPanel;
  */
 public class AboutPanel extends JPanel
 {
-    private JLabel aboutCopyrightText;
+	private static final long	serialVersionUID	= 4830311542618970933L;
+	private JLabel aboutCopyrightText;
     private JLabel jLabel2;
     private JLabel jLabel4;
     private JPanel jPanel2;

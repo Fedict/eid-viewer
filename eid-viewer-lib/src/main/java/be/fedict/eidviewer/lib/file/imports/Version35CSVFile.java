@@ -57,8 +57,6 @@ import org.apache.commons.codec.binary.Base64;
 public class Version35CSVFile
 {
     private static final Logger logger=Logger.getLogger(Version35CSVFile.class.getName());
-    private static final int    FILEVERSION                 =1;
-    private static final int    FILEMAGIC                   =2;
     private static final int    DOCUMENTTYPE                =3;
     private static final int    FIRSTNAMES                  =4;
     private static final int    LASTNAME                    =5;
@@ -156,7 +154,7 @@ public class Version35CSVFile
             if (authenticationCert != null)
             {
                 logger.fine("Setting Authentication Certificate Chain");
-                List authChain = new LinkedList<X509Certificate>();
+                List<X509Certificate> authChain = new LinkedList<X509Certificate>();
                 authChain.add(authenticationCert);
                 authChain.add(citizenCert);
                 authChain.add(rootCert);
@@ -166,7 +164,7 @@ public class Version35CSVFile
             if (signingCert != null)
             {
                 logger.fine("Setting Signing Certificate Chain");
-                List signChain = new LinkedList<X509Certificate>();
+                List<X509Certificate> signChain = new LinkedList<X509Certificate>();
                 signChain.add(signingCert);
                 signChain.add(citizenCert);
                 signChain.add(rootCert);
@@ -176,7 +174,7 @@ public class Version35CSVFile
             if (rrnCert != null)
             {
                 logger.fine("Setting RRN Certificate Chain");
-                List rrnChain = new LinkedList<X509Certificate>();
+                List<X509Certificate> rrnChain = new LinkedList<X509Certificate>();
                 rrnChain.add(rrnCert);
                 rrnChain.add(rootCert);
                 eidData.setRRNCertChain(new X509CertificateChainAndTrust(TrustServiceDomains.BELGIAN_EID_NATIONAL_REGISTRY_TRUST_DOMAIN, rrnChain));

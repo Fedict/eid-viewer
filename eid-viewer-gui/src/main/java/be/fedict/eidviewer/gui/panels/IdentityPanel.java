@@ -50,7 +50,8 @@ import javax.swing.SwingConstants;
  */
 public class IdentityPanel extends JPanel implements Observer, DynamicLocale
 {
-    private static final Logger logger = Logger.getLogger(IdentityPanel.class.getName());
+	private static final long	serialVersionUID	= 4356064467571081978L;
+	private static final Logger logger = Logger.getLogger(IdentityPanel.class.getName());
     private ResourceBundle      bundle;
     
     private JLabel addressBusyIcon;

@@ -32,7 +32,8 @@ import javax.swing.text.PlainDocument;
  */
 public class PositiveIntegerDocument extends PlainDocument
 {
-    private int maxSize;
+	private static final long	serialVersionUID	= -1657254247087133983L;
+	private int maxSize;
 
     /*
      * PositiveIntegerDocument Constructor, takes maxSize, which is the maximum number

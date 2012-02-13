@@ -91,7 +91,6 @@ public class Version35EidFile
                 {
                     TLVEntry certEntry = null;
                     ByteArrayInputStream bis = new ByteArrayInputStream(entry.data);
-                    X509Certificate cert = null;
 
                     while ((certEntry = TLVEntry.next(bis)) != null)
                     {
@@ -115,9 +114,6 @@ public class Version35EidFile
                                     {
                                         case 0:
                                         {
-                                            cert = (X509Certificate) certificateFactory.generateCertificate(new ByteArrayInputStream(certEntry2.data));
-                                            //System.err.println(cert.getSubjectDN().getName());
-
                                             switch (certEntry.tag)
                                             {
                                                 case 0:
@@ -160,7 +156,7 @@ public class Version35EidFile
         {
             if (authenticationCert != null)
             {
-                List authChain = new LinkedList<X509Certificate>();
+                List<X509Certificate> authChain = new LinkedList<X509Certificate>();
                 authChain.add(authenticationCert);
                 authChain.add(citizenCert);
                 authChain.add(rootCert);
@@ -169,7 +165,7 @@ public class Version35EidFile
 
             if (signingCert != null)
             {
-                List signChain = new LinkedList<X509Certificate>();
+                List<X509Certificate> signChain = new LinkedList<X509Certificate>();
                 signChain.add(signingCert);
                 signChain.add(citizenCert);
                 signChain.add(rootCert);
@@ -179,7 +175,7 @@ public class Version35EidFile
 
             if (rrnCert != null)
             {
-                List signChain = new LinkedList<X509Certificate>();
+                List<X509Certificate> signChain = new LinkedList<X509Certificate>();
                 signChain.add(rrnCert);
                 signChain.add(rootCert);
                 eidData.setSignCertChain(new X509CertificateChainAndTrust(TrustServiceDomains.BELGIAN_EID_NATIONAL_REGISTRY_TRUST_DOMAIN, signChain));

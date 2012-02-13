@@ -46,7 +46,7 @@ public class TextFormatHelper
     // return special stati, comma separated
     public static String getSpecialStatusString(ResourceBundle bundle, SpecialStatus specialStatus)
     {
-        List specials = new ArrayList();
+        List<String> specials = new ArrayList<String>();
 
         if(specialStatus!=null)
         {
@@ -78,7 +78,9 @@ public class TextFormatHelper
         return formatted.toString();
     }
     
-    // format a card number into XXX-YYYYYYYY-ZZ
+    /*
+     *  format a card number into XXX-YYYYYYYY-ZZ
+     */
     public static String formatCardNumber(String cardNumber)
     {
         //XXX-XXXXXXX-XX
@@ -152,10 +154,10 @@ public class TextFormatHelper
     }
     
     // join a la python etc..
-    public static String join(Collection s, String delimiter)
+    public static String join(Collection<?> s, String delimiter)
     {
         StringBuilder buffer = new StringBuilder();
-        Iterator iter = s.iterator();
+        Iterator<?> iter = s.iterator();
         if (iter.hasNext())
         {
             buffer.append(iter.next());

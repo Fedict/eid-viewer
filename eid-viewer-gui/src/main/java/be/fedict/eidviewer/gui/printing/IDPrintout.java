@@ -239,7 +239,7 @@ public class IDPrintout implements Printable,ImageObserver
      */
     private List<IdentityAttribute> populateAttributeList()
     {
-        ArrayList<IdentityAttribute> idAttributes = new ArrayList();
+        ArrayList<IdentityAttribute> idAttributes = new ArrayList<IdentityAttribute>();
 
         addIdAttribute(idAttributes, "nameLabel",           identity.getName());
         addIdAttribute(idAttributes, "givenNamesLabel",     identity.getFirstName() + (identity.getMiddleName()==null?"":" " + identity.getMiddleName()));
@@ -280,13 +280,13 @@ public class IDPrintout implements Printable,ImageObserver
 
     
 
-    private void addIdAttribute(List list, String labelName, String value)
+    private void addIdAttribute(List<IdentityAttribute> list, String labelName, String value)
     {
         String labelStr = bundle.getString(labelName);
         list.add(new IdentityAttribute(labelStr, value));
     }
 
-    private void addIdAttribute(List list, String labelName, String value, boolean relevant)
+    private void addIdAttribute(List<IdentityAttribute> list, String labelName, String value, boolean relevant)
     {
         String labelStr = bundle.getString(labelName);
         list.add(new IdentityAttribute(labelStr, value).setRelevant(relevant));
@@ -316,21 +316,9 @@ public class IDPrintout implements Printable,ImageObserver
             return label;
         }
 
-        public IdentityAttribute setLabel(String label)
-        {
-            this.label = label;
-            return this;
-        }
-
         public String getValue()
         {
             return value;
-        }
-
-        public IdentityAttribute setValue(String value)
-        {
-            this.value = value;
-            return this;
         }
 
         public boolean isRelevant()

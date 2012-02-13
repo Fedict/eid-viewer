@@ -94,7 +94,7 @@ public final class Version4XMLFileIdentity
         if(eidIdentity.getSpecialStatus() != null && eidIdentity.getSpecialStatus() != SpecialStatus.NO_STATUS)
         {
             SpecialStatus sStatus = eidIdentity.getSpecialStatus();
-            List specials = new ArrayList();
+            List<String> specials = new ArrayList<String>();
             if (sStatus.hasWhiteCane())
                 specials.add("whitecane");
             if (sStatus.hasYellowCane())

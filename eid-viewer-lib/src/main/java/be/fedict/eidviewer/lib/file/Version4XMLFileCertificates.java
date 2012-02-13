@@ -78,7 +78,7 @@ public final class Version4XMLFileCertificates
         X509Certificate rootCert = null;
         X509Certificate citizenCert = null;
         X509Certificate authenticationCert = null;
-        List authChain=null;
+        List<X509Certificate> authChain=null;
         
         if(getRootCertificate()==null || getCitizenCACertificate()==null || getAuthenticationCertificate()==null)
             return null;
@@ -88,6 +88,9 @@ public final class Version4XMLFileCertificates
        rootCert=(X509Certificate) certificateFactory.generateCertificate(new ByteArrayInputStream(Base64.decodeBase64(getRootCertificate().getBytes())));
        citizenCert=(X509Certificate) certificateFactory.generateCertificate(new ByteArrayInputStream(Base64.decodeBase64(getCitizenCACertificate().getBytes())));
        authenticationCert=(X509Certificate) certificateFactory.generateCertificate(new ByteArrayInputStream(Base64.decodeBase64(getAuthenticationCertificate().getBytes())));
+       
+       authChain = new LinkedList<X509Certificate>();
+       authChain.add(authenticationCert);
        authChain.add(citizenCert);
        authChain.add(rootCert);
 
@@ -100,7 +103,7 @@ public final class Version4XMLFileCertificates
         X509Certificate         rootCert = null;
         X509Certificate         citizenCert = null;
         X509Certificate         signingCert = null;
-        List                    signChain=null;
+        List<X509Certificate>   signChain=null;
 
         if(getRootCertificate()==null || getCitizenCACertificate()==null || getSigningCertificate()==null)
             return null;
@@ -124,7 +127,7 @@ public final class Version4XMLFileCertificates
         CertificateFactory      certificateFactory = null;
         X509Certificate         rootCert = null;
         X509Certificate         rrnCert = null;
-        List                    rrnChain=null;
+        List<X509Certificate>   rrnChain=null;
 
         if(getRootCertificate()==null || getCitizenCACertificate()==null || getSigningCertificate()==null || getRRNCertificate()==null)
             return null;
