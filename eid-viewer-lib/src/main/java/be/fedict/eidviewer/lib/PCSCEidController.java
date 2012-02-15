@@ -498,6 +498,11 @@ public class PCSCEidController extends Observable implements Runnable, Observer,
 
                 setState(STATE.IDLE);
             }
+            finally
+            {
+            	logger.fine("closing card access");
+            	eid.close();
+            }
         }
     }
 
