@@ -324,7 +324,12 @@ public class PCSCEid
     {
         return messages.getMessage(mESSAGE_ID);
     }
-
+    
+    public void clear()
+    {
+        fileCache.clear();
+        certCache.clear();
+    }
 
     private byte[] trimRight(byte[] addressFile)
     {
@@ -339,12 +344,6 @@ public class PCSCEid
         byte[] result = new byte[idx];
         System.arraycopy(addressFile, 0, result, 0, idx);
         return result;
-    }
-
-    private void clear()
-    {
-        fileCache.clear();
-        certCache.clear();
     }
     
     private void initI18N(Locale locale)

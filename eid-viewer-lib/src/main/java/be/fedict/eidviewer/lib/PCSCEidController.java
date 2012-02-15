@@ -187,7 +187,7 @@ public class PCSCEidController extends Observable implements Runnable, Observer,
     public void securityClear()
     {
         logger.fine("securityClear");
-
+        eid.clear();
         identity = null;
         address = null;
         photo = null;
