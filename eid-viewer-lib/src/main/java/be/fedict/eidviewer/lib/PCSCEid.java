@@ -119,6 +119,7 @@ public class PCSCEid
     public void close()
     {
         pcscEidImpl.close();
+        clear();
     }
 
     public boolean isEidPresent() throws Exception

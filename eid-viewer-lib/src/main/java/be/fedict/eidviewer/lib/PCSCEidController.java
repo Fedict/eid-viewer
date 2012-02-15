@@ -331,6 +331,7 @@ public class PCSCEidController extends Observable implements Runnable, Observer,
         {
             try
             {
+            	logger.fine("starting reader sequence");
                 if(!eid.hasCardReader())
                 {
                     logger.fine("waiting for card readers..");
@@ -338,6 +339,7 @@ public class PCSCEidController extends Observable implements Runnable, Observer,
                     eid.waitForCardReader();
                 }
 
+                logger.fine("starting card sequence");
                 if(!eid.isEidPresent())
                 {
                     logger.fine("waiting for eid card..");
