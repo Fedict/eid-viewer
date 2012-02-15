@@ -106,7 +106,7 @@ public class CertificatesPanel extends JPanel implements Observer, TreeSelection
     private DefaultMutableTreeNode                  rootNode;
     private DefaultTreeModel                        treeModel;
     private Color                                   defaultLabelForeground,defaultLabelBackground;
-    private PCSCEidController                           eidController;
+    private PCSCEidController                       eidController;
 
     public CertificatesPanel()
     {
@@ -609,12 +609,11 @@ public class CertificatesPanel extends JPanel implements Observer, TreeSelection
         if(certificatesInTree==null)
         	return;
         
-	    DefaultMutableTreeNode existingNode = certificatesInTree.get("CN=RRN");
-	    if(existingNode!=null)
-	    {
-	         updateTreeNode(existingNode);
-	         updateCertificateDetail();
-        }
+        // update cert names, to adapt to possibly longer name for "RRN (translation)"
+        for(DefaultMutableTreeNode nodeToUpdate: certificatesInTree.values())
+	         updateTreeNode(nodeToUpdate);
+        
+        updateCertificateDetail();
     }
 
 

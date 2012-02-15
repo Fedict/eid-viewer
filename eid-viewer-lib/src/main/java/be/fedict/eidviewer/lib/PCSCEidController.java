@@ -75,7 +75,7 @@ public class PCSCEidController extends Observable implements Runnable, Observer,
     public void start()
     {
         logger.fine("starting..");
-        Thread me = new Thread(this);
+        Thread me = new Thread(this,"PCSCEidController");
         me.setDaemon(true);
         me.start();
         
@@ -374,7 +374,10 @@ public class PCSCEidController extends Observable implements Runnable, Observer,
                 setActivity(ACTIVITY.READING_RRN_CHAIN);
                 rrnCertChain = new X509CertificateChainAndTrust(TrustServiceDomains.BELGIAN_EID_NATIONAL_REGISTRY_TRUST_DOMAIN,eid.getRRNCertificateChain());
                 if (trustServiceController != null && autoValidatingTrust)
+                {
+                    logger.fine("enqueueing RRN chain for validation (auto-validate is on)");
                     trustServiceController.validateLater(rrnCertChain);
+                }
                 setState();
 
                 logger.fine("validating identity");
