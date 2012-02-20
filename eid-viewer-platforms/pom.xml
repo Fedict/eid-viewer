@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>be.fedict</groupId>
+        <artifactId>eid-viewer</artifactId>
+        <version>4.1.0-SNAPSHOT</version>
+    </parent>
+    <name>eID Viewer Platform Packages</name>
+    <groupId>be.fedict.eid-viewer</groupId>
+    <artifactId>platforms</artifactId>
+    <version>4.1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <build>
+
+        <plugins>
+        <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>2.4</version>
+        <executions>
+          <execution>
+            <id>copy</id>
+            <phase>package</phase>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                  <artifactItem>
+                   <groupId>be.fedict.eid-viewer</groupId>^M
+                   <artifactId>package</artifactId>^M
+                   <version>${project.version}</version>
+                  <overWrite>true</overWrite>
+                  <outputDirectory>${project.basedir}/target/</outputDirectory>
+                  <destFileName>platforms-${project.version}.jar</destFileName>
+                </artifactItem>
+              </artifactItems>
+              <!-- other configurations here -->
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+        <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.4</version>
+            <configuration>
+              <finalName>dummy</finalName>
+            </configuration>
+      </plugin>
+      
+                <plugin>
+                <groupId>org.bluestemsoftware.open.maven.plugin</groupId>
+                <artifactId>launch4j-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>launch4j</goal>
+                        </goals>
+                        <configuration>
+                            <headerType>gui</headerType>
+                            <jre>
+                                <minVersion>1.6.0</minVersion>
+                            </jre>
+                            <classPath>
+                                <mainClass>com.simontuffs.onejar.Boot</mainClass>
+                            </classPath>
+                            <singleInstance>
+                                <mutexName>be.fedict.eidviewer.gui.BelgianEidViewer</mutexName>
+                                <windowTitle>Belgian eID Viewer</windowTitle>
+                            </singleInstance>
+
+                            <dontWrapJar>false</dontWrapJar>
+                            <outfile>target/eid-viewer.exe</outfile>
+                            <icon>src/main/assembly/eid.ico</icon>
+                            <versionInfo>
+                                <fileVersion>${win32-executable.version}</fileVersion>
+                                <txtFileVersion>eID Viewer v${project.version}</txtFileVersion>
+                                <fileDescription>eID Viewer</fileDescription>
+                                <copyright>Copyright (C) 2010-2011 FedICT</copyright>
+                                <productVersion>${win32-executable.version}</productVersion>
+                                <txtProductVersion>eID Viewer v${project.version}</txtProductVersion>
+                                <productName>eID Viewer</productName>
+                                <internalName>eid-viewer</internalName>
+                                <originalFilename>eid-viewer.exe</originalFilename>
+                            </versionInfo>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <descriptors>
+                        <descriptor>src/main/assembly/package.xml</descriptor>
+                    </descriptors>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>package</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>attached</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin> -->
+
+        <plugin> 
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>osxappbundle-maven-plugin</artifactId>
+                <version>1.0-alpha-2</version>
+                <configuration>
+                    <mainClass>be.fedict.eidviewer.gui.BelgianEidViewer</mainClass>
+					<jvmVersion>1.6+</jvmVersion>
+					<javaApplicationStub>${basedir}/src/main/assembly/JavaApplicationStub</javaApplicationStub>
+                    <iconFile>${basedir}/src/main/assembly/eid-viewer.icns</iconFile>
+					<bundleName>eID Viewer</bundleName>
+					<zipFile>${project.build.directory}/eid-viewer.zip</zipFile>
+					<dictionaryFile>${basedir}/src/main/assembly/Info.plist.template</dictionaryFile>
+					<additionalResources>
+                        <fileSet>
+                            <directory>${basedir}/src/main/assembly</directory>
+                            <includes>
+                                <include>COPYING</include>
+                                <include>COPYING.LESSER</include>
+                                <include>COPYING.ARTWORK</include>
+                            </includes>
+                        </fileSet>
+                    </additionalResources>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>bundle</goal>
+                        </goals>
+                    </execution>
+               </executions>
+           </plugin> 
+
+        </plugins>
+    </build>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>be.fedict.eid-viewer</groupId>
+            <artifactId>package</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+    
+</project>

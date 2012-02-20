@@ -46,6 +46,7 @@
     		</activation>
 			<modules>
 				<module>eid-viewer-package</module>
+				<module>eid-viewer-platforms</module>
    			</modules>
         </profile>
     </profiles>

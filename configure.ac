@@ -18,6 +18,9 @@ AS_VAR_IF([with_jars],[no],
 
 	AC_CHECK_PROGS(MVN,[mvn],[missing])
 	AS_VAR_IF([MVN],[missing],AC_MSG_ERROR([Maven2 or higher is required.]),AC_SUBST(MVN))
+
+	AC_CHECK_PROGS(ZIP,[zip],[missing])
+	AS_VAR_IF([ZIP],[missing],AC_MSG_ERROR([zip is required.]),AC_SUBST(ZIP))
 ],
 [
 	AC_CHECK_PROGS(TAR,[tar],[missing])
