@@ -1,17 +1,16 @@
 if COMPILE
 #########
 
-EXTRA_DIST = pom.xml eid-viewer-platforms eid-viewer-package eid-viewer-lib eid-viewer-gui debian rpm build-debian.sh svn_revision README
+EXTRA_DIST = pom.xml eid-viewer-win32 eid-viewer-osx eid-viewer-lib eid-viewer-gui debian rpm build-debian.sh svn_revision README
 BUILT_SOURCES=svn_revision
 
 svn_revision:
 	svnversion > svn_revision
 
-all: pom.xml eid-viewer-package eid-viewer-lib eid-viewer-gui
-	cd $(srcdir) ; chmod -R u+w eid-viewer-package eid-viewer-lib eid-viewer-gui
+all: pom.xml eid-viewer-win32 eid-viewer-osx eid-viewer-lib eid-viewer-gui
+	cd $(srcdir) ; chmod -R u+w eid-viewer-win32 eid-viewer-osx eid-viewer-lib eid-viewer-gui
 	cd $(srcdir) ; echo "version=4.1.0-`cat svn_revision`" > eid-viewer-gui/src/main/resources/be/fedict/eidviewer/gui/resources/Version.properties
 	cd $(srcdir) ; $(MVN) -e clean install
-#	cd $(srcdir) ; $(ZIP) -j eid-viewer-package/target/package-4.1.0-SNAPSHOT.one-jar.jar eid-viewer-package/src/main/assembly/xkms.wsdl
 
 clean-local:
 	rm -f eid-viewer.desktop ; cd $(srcdir) ; $(MVN) clean 

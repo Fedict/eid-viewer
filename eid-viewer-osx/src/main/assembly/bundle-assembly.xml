@@ -1,0 +1,66 @@
+<assembly>
+
+    <id>make-assembly</id>
+
+    <formats>
+        <format>zip</format>
+    </formats>
+
+    <includeBaseDirectory>false</includeBaseDirectory>
+
+    <!-- dependency set copies one-jarred package into JAVA dir -->
+
+    <dependencySets>
+        <dependencySet>
+            <outputDirectory>eID Viewer.app/Contents/Resources/Java</outputDirectory>
+            <scope>runtime</scope>
+            <useTransitiveDependencies>false</useTransitiveDependencies>
+            <useProjectArtifact>false</useProjectArtifact>
+        </dependencySet>
+    </dependencySets>
+
+    <fileSets>
+
+        <!-- Copy Application Stub -->
+
+        <fileSet>
+            <directory>src/main/assembly</directory>
+            <outputDirectory>eID Viewer.app/Contents/MacOS</outputDirectory>
+            <includes>
+                <include>JavaApplicationStub</include>
+            </includes>
+        </fileSet>
+
+        <!-- Copy Bundle Descriptor -->
+
+        <fileSet>
+            <directory>target/classes</directory>
+            <outputDirectory>eID Viewer.app/Contents</outputDirectory>
+            <includes>
+                <include>Info.plist</include>
+            </includes>
+        </fileSet>
+
+        <!-- Copy Icons -->
+
+        <fileSet>
+            <directory>src/main/assembly</directory>
+            <outputDirectory>eID Viewer.app/Contents/Resources</outputDirectory>
+            <includes>
+                <include>eid-viewer.icns</include>
+            </includes>
+        </fileSet>
+
+        <!-- Copy License Files -->
+
+        <fileSet>
+            <directory>src/main/assembly</directory>
+            <outputDirectory>eID Viewer.app</outputDirectory>
+            <includes>
+                <include>COPYING*</include>
+            </includes>
+        </fileSet>
+
+    </fileSets>
+
+</assembly>

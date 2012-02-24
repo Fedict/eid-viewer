@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>be.fedict</groupId>
+        <artifactId>eid-viewer</artifactId>
+        <version>4.1.0-SNAPSHOT</version>
+    </parent>
+    <name>eID Viewer MS Windows Executable</name>
+    <groupId>be.fedict.eid-viewer</groupId>
+    <artifactId>eid-viewer-win32</artifactId>
+    <version>4.1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <build>
+        <plugins>
+            <!-- copy just the eid-viewer jar ; it's a shaded jar with all depdendencies included -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>unpack-dependencies</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <includes>.jar</includes>
+                            <outputDirectory>${project.build.directory}</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- our own output is not relevant, disable the jar plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>default-jar</id>
+                        <phase>none</phase>
+                    </execution>
+                </executions>
+                <inherited>false</inherited>
+            </plugin>
+            <!-- create an MS Windows executable wrapper around the shaded jar -->
+            <plugin>
+                <groupId>org.bluestemsoftware.open.maven.plugin</groupId>
+                <artifactId>launch4j-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>launch4j</goal>
+                        </goals>
+                        <configuration>
+                            <jar>${project.build.directory}/eid-viewer-gui-${project.version}.jar</jar>
+                            <headerType>gui</headerType>
+                            <jre>
+                                <minVersion>1.6.0</minVersion>
+                            </jre>
+                            <classPath>
+                                <mainClass>be.fedict.eidviewer.gui.BelgianEidViewer</mainClass>
+                                <addDependencies>true</addDependencies>
+                            </classPath>
+                            <singleInstance>
+                                <mutexName>be.fedict.eidviewer.gui.BelgianEidViewer</mutexName>
+                                <windowTitle>Belgian eID Viewer</windowTitle>
+                            </singleInstance>
+                            <dontWrapJar>false</dontWrapJar>
+                            <icon>src/main/assembly/eid-viewer.ico</icon>
+                            <versionInfo>
+                                <fileVersion>${win32-executable.version}</fileVersion>
+                                <txtFileVersion>eID Viewer v${project.version}</txtFileVersion>
+                                <fileDescription>eID Viewer</fileDescription>
+                                <copyright>Copyright (C) 2010-2012 FedICT</copyright>
+                                <productVersion>${win32-executable.version}</productVersion>
+                                <txtProductVersion>eID Viewer v${project.version}</txtProductVersion>
+                                <productName>eID Viewer</productName>
+                                <internalName>eid-viewer</internalName>
+                                <originalFilename>eID Viewer.exe</originalFilename>
+                            </versionInfo>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+    <dependencies>
+        <dependency>
+            <groupId>be.fedict.eid-viewer</groupId>
+            <artifactId>eid-viewer-gui</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+</project>
