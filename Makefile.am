@@ -7,19 +7,19 @@ BUILT_SOURCES=svn_revision
 svn_revision:
 	svnversion > svn_revision
 
-all: pom.xml eid-viewer-win32 eid-viewer-osx eid-viewer-lib eid-viewer-gui
-	cd $(srcdir) ; chmod -R u+w eid-viewer-win32 eid-viewer-osx eid-viewer-lib eid-viewer-gui
-	cd $(srcdir) ; echo "version=4.1.0-`cat svn_revision`" > eid-viewer-gui/src/main/resources/be/fedict/eidviewer/gui/resources/Version.properties
-	cd $(srcdir) ; $(MVN) -e clean install
+all: pom.xml eid-viewer-win32 eid-viewer-osx eid-viewer-lib eid-viewer-gui eid-viewer.desktop eid-viewer
+	cd $(srcdir) && chmod -R u+w eid-viewer-*
+	cd $(srcdir) && $(MVN) -e -Dproject.revision=`cat svn_revision` clean install
 
 clean-local:
-	rm -f eid-viewer.desktop ; cd $(srcdir) ; $(MVN) clean 
+	rm -f eid-viewer.desktop eid-viewer && cd $(srcdir) && $(MVN) clean 
 
 install-data-local:
-	mkdir -p $(DESTDIR)$(datadir) $(DESTDIR)$(bindir)
-	cd $(srcdir) ; cp -r eid-viewer-package/target/package-4.1.0-SNAPSHOT/eid-viewer $(DESTDIR)$(datadir)/eid-viewer
+	mkdir -p $(DESTDIR)$(datadir)/eid-viewer $(DESTDIR)$(bindir)
+	cd $(srcdir) && cp -r eid-viewer-gui/target/eid-viewer-gui-*.jar $(DESTDIR)$(datadir)/eid-viewer
+	cp -r eid-viewer $(DESTDIR)$(bindir)/eid-viewer
 	chmod -R 0755 $(DESTDIR)$(datadir)/eid-viewer/
-	ln -sf $(datadir)/eid-viewer/eid-viewer.sh $(DESTDIR)$(bindir)/eid-viewer
+	chmod -R 0755 $(DESTDIR)$(bindir)/eid-viewer
 
 #####
 endif
@@ -30,18 +30,17 @@ if PREBUILT
 ###########
 
 all: 
-	cd $(srcdir) ; cp -r $(PREBUILT_PATH) .
-	cd $(srcdir) ; $(TAR) xvfz *.tar.gz
-	cd $(srcdir) ; rm -Rf eid-viewer-4.0.0/eid-viewer.exe
+	cd $(srcdir) && cp -r $(PREBUILT_PATH) .
 
 clean-local:
-	cd $(srcdir) ; rm -Rf eid-viewer-4.0.0* 
+	cd $(srcdir) && rm eid-viewer.desktop eid-viewer -Rf eid-viewer-gui-*.jar
 
 install-data-local:
-	mkdir -p $(DESTDIR)$(datadir) $(DESTDIR)$(bindir)
-	cd $(srcdir) ; cp -r eid-viewer-4.0.0/ $(DESTDIR)$(datadir)/eid-viewer
+	mkdir -p $(DESTDIR)$(datadir)/eid-viewer $(DESTDIR)$(bindir)
+	cd $(srcdir) && cp -r eid-viewer-gui-*.jar $(DESTDIR)$(datadir)/eid-viewer
+	cp -r eid-viewer $(DESTDIR)$(bindir)/eid-viewer
 	chmod -R 0755 $(DESTDIR)$(datadir)/eid-viewer/
-	ln -sf $(datadir)/eid-viewer/eid-viewer.sh $(DESTDIR)$(bindir)/eid-viewer
+	chmod -R 0755 $(DESTDIR)$(bindir)/eid-viewer
 
 ###########
 endif
@@ -50,6 +49,9 @@ endif
 
 eid-viewer.desktop: eid-viewer.desktop.sh
 	sh eid-viewer.desktop.sh
+
+eid-viewer: eid-viewer.sh
+	sh eid-viewer.sh
 
 desktopdir=@datadir@/applications
 icondir=@datadir@/icons

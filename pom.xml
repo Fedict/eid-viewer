@@ -4,7 +4,7 @@
     <name>eID Viewer</name>
     <groupId>be.fedict</groupId>
     <artifactId>eid-viewer</artifactId>
-    <version>4.1.0-SNAPSHOT</version>
+    <version>4.0.2-SNAPSHOT</version>
     <packaging>pom</packaging>
     <inceptionYear>2010</inceptionYear>
     <licenses>
@@ -44,6 +44,7 @@
             </activation>
             <modules>
                 <module>eid-viewer-win32</module>
+                <module>eid-viewer-osx</module>
             </modules>
         </profile>
     </profiles>
@@ -251,9 +252,9 @@
         </repository>
     </repositories>
     <properties>
-        <eid-applet.version>1.0.5.Beta1</eid-applet.version>
+        <eid-applet.version>1.0.5.Beta2</eid-applet.version>
         <trustservice.version>1.0.0.GA</trustservice.version>
-        <win32-executable.version>4.1.0.0</win32-executable.version>
+        <win32-executable.version>4.0.2.0</win32-executable.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 </project>

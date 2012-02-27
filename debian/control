@@ -3,11 +3,11 @@ Priority: optional
 Maintainer: Frank Mariën <frank.marien@fedict.be>
 Build-Depends: debhelper (>= 7.0.50), autotools-dev
 Standards-Version: 3.8.3
-Section: libs
-Homepage: http://code.google.com/p/eid-mw/
+Section: misc
+Homepage: http://code.google.com/p/eid-viewer/
 
 Package: eid-viewer
-Section: java
+Section: misc
 Provides: beidgui
 Replaces: beidgui
 Conflicts: beidgui

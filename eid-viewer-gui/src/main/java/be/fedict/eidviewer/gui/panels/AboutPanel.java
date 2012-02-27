@@ -90,6 +90,6 @@ public class AboutPanel extends JPanel
     private void initI18N()
     {
         String aboutHTML=ResourceBundle.getBundle("be/fedict/eidviewer/gui/resources/AboutPanel").getString("about_html");
-        aboutCopyrightText.setText(aboutHTML.replace("__FULLVERSION__", ViewerPrefs.getFullVersion()));
+        aboutCopyrightText.setText(aboutHTML);
     }
 }
