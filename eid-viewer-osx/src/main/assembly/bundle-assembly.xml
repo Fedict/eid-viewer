@@ -8,7 +8,8 @@
 
     <includeBaseDirectory>false</includeBaseDirectory>
 
-    <!-- dependency set copies one-jarred package into JAVA dir -->
+    <!-- dependency set copies shaded jar $JAVA dir
+         skipping our own artefact, and dependencies (they're all in the shaded jar already -->
 
     <dependencySets>
         <dependencySet>
