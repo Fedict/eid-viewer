@@ -1,0 +1,10 @@
+#!/bin/sh
+
+prefix=@prefix@
+datarootdir=@datarootdir@
+datadir=@datadir@
+
+cat > eid-viewer <<EOF
+#!/bin/sh
+exec java -jar @datadir@/eid-viewer/eid-viewer*.jar
+EOF
