@@ -382,9 +382,9 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View, Observ
         imageList.add(ImageUtilities.getIcon(this.getClass(), ICONS + "logo_512.png").getImage());
         imageList.add(ImageUtilities.getIcon(this.getClass(), ICONS + "logo_256.png").getImage());
         imageList.add(ImageUtilities.getIcon(this.getClass(), ICONS + "logo_128.png").getImage());
-        imageList.add(ImageUtilities.getIcon(this.getClass(), ICONS + "logo_64.png").getImage());
-        imageList.add(ImageUtilities.getIcon(this.getClass(), ICONS + "logo_32.png").getImage());
-        imageList.add(ImageUtilities.getIcon(this.getClass(), ICONS + "logo_16.png").getImage());
+        imageList.add(ImageUtilities.getIcon(this.getClass(), ICONS + "logo_64.png" ).getImage());
+        imageList.add(ImageUtilities.getIcon(this.getClass(), ICONS + "logo_32.png" ).getImage());
+        imageList.add(ImageUtilities.getIcon(this.getClass(), ICONS + "logo_16.png" ).getImage());
         setIconImages(imageList);
         
         setTitle("eID Viewer");

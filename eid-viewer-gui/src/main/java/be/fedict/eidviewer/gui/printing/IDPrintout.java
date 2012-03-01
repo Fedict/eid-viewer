@@ -22,6 +22,7 @@ import be.fedict.eidviewer.gui.panels.CertificatesPanel;
 import be.fedict.eidviewer.lib.file.helper.TextFormatHelper;
 import be.fedict.eid.applet.service.Address;
 import be.fedict.eid.applet.service.Identity;
+import be.fedict.eid.applet.service.SpecialOrganisation;
 import be.fedict.eidviewer.gui.ViewerPrefs;
 import be.fedict.eidviewer.gui.helper.ImageUtilities;
 import java.awt.Color;
@@ -32,8 +33,10 @@ import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.image.ImageObserver;
 import java.awt.print.*;
+import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -49,9 +52,9 @@ public class IDPrintout implements Printable,ImageObserver
 {
     private static final Logger             logger=Logger.getLogger(CertificatesPanel.class.getName());
     
-    private static final int                MINIMAL_FONT_SIZE = 6;
+    private static final int                MINIMAL_FONT_SIZE = 2;
     private static final int                MAXIMAL_FONT_SIZE = 24;
-    private static final int                TITLE_MAXIMAL_FONT_SIZE = 32;
+    private static final int                TITLE_MAXIMAL_FONT_SIZE = MAXIMAL_FONT_SIZE;
     private static final String             ICONS = "/be/fedict/eidviewer/gui/resources/icons/";
     private static final float              SPACE_BETWEEN_ITEMS = 16;
     private static final String             FONT = "Lucida";
@@ -121,6 +124,20 @@ public class IDPrintout implements Printable,ImageObserver
 
         // get localised strings for card type. We'll take a new line every time a ";" is found in the resource
         String[] cardTypeStr = (bundle.getString("type_" + this.identity.getDocumentType().toString()).toUpperCase()).split(";");
+        
+        // if a "mention" is present, append it so it appears below the card type string, between brackets
+        
+        if(identity.getSpecialOrganisation()!=SpecialOrganisation.UNSPECIFIED)
+        {
+	        String mention = TextFormatHelper.getSpecialOrganisationString(bundle, identity.getSpecialOrganisation());
+	        if(mention!=null && !mention.isEmpty())
+	        {
+	        	String[] cardTypeWithMention=new String[cardTypeStr.length+1];
+	        	System.arraycopy(cardTypeStr,0,cardTypeWithMention,0,cardTypeStr.length);
+	        	cardTypeWithMention[cardTypeStr.length]="(" + mention + ")";
+	        	cardTypeStr=cardTypeWithMention;
+	        }
+        }
 
         // iterate from MAXIMAL_FONT_SIZE, calculating how much space would be required to fit the card type strings
         // stop when a font size is found where they all fit the space between the graphics in an orderly manner
@@ -253,6 +270,7 @@ public class IDPrintout implements Printable,ImageObserver
 
         String nobleCondition = identity.getNobleCondition();
         addIdAttribute(idAttributes, "titleLabel",          (nobleCondition==null || nobleCondition.isEmpty())?TextFormatHelper.UNKNOWN_VALUE_TEXT:nobleCondition, (!(nobleCondition==null || nobleCondition.isEmpty())));
+         
         String specialStatusStr = TextFormatHelper.getSpecialStatusString(bundle,identity.getSpecialStatus());
         addIdAttribute(idAttributes, "specialStatusLabel",  specialStatusStr.isEmpty()?TextFormatHelper.UNKNOWN_VALUE_TEXT:specialStatusStr, (!specialStatusStr.isEmpty()));
        

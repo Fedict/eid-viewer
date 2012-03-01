@@ -181,9 +181,13 @@ public class IdentityPanel extends JPanel implements Observer, DynamicLocale
                 addressTrustedIcon.setVisible   (eidController!=null && (!eidController.isAddressTrusted()) && eidController.isAddressValidated() && eidController.hasRRNCertChain() && eidController.getRRNCertChain().isTrusted());
 
 
-                if (identity != null)
+                if(identity != null)
                 {
-                    type.setText(bundle.getString("type_" + identity.getDocumentType().toString()));
+                	String specialOrganisation=TextFormatHelper.getSpecialOrganisationString(bundle, identity.getSpecialOrganisation());
+                	if(specialOrganisation!=null && !specialOrganisation.isEmpty())
+                		type.setText(bundle.getString("type_" + identity.getDocumentType().toString()) + " (" + specialOrganisation + ")");
+                	else
+                		type.setText(bundle.getString("type_" + identity.getDocumentType().toString()));
                     type.setEnabled(true);
 
                     name.setText(identity.getName());

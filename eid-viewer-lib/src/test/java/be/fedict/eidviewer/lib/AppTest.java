@@ -1,6 +1,5 @@
 package be.fedict.eidviewer.lib;
 
-import be.fedict.eid.applet.Messages;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Locale;

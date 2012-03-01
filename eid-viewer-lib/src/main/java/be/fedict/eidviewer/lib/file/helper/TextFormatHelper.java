@@ -20,6 +20,7 @@ package be.fedict.eidviewer.lib.file.helper;
 
 import be.fedict.eid.applet.service.Gender;
 import be.fedict.eid.applet.service.Identity;
+import be.fedict.eid.applet.service.SpecialOrganisation;
 import be.fedict.eid.applet.service.SpecialStatus;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -60,6 +61,23 @@ public class TextFormatHelper
         return TextFormatHelper.join(specials, ",");
     }
     
+    // return special organization, comma separated
+    public static String getSpecialOrganisationString(ResourceBundle bundle, SpecialOrganisation specialOrganisation)
+    {
+        if(specialOrganisation!=null && specialOrganisation!=SpecialOrganisation.UNSPECIFIED)
+        {
+        	switch(specialOrganisation)
+        	{
+        		case SHAPE:						return bundle.getString("special_organisation_shape");
+        		case NATO:						return bundle.getString("special_organisation_nato");
+        		case FORMER_BLUE_CARD_HOLDER: 	return bundle.getString("special_organisation_former_blue_card"); 
+        		case RESEARCHER: 				return bundle.getString("special_organisation_researcher"); 
+        		case UNSPECIFIED: 				return ""; 
+        	}
+        }
+        return "";
+    }
+    
     // format a national number into YY.MM.DD-S&G.CS
     public static String formatNationalNumber(String nationalNumber)
     {
@@ -83,14 +101,30 @@ public class TextFormatHelper
      */
     public static String formatCardNumber(String cardNumber)
     {
-        //XXX-XXXXXXX-XX
-        //012 3456789 AB
-        
-        StringBuilder formatted=new StringBuilder(cardNumber.substring(0,3));
-                      formatted.append('-');
-                      formatted.append(cardNumber.substring(3,10));
-                      formatted.append('-');
-                      formatted.append(cardNumber.substring(10));
+    	StringBuilder formatted=new StringBuilder();
+    	
+    	if(cardNumber.length()==10 && cardNumber.startsWith("B"))
+    	{
+            //B 0123456 78
+    		formatted.append(cardNumber.substring(0,1));
+    		formatted.append(' ');
+    		formatted.append(cardNumber.substring(1,7));
+    		formatted.append(' ');
+    		formatted.append(cardNumber.substring(8));
+    	}
+    	else if(cardNumber.length()==12)
+    	{
+            //012-3456789-01
+    		formatted.append(cardNumber.substring(0,3));
+            formatted.append('-');
+            formatted.append(cardNumber.substring(3,10));
+            formatted.append('-');
+            formatted.append(cardNumber.substring(10));
+    	}
+    	else
+    	{
+    		formatted.append(cardNumber);
+    	}
                      
         return formatted.toString();
     }

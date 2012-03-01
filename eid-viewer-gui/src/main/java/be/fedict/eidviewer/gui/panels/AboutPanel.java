@@ -18,7 +18,6 @@
 
 package be.fedict.eidviewer.gui.panels;
 
-import be.fedict.eidviewer.gui.ViewerPrefs;
 import java.util.ResourceBundle;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
