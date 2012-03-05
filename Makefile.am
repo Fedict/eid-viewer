@@ -17,7 +17,7 @@ clean-local:
 install-data-local:
 	mkdir -p $(DESTDIR)$(datadir)/eid-viewer $(DESTDIR)$(bindir)
 	cd $(srcdir) && cp -r eid-viewer-gui/target/eid-viewer-gui-*.jar $(DESTDIR)$(datadir)/eid-viewer
-	cp -r eid-viewer $(DESTDIR)$(bindir)/eid-viewer
+	cp eid-viewer $(DESTDIR)$(bindir)/eid-viewer
 	chmod -R 0755 $(DESTDIR)$(datadir)/eid-viewer/
 	chmod -R 0755 $(DESTDIR)$(bindir)/eid-viewer
 
@@ -37,8 +37,8 @@ clean-local:
 
 install-data-local:
 	mkdir -p $(DESTDIR)$(datadir)/eid-viewer $(DESTDIR)$(bindir)
-	cd $(srcdir) && cp -r eid-viewer-gui-*.jar $(DESTDIR)$(datadir)/eid-viewer
-	cp -r eid-viewer $(DESTDIR)$(bindir)/eid-viewer
+	cd $(srcdir) && cp eid-viewer-*.jar $(DESTDIR)$(datadir)/eid-viewer
+	cp eid-viewer $(DESTDIR)$(bindir)/eid-viewer
 	chmod -R 0755 $(DESTDIR)$(datadir)/eid-viewer/
 	chmod -R 0755 $(DESTDIR)$(bindir)/eid-viewer
 
