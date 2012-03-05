@@ -29,7 +29,7 @@ endif
 if PREBUILT
 ###########
 
-all: 
+all: eid-viewer.desktop eid-viewer
 	cp $(PREBUILT_PATH) $(srcdir)
 
 clean-local:
