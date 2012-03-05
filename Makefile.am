@@ -30,14 +30,14 @@ if PREBUILT
 ###########
 
 all: 
-	cd $(srcdir) && cp -r $(PREBUILT_PATH) .
+	cp $(PREBUILT_PATH) $(srcdir)
 
 clean-local:
-	cd $(srcdir) && rm eid-viewer.desktop eid-viewer -Rf eid-viewer-gui-*.jar
+	cd $(srcdir) && rm -f eid-viewer.desktop eid-viewer eid-viewer.jar
 
 install-data-local:
 	mkdir -p $(DESTDIR)$(datadir)/eid-viewer $(DESTDIR)$(bindir)
-	cd $(srcdir) && cp eid-viewer-*.jar $(DESTDIR)$(datadir)/eid-viewer
+	cp $(srcdir)/eid-viewer.jar $(DESTDIR)$(datadir)/eid-viewer
 	cp eid-viewer $(DESTDIR)$(bindir)/eid-viewer
 	chmod -R 0755 $(DESTDIR)$(datadir)/eid-viewer/
 	chmod -R 0755 $(DESTDIR)$(bindir)/eid-viewer
