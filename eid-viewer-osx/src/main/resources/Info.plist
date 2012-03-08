@@ -7,7 +7,7 @@
     <key>CFBundleName</key>
     <string>eID Viewer</string>
     <key>CFBundleVersion</key>
-    <string>${project.version} ${project.revision}</string>
+    <string>${project.version} ${eid-viewer-osx.revision}</string>
      <key>CFBundleShortVersionString</key>
      <string>${project.version}</string>
     <key>CFBundleAllowMixedLocalizations</key>

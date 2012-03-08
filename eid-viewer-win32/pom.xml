@@ -70,15 +70,16 @@
                             <dontWrapJar>false</dontWrapJar>
                             <icon>src/main/assembly/eid-viewer.ico</icon>
                             <versionInfo>
-                                <fileVersion>${win32-executable.version}</fileVersion>
-                                <txtFileVersion>eID Viewer v${project.version}</txtFileVersion>
-                                <fileDescription>eID Viewer</fileDescription>
-                                <copyright>Copyright (C) 2010-2012 FedICT</copyright>
-                                <productVersion>${win32-executable.version}</productVersion>
-                                <txtProductVersion>eID Viewer v${project.version}</txtProductVersion>
-                                <productName>eID Viewer</productName>
-                                <internalName>eid-viewer</internalName>
-                                <originalFilename>eID Viewer.exe</originalFilename>
+                                <fileVersion>${project.version}.0</fileVersion>
+                                <productVersion>${project.version}.0</productVersion>
+                                <fileDescription>${project.parent.name}</fileDescription>
+                                <copyright>Copyright (C) ${project.inceptionYear}-${copyrightPeriodTo} ${project.organization.name}</copyright>
+                                <txtProductVersion>${project.parent.name} ${project.version} ${eid-viewer-win32.revision}</txtProductVersion>
+                                <companyName>${project.organization.name}</companyName>
+                                <txtFileVersion>${project.version} ${eid-viewer-win32.revision}</txtFileVersion>
+                                <productName>${project.parent.name}</productName>
+                                <internalName>${project.parent.artifactId}</internalName>
+                                <originalFilename>${project.parent.name}.exe</originalFilename>
                             </versionInfo>
                         </configuration>
                     </execution>

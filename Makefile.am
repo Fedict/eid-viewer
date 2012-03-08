@@ -1,7 +1,7 @@
 if COMPILE
 #########
 
-EXTRA_DIST = pom.xml eid-viewer-win32 eid-viewer-osx eid-viewer-lib eid-viewer-gui debian rpm build-debian.sh svn_revision README
+EXTRA_DIST = pom.xml eid-viewer-win32 eid-viewer-osx eid-viewer-lib eid-viewer-gui debian rpm build-debian.sh svn_revision eid-viewer-version eid-viewer-version.sh README
 BUILT_SOURCES=svn_revision
 
 svn_revision:
@@ -9,7 +9,7 @@ svn_revision:
 
 all: pom.xml eid-viewer-win32 eid-viewer-osx eid-viewer-lib eid-viewer-gui eid-viewer.desktop eid-viewer
 	cd $(srcdir) && chmod -R u+w eid-viewer-*
-	cd $(srcdir) && $(MVN) -e -Dproject.revision=`cat svn_revision` clean install
+	cd $(srcdir) && $(MVN) -e clean install
 
 clean-local:
 	rm -f eid-viewer.desktop eid-viewer && cd $(srcdir) && $(MVN) clean 

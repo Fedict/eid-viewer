@@ -30,6 +30,8 @@
             <email>frank.marien@fedict.be</email>
         </developer>
     </developers>
+
+
     <modules>
         <module>eid-viewer-gui</module>
         <module>eid-viewer-lib</module>
@@ -118,6 +120,18 @@
                     <skip>true</skip>
                 </configuration>
             </plugin>
+<plugin>
+    <groupId>com.google.code.maven-svn-revision-number-plugin</groupId>
+    <artifactId>svn-revision-number-maven-plugin</artifactId> <!-- artifactId has changed! -->
+    <version>1.8-SVN7</version> <!-- the version has explicit svn-1.7-related suffix for now -->
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>revision</goal>
+                        </goals>
+                    </execution>
+                </executions>
+</plugin>
         </plugins>
         <pluginManagement>
             <plugins>
@@ -175,6 +189,17 @@
                 <enabled>false</enabled>
             </snapshots>
         </pluginRepository>
+ <pluginRepository>
+        <id>maven-svn-revision-number-plugin.googlecode.com</id>
+        <url>http://maven-svn-revision-number-plugin.googlecode.com/svn/m2/releases</url>
+        <releases>
+            <enabled>true</enabled>
+        </releases>
+        <snapshots>
+            <enabled>false</enabled>
+        </snapshots>
+    </pluginRepository>
+
     </pluginRepositories>
     <repositories>
         <repository>
@@ -254,7 +279,9 @@
     <properties>
         <eid-applet.version>1.0.5.Beta2</eid-applet.version>
         <trustservice.version>1.0.0.GA</trustservice.version>
-        <win32-executable.version>4.0.2.0</win32-executable.version>
+        <win32-executable.version>${project.version}.${project.revision}</win32-executable.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.build.timestamp.format>yyyy</maven.build.timestamp.format>
+        <copyrightPeriodTo>${maven.build.timestamp}</copyrightPeriodTo>
     </properties>
 </project>
