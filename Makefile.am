@@ -1,49 +1,22 @@
-if COMPILE
-#########
+# This configure/make install provision to facilitate GNU/Linux packaging
+# place "eid-viewer.jar" in $(srcdir)=same dir as this file.
+# ./configure && make install will install it, launcher script and desktop file
+#
+# autoreconf -i (only if when checked out from svn)
+# ./configure
+# sudo make install
 
-EXTRA_DIST = pom.xml eid-viewer-win32 eid-viewer-osx eid-viewer-lib eid-viewer-gui debian rpm build-debian.sh svn_revision eid-viewer-version eid-viewer-version.sh README
-BUILT_SOURCES=svn_revision
-
-svn_revision:
-	svnversion > svn_revision
-
-all: pom.xml eid-viewer-win32 eid-viewer-osx eid-viewer-lib eid-viewer-gui eid-viewer.desktop eid-viewer
-	cd $(srcdir) && chmod -R u+w eid-viewer-*
-	cd $(srcdir) && $(MVN) -e clean install
+#######################################################
 
 clean-local:
-	rm -f eid-viewer.desktop eid-viewer && cd $(srcdir) && $(MVN) clean 
+	rm -f eid-viewer.desktop eid-viewer eid-viewer.jar
 
-install-data-local:
+install-data-local: eid-viewer eid-viewer.desktop eid-viewer.jar
 	mkdir -p $(DESTDIR)$(datadir)/eid-viewer $(DESTDIR)$(bindir)
-	cd $(srcdir) && cp -r eid-viewer-gui/target/eid-viewer-gui-*.jar $(DESTDIR)$(datadir)/eid-viewer
+	cp eid-viewer.jar $(DESTDIR)$(datadir)/eid-viewer
 	cp eid-viewer $(DESTDIR)$(bindir)/eid-viewer
 	chmod -R 0755 $(DESTDIR)$(datadir)/eid-viewer/
 	chmod -R 0755 $(DESTDIR)$(bindir)/eid-viewer
-
-#####
-endif
-
-
-
-if PREBUILT
-###########
-
-all: eid-viewer.desktop eid-viewer
-	cp $(PREBUILT_PATH) $(srcdir)
-
-clean-local:
-	cd $(srcdir) && rm -f eid-viewer.desktop eid-viewer eid-viewer.jar
-
-install-data-local:
-	mkdir -p $(DESTDIR)$(datadir)/eid-viewer $(DESTDIR)$(bindir)
-	cp $(srcdir)/eid-viewer.jar $(DESTDIR)$(datadir)/eid-viewer
-	cp eid-viewer $(DESTDIR)$(bindir)/eid-viewer
-	chmod -R 0755 $(DESTDIR)$(datadir)/eid-viewer/
-	chmod -R 0755 $(DESTDIR)$(bindir)/eid-viewer
-
-###########
-endif
 
 #######################################################
 

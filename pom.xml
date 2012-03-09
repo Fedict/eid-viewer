@@ -50,6 +50,15 @@
             </modules>
         </profile>
     </profiles>
+
+
+ <distributionManagement>
+    <repository>
+      <id>dist.eid.belgium.be</id>
+      <url>scpexe://eidfiles.be/data/dist/maven2</url>
+    </repository>
+  </distributionManagement>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -173,6 +182,15 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+
+    <extensions>
+      <extension>
+        <groupId>org.apache.maven.wagon</groupId>
+         <artifactId>wagon-ssh-external</artifactId>
+         <version>2.2</version>
+      </extension>
+    </extensions>
+
     </build>
     <pluginRepositories>
         <pluginRepository>

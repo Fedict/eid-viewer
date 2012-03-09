@@ -9,6 +9,7 @@ import junit.framework.TestSuite;
 
 import be.fedict.eid.applet.service.*;
 import java.awt.Image;
+import be.fedict.eidviewer.lib.PCSCEid;
 
 /**
  * Unit test for simple App.
@@ -76,8 +77,5 @@ public class AppTest extends TestCase
         {
             System.err.println("getReaderList Failed");
         }
-
-
-
     }
 }
