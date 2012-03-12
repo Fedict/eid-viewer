@@ -1,24 +1,32 @@
 # This configure/make install provision to facilitate GNU/Linux packaging
-# place "eid-viewer.jar" in $(srcdir)=same dir as this file.
-# ./configure && make install will install it, launcher script and desktop file
 #
-# autoreconf -i (only if when checked out from svn)
+# to create a source tarball from svn checkout:
+# place "eid-viewer.jar" in $(srcdir)=same dir as this file (get it from the maven2 repo)
+# autoreconf -i
+# ./configure
+# make dist
+#
+# to install from source tarball:
 # ./configure
 # sudo make install
+#
+# (This is how distro package builders use the source tarball as well)
+#
+######################################################################################################################
 
-#######################################################
+EXTRA_DIST = eid-viewer.jar debian rpm build-debian.sh svn_revision eid-viewer-version eid-viewer-version.sh README
 
 clean-local:
 	rm -f eid-viewer.desktop eid-viewer eid-viewer.jar
 
 install-data-local: eid-viewer eid-viewer.desktop eid-viewer.jar
 	mkdir -p $(DESTDIR)$(datadir)/eid-viewer $(DESTDIR)$(bindir)
-	cp eid-viewer.jar $(DESTDIR)$(datadir)/eid-viewer
+	cp $(srcdir)/eid-viewer.jar $(DESTDIR)$(datadir)/eid-viewer
 	cp eid-viewer $(DESTDIR)$(bindir)/eid-viewer
 	chmod -R 0755 $(DESTDIR)$(datadir)/eid-viewer/
 	chmod -R 0755 $(DESTDIR)$(bindir)/eid-viewer
 
-#######################################################
+#######################################################################################################################
 
 eid-viewer.desktop: eid-viewer.desktop.sh
 	sh eid-viewer.desktop.sh
