@@ -14,7 +14,7 @@
 #
 ######################################################################################################################
 
-EXTRA_DIST = eid-viewer.jar debian rpm build-debian.sh svn_revision eid-viewer-version eid-viewer-version.sh README
+EXTRA_DIST = eid-viewer.jar debian rpm build-debian.sh svn_revision README
 
 clean-local:
 	rm -f eid-viewer.desktop eid-viewer eid-viewer.jar
@@ -27,6 +27,9 @@ install-data-local: eid-viewer eid-viewer.desktop eid-viewer.jar
 	chmod -R 0755 $(DESTDIR)$(bindir)/eid-viewer
 
 #######################################################################################################################
+
+svn_revision:
+		svnversion > svn_revision
 
 eid-viewer.desktop: eid-viewer.desktop.sh
 	sh eid-viewer.desktop.sh

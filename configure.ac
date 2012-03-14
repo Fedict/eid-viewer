@@ -1,5 +1,5 @@
 AC_PREREQ([2.61])
-AC_INIT([eid-viewer],m4_esyscmd([./eid-viewer-version.sh]),[servicedesk@fedict.be])
+AC_INIT([eid-viewer],[4.0.2],[servicedesk@fedict.be])
 AC_CONFIG_SRCDIR([eid-viewer.jar])
 AC_CANONICAL_HOST
 AM_INIT_AUTOMAKE([1.9 foreign])
