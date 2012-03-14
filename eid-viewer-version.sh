@@ -8,7 +8,7 @@ else
     VERSION=`svn info | grep ^URL | cut -d " " -f 2 | awk -F/ '{print $NF}'`
     REVISION=`svnversion`
     if [ "$VERSION" == "trunk" ]; then VERSION="0.0.0"; fi
-    echo -n $VERSION-$REVISION | tee $VERSIONFILE
+    echo -n $VERSION | tee $VERSIONFILE
     echo -n $REVISION > svn_revision
 fi
 
