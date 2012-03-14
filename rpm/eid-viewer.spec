@@ -3,7 +3,7 @@
 
 Summary: Belgium electronic identity card viewer
 Name: eid-viewer
-Version: 4.0.0
+Version: 4.0.2
 Release: 0.%{revision}%{?dist}
 License: LGPL
 Group: Applications/Communications
@@ -39,7 +39,7 @@ the government's servers.
 
 %{__cat} <<EOF >eid-viewer.sh
 #!/bin/bash
-java -jar %{_datadir}/eid-viewer/eid-viewer-gui-4.0.0-SNAPSHOT.jar
+java -jar %{_datadir}/eid-viewer/eid-viewer.jar
 EOF
 
 %{__cat} <<EOF >eid-viewer.desktop
@@ -134,6 +134,9 @@ fi
 %{_datadir}/icons/eid-viewer.png
 
 %changelog
+* Wed Mar 14 2012 Frank Marien <frank@apsu.be> - 4.0.2-0.R
+- Upgrade to 4.0.2
+
 * Mon Mar 21 2011 Frank Marien <frank@apsu.be> - 4.0.0-0.R
 - Dynamic Revision for continuous builds
 
