@@ -121,7 +121,6 @@ fi
 
 %files
 %defattr(-, root, root, 0755)
-%doc README-eid-viewer.txt
 ### FIXME: Include a man-page about eid-viewer
 #%doc %{_mandir}/man8/eid-viewer.8*
 %{_bindir}/eid-viewer
