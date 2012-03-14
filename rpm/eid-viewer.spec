@@ -63,6 +63,7 @@ EOF
 %{__rm} -rf %{buildroot}
 
 %{__install} -Dp -m0755 eid-viewer.sh %{buildroot}%{_bindir}/eid-viewer
+%{__install} -d -m0755 %{buildroot}%{_datadir}/eid-viewer/
 %{__cp} -av *.jar %{buildroot}%{_datadir}/eid-viewer/
 
 %{__install} -Dp -m0644 %{SOURCE1} %{buildroot}%{_datadir}/icons/eid-viewer.png
