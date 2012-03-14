@@ -70,6 +70,11 @@
             </plugin>
         </plugins>
     </build>
+
+    <properties>
+        <project.revision>${eid-viewer-gui.revision}</project.revision>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>be.fedict.eid-viewer</groupId>

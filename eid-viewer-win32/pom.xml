@@ -87,6 +87,12 @@
             </plugin>
         </plugins>
     </build>
+
+    <properties>
+        <project.revision>${eid-viewer-win32.revision}</project.revision>
+    </properties>
+
+
     <dependencies>
         <dependency>
             <groupId>be.fedict.eid-viewer</groupId>
