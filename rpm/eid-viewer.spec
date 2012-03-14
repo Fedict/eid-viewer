@@ -9,7 +9,7 @@ License: LGPL
 Group: Applications/Communications
 URL: http://eid.belgium.be/
 
-Source0: http://dist.apsu.be/eid-mw/viewer/eid-viewer-%{version}-%{revision}.tar.gz
+Source0: http://eidfiles.be/continuous/sources/eid-viewer-4.0.2-%{revision}.src.tar.gz
 Source1: eid-viewer.png
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -30,9 +30,7 @@ and can easily be printed out or stored for later reviewal.
 
 The application verifies the signature of the identity information,
 checks whether it was signed by a government-issued key, and optionally
-checks the certificate against the government's Certificate Revocation List
-(CRL) and/or by using the Online Certificate Status Protocol (OCSP) against
-the government's servers.
+checks the certificate against the government's Trust Service.
 
 %prep
 %setup
@@ -65,10 +63,7 @@ EOF
 %{__rm} -rf %{buildroot}
 
 %{__install} -Dp -m0755 eid-viewer.sh %{buildroot}%{_bindir}/eid-viewer
-%{__install} -d -m0755 %{buildroot}%{_datadir}/eid-viewer/lib/
-%{__cp} -av README.txt README-eid-viewer.txt
 %{__cp} -av *.jar %{buildroot}%{_datadir}/eid-viewer/
-%{__cp} -av lib/*.jar %{buildroot}%{_datadir}/eid-viewer/lib/
 
 %{__install} -Dp -m0644 %{SOURCE1} %{buildroot}%{_datadir}/icons/eid-viewer.png
 %{__install} -d -m0755 %{buildroot}%{_datadir}/applications/
