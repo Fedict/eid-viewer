@@ -43,7 +43,7 @@ EOF
 %{__cat} <<EOF >eid-viewer.desktop
 [Desktop Entry]
 Encoding=UTF-8
-Name=eID Card Reader
+Name=eID Viewer
 Comment=Display and administer your eID card
 Name[nl]=eID Kaart Lezer
 Comment[nl]=Weergeven en beheren van uw eID kaart
