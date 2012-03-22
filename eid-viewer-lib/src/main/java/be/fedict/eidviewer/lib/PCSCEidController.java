@@ -60,6 +60,7 @@ public class PCSCEidController extends Observable implements Runnable, Observer,
     private Timer   yieldLockedTimer;
     private long    yieldConsideredLockedAt;
     private boolean autoValidatingTrust, yielding,loadedFromFile;
+    private boolean hasExclusive;
 
     public PCSCEidController(PCSCEid eid)
     {
@@ -327,7 +328,7 @@ public class PCSCEidController extends Observable implements Runnable, Observer,
     public void run()
     {
         running = true;
-        while (running)
+        while(running)
         {
             try
             {
@@ -346,13 +347,21 @@ public class PCSCEidController extends Observable implements Runnable, Observer,
                     setState(STATE.NO_EID_PRESENT);
                     eid.waitForEidPresent();
                 }
-
+                
+               
+                
                 if(isLoadedFromFile())
                 {
                     logger.fine("clearing file-loaded data");
                     securityClear();
                     setState(STATE.IDLE);
                 }
+                
+                /////////////////////////////////////////////////////////////////////////////////////////////
+                // EXCLUSIVE ACCESS STARTS
+                // set hasExclusive ourselves, because the methods above have called beginExclusive for us..
+                hasExclusive=true;
+                /////////////////////////////////////////////////////////////////////////////////////////////
 
                 logger.fine("reading identity from card..");
                 setStateAndActivity(STATE.EID_PRESENT, ACTIVITY.READING_IDENTITY);
@@ -430,6 +439,11 @@ public class PCSCEidController extends Observable implements Runnable, Observer,
                    logger.fine("no signing chain found.");
                 }
                 
+                ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                // EXCLUSIVE ACCESS ENDS
+                endExclusive();
+                ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                
                 setActivity(ACTIVITY.IDLE);
 
                 logger.fine("waiting for actions or card removal..");
@@ -439,12 +453,29 @@ public class PCSCEidController extends Observable implements Runnable, Observer,
                     if (runningAction == ACTION.CHANGE_PIN)
                     {
                         logger.fine("requesting change_pin action");
-                        eid_changePin();
+                        
+                        try
+                        {
+                        	beginExclusive();
+                        	eid_changePin();
+                        }
+                        finally
+                        {
+                        	endExclusive();
+                        }
                     }
                     else if(runningAction == ACTION.VERIFY_PIN)
                     {
                         logger.fine("requesting verify_pin action");
-                        eid_verifyPin();
+                        try
+                        {
+                        	beginExclusive();
+                        	eid_verifyPin();
+                        }
+                        finally
+                        {
+                        	endExclusive();
+                        }
                     }
                     else if (runningAction == ACTION.VALIDATETRUST)
                     {
@@ -455,23 +486,11 @@ public class PCSCEidController extends Observable implements Runnable, Observer,
                     {
                         try
                         {
-                            setYielding(true);
-                            eid.yieldExclusive(true);
-                            Thread.sleep(200);
-                            eid.yieldExclusive(false);   
+                            Thread.sleep(1000);
                         }
                         catch(InterruptedException iex)
                         {
                             logger.log(Level.SEVERE, "Activity Loop was Interrupted",iex);
-                        }
-                        catch(CardException cex)
-                        {
-                            if(eid.isCardStillPresent())
-                                logger.log(Level.SEVERE, "CardException in activity loop", cex);
-                        }
-                        finally
-                        {
-                            setYielding(false);
                         }
                     }
                 }
@@ -506,6 +525,7 @@ public class PCSCEidController extends Observable implements Runnable, Observer,
             finally
             {
             	logger.fine("closing card access");
+            	endExclusive();
             	eid.close();
             }
         }
@@ -735,5 +755,56 @@ public class PCSCEidController extends Observable implements Runnable, Observer,
             securityClear();
             setState(STATE.IDLE);
         }
+    }
+    
+    private void beginExclusive() throws Exception
+    {
+    	if(!hasExclusive)
+    	{
+    		logger.fine("attempting to grab exclusive access");
+    		while(!hasExclusive)
+    		{
+	    		try
+	    		{
+	    			eid.beginExclusive();
+	    			hasExclusive=true;
+	    			setYielding(false);
+	    			logger.fine("exclusive access obtained");
+	    		}
+	    		catch(CardException cax)
+	    		{
+	    			setYielding(true);
+	    			logger.fine("exclusive access deferred");
+	    			
+	    			try 
+	    			{
+						Thread.sleep(1000);
+					}
+	    			catch (InterruptedException ex)
+	    			{
+	    				logger.fine("interrupted while waiting for exclusive access");
+					}
+	    		}
+    		}
+    	}
+    }
+    
+    private void endExclusive()
+    {
+    	if(hasExclusive)
+    	{
+    		logger.fine("attempting to release exclusive access");
+    	
+    		try
+    		{
+    			eid.endExclusive();
+    			hasExclusive=false;
+    			logger.fine("exclusive access released");
+    		}
+    		catch(Exception cax)
+    		{
+    			logger.fine("failed to release exclusive access");
+    		}
+    	}
     }
 }
