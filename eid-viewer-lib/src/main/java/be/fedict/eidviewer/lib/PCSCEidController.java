@@ -348,8 +348,6 @@ public class PCSCEidController extends Observable implements Runnable, Observer,
                     eid.waitForEidPresent();
                 }
                 
-               
-                
                 if(isLoadedFromFile())
                 {
                     logger.fine("clearing file-loaded data");
@@ -366,83 +364,141 @@ public class PCSCEidController extends Observable implements Runnable, Observer,
                 logger.fine("reading identity from card..");
                 setStateAndActivity(STATE.EID_PRESENT, ACTIVITY.READING_IDENTITY);
                 setLoadedFromFile(false);
-                identity = eid.getIdentity();
+                try
+                {
+                	beginExclusive();
+                	identity = eid.getIdentity();
+                }
+                finally
+                {
+                	endExclusive();
+                }
                 setState();
 
                 logger.fine("reading address from card..");
                 setActivity(ACTIVITY.READING_ADDRESS);
-                address = eid.getAddress();
+                try
+                {
+                	beginExclusive();
+                	address = eid.getAddress();
+                }
+                finally
+                {
+                	endExclusive();
+                }
                 setState();
                 
                 logger.fine("reading photo from card..");
                 setActivity(ACTIVITY.READING_PHOTO);
-                photo = eid.getPhotoJPEG();
+                try
+                {
+                	beginExclusive();
+                	photo = eid.getPhotoJPEG();
+                }
+                finally
+                {
+                	endExclusive();
+                }
                 setState();
                 
                 logger.fine("reading rrn chain from card..");
                 setActivity(ACTIVITY.READING_RRN_CHAIN);
-                rrnCertChain = new X509CertificateChainAndTrust(TrustServiceDomains.BELGIAN_EID_NATIONAL_REGISTRY_TRUST_DOMAIN,eid.getRRNCertificateChain());
-                if (trustServiceController != null && autoValidatingTrust)
+                try
                 {
-                    logger.fine("enqueueing RRN chain for validation (auto-validate is on)");
-                    trustServiceController.validateLater(rrnCertChain);
+                	beginExclusive();
+	                rrnCertChain = new X509CertificateChainAndTrust(TrustServiceDomains.BELGIAN_EID_NATIONAL_REGISTRY_TRUST_DOMAIN,eid.getRRNCertificateChain());
+	                if (trustServiceController != null && autoValidatingTrust)
+	                {
+	                    logger.fine("enqueueing RRN chain for validation (auto-validate is on)");
+	                    trustServiceController.validateLater(rrnCertChain);
+	                }
+                }
+                finally
+                {
+                	endExclusive();
                 }
                 setState();
 
                 logger.fine("validating identity");
                 setActivity(ACTIVITY.VALIDATING_IDENTITY);
-                identityTrusted=eid.isIdentityTrusted();
-                identityValidated=true;
+                try
+                {
+                	beginExclusive();
+                	identityTrusted=eid.isIdentityTrusted();
+                	identityValidated=true;
+                }
+                finally
+                {
+                	endExclusive();
+                }
                 setState();
 
                 logger.fine("validating address");
                 setActivity(ACTIVITY.VALIDATING_ADDRESS);
-                addressTrusted=eid.isAddressTrusted();
-                addressValidated=true;
+                try
+                {
+                	beginExclusive();
+                	addressTrusted=eid.isAddressTrusted();
+                	addressValidated=true;
+                }
+                finally
+                {
+                	endExclusive();
+                }
                 setState();
 
                 logger.fine("reading authentication chain from card..");
                 setActivity(ACTIVITY.READING_AUTH_CHAIN);
-                List<X509Certificate> aChain=eid.getAuthnCertificateChain();
-                if(aChain!=null)
+                try
                 {
-                    logger.fine("authentication chain found");
-                    authCertChain = new X509CertificateChainAndTrust(TrustServiceDomains.BELGIAN_EID_AUTH_TRUST_DOMAIN, aChain);
-                    if (trustServiceController != null && autoValidatingTrust)
-                    {
-                        logger.fine("enqueueing authentication chain for validation (auto-validate is on)");
-                        trustServiceController.validateLater(authCertChain);
-                    }
+                	beginExclusive();
+	                List<X509Certificate> aChain=eid.getAuthnCertificateChain();
+	                if(aChain!=null)
+	                {
+	                    logger.fine("authentication chain found");
+	                    authCertChain = new X509CertificateChainAndTrust(TrustServiceDomains.BELGIAN_EID_AUTH_TRUST_DOMAIN, aChain);
+	                    if (trustServiceController != null && autoValidatingTrust)
+	                    {
+	                        logger.fine("enqueueing authentication chain for validation (auto-validate is on)");
+	                        trustServiceController.validateLater(authCertChain);
+	                    }
+	                }
+	                else
+	                {
+	                   logger.fine("no authentication chain found.");
+	                }
                 }
-                else
+                finally
                 {
-                   logger.fine("no authentication chain found.");
+                	endExclusive();
                 }
-                
                 setState();
 
                 logger.fine("reading signing chain from card..");
                 setActivity(ACTIVITY.READING_SIGN_CHAIN);
-                List<X509Certificate> sChain=eid.getSignCertificateChain();
-                if(sChain!=null)
+                try
                 {
-                    logger.fine("signing chain found");
-                    signCertChain = new X509CertificateChainAndTrust(TrustServiceDomains.BELGIAN_EID_NON_REPUDIATION_TRUST_DOMAIN, sChain);
-                    if (trustServiceController != null && autoValidatingTrust)
-                    {
-                        logger.fine("enqueueing signing chain for validation (auto-validate is on)");
-                        trustServiceController.validateLater(signCertChain);
-                    }
+                	beginExclusive();
+	                List<X509Certificate> sChain=eid.getSignCertificateChain();
+	                if(sChain!=null)
+	                {
+	                    logger.fine("signing chain found");
+	                    signCertChain = new X509CertificateChainAndTrust(TrustServiceDomains.BELGIAN_EID_NON_REPUDIATION_TRUST_DOMAIN, sChain);
+	                    if (trustServiceController != null && autoValidatingTrust)
+	                    {
+	                        logger.fine("enqueueing signing chain for validation (auto-validate is on)");
+	                        trustServiceController.validateLater(signCertChain);
+	                    }
+	                }
+	                else
+	                {
+	                   logger.fine("no signing chain found.");
+	                }
                 }
-                else
+                finally
                 {
-                   logger.fine("no signing chain found.");
+                	endExclusive();
                 }
-                
-                ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                // EXCLUSIVE ACCESS ENDS
-                endExclusive();
-                ////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 
                 setActivity(ACTIVITY.IDLE);
 
