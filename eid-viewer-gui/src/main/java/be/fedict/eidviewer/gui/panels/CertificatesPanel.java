@@ -17,20 +17,19 @@
  */
 package be.fedict.eidviewer.gui.panels;
 
-import be.fedict.eidviewer.gui.DynamicLocale;
-import be.fedict.eidviewer.gui.ViewerPrefs;
-import be.fedict.eidviewer.lib.PCSCEidController;
-import be.fedict.eidviewer.lib.X509CertificateAndTrust;
-import be.fedict.eidviewer.lib.X509CertificateChainAndTrust;
-import be.fedict.eidviewer.lib.file.helper.TextFormatHelper;
-import be.fedict.eidviewer.gui.helper.ImageUtilities;
-import be.fedict.eidviewer.lib.X509Utilities;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.security.Principal;
+import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateExpiredException;
 import java.security.cert.CertificateNotYetValidException;
 import java.security.cert.X509Certificate;
@@ -40,18 +39,22 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Locale;
 import java.util.Map;
-import java.util.ResourceBundle;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
 import javax.swing.JTree;
@@ -59,17 +62,30 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import javax.swing.filechooser.FileFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
+import be.fedict.eidviewer.gui.BelgianEidViewer;
+import be.fedict.eidviewer.gui.DynamicLocale;
+import be.fedict.eidviewer.gui.DynamicLocaleAbstractAction;
+import be.fedict.eidviewer.gui.ViewerPrefs;
+import be.fedict.eidviewer.gui.helper.ImageUtilities;
+import be.fedict.eidviewer.lib.PCSCEidController;
+import be.fedict.eidviewer.lib.X509CertificateAndTrust;
+import be.fedict.eidviewer.lib.X509CertificateChainAndTrust;
+import be.fedict.eidviewer.lib.X509Utilities;
+import be.fedict.eidviewer.lib.file.gui.EidFileFilter;
+import be.fedict.eidviewer.lib.file.helper.TextFormatHelper;
+
 /**
  *
  * @author Frank Marien
  */
-public class CertificatesPanel extends JPanel implements Observer, TreeSelectionListener, DynamicLocale
+public class CertificatesPanel extends JPanel implements Observer, TreeSelectionListener, DynamicLocale, ActionListener
 {
 	private static final long	serialVersionUID	= 3873882498274610172L;
 	private static final Logger                     logger=Logger.getLogger(CertificatesPanel.class.getName());
@@ -93,13 +109,15 @@ public class CertificatesPanel extends JPanel implements Observer, TreeSelection
     private JSeparator trustServiceTrustErrorsSeparator;
     private JLabel trustStatus;
     private JLabel trustStatusLabel;
-    private JLabel validFrom;
-    private JLabel validFromLabel;
-    private JLabel validUntil;
-    private JLabel validUntilLabel;
-    private JButton validateNowButton;
-    private JSeparator validdUntilKeyUsageSeparator;
-    
+    private JLabel 					validFrom;
+    private JLabel 					validFromLabel;
+    private JLabel 					validUntil;
+    private JLabel 					validUntilLabel;
+    private JButton 				validateNowButton;
+    private JSeparator 				validdUntilKeyUsageSeparator;
+    private ExportAction			exportAction;
+    private	ExportChainAction		exportChainAction;
+    private X509CertificateAndTrust	exportingCertificate;
     
     private DateFormat                              dateFormat;
     private Map<Principal, DefaultMutableTreeNode>  certificatesInTree;
@@ -112,12 +130,19 @@ public class CertificatesPanel extends JPanel implements Observer, TreeSelection
     {
         bundle = ResourceBundle.getBundle("be/fedict/eidviewer/gui/resources/CertificatesPanel");
         dateFormat = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
+        initActions();
         initComponents();
         initI18N();
         trustErrors.setVisible(false);
         defaultLabelForeground = UIManager.getColor("Label.foreground");
         defaultLabelBackground = UIManager.getColor("Label.background");
         initCertsTree();  
+    }
+    
+    private void initActions()
+    {
+        exportAction    	 = new ExportAction      ("Export..");
+        exportChainAction    = new ExportChainAction ("Export Chain..");
     }
 
     public CertificatesPanel setEidController(PCSCEidController eidController)
@@ -423,6 +448,45 @@ public class CertificatesPanel extends JPanel implements Observer, TreeSelection
         trustPrefspanel = new JPanel();
         alwaysValidateCheckbox = new JCheckBox();
         validateNowButton = new JButton();
+        
+        MouseAdapter certContextMenuListener = new MouseAdapter()
+        {  
+        	private void maybeShowPopup(MouseEvent e)
+    	    {
+    	        if(e.isPopupTrigger())
+    	        {
+    	        	Point p=e.getPoint();  
+                	TreePath path=certsTree.getPathForLocation(p.x, p.y); 
+                	
+                	if(path!=null)
+                	{
+                		DefaultMutableTreeNode node = (DefaultMutableTreeNode)path.getLastPathComponent();  
+                		Object nodeInfo = node.getUserObject();  
+                		exportingCertificate=(X509CertificateAndTrust)nodeInfo;
+                		
+                		System.out.println(exportingCertificate.toString());
+                		
+                		JPopupMenu certContextMenu=new JPopupMenu();
+            	        certContextMenu.add(new JMenuItem(exportAction));      	        
+                		if(!X509Utilities.isSelfSigned(exportingCertificate.getCertificate()))
+                	        certContextMenu.add(new JMenuItem(exportChainAction));
+                	        
+                		certContextMenu.show(e.getComponent(),e.getX(), e.getY());
+                	}
+    	        }
+    	    }
+        	
+            public void mousePressed(MouseEvent e)
+            {  
+            	maybeShowPopup(e); 
+            }
+
+            public void mouseReleased(MouseEvent e)
+            {  
+            	maybeShowPopup(e);
+        	}
+       }; 
+       certsTree.addMouseListener(certContextMenuListener);  
 
         setBorder(ImageUtilities.getEIDBorder());
         setLayout(new java.awt.BorderLayout());
@@ -796,5 +860,98 @@ public class CertificatesPanel extends JPanel implements Observer, TreeSelection
         }
         html.append("</html>");
         return html.toString();
+    }
+
+	@Override
+	public void actionPerformed(ActionEvent actionEvent)
+	{
+		logger.fine(actionEvent.getActionCommand());
+	}
+	
+	private class ExportAction extends DynamicLocaleAbstractAction
+    {
+		private static final long serialVersionUID = 2751644027503348460L;
+
+		public ExportAction(String text)
+        {
+            super(text);
+        }
+        
+        public void actionPerformed(ActionEvent ae)
+        {
+            logger.fine("Export action chosen..");
+            
+            final JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setAcceptAllFileFilterUsed(true);
+            fileChooser.addChoosableFileFilter(new FileFilter()
+            {
+				
+				@Override
+				public String getDescription()
+				{
+					return "DER";
+				}
+				
+				@Override
+				public boolean accept(File file)
+				{
+					return file.isDirectory() || file.getName().toLowerCase().endsWith(".der");
+				}
+			});
+            
+            File suggestedFile=null;
+            
+            try
+            {
+            	String commonName=X509Utilities.getCN(exportingCertificate.getCertificate()).toLowerCase().replace(' ','_').replaceAll("[^a-z0-9_]","");
+                suggestedFile=new File(new File(commonName + ".der").getCanonicalPath());
+                logger.log(Level.FINE, "Suggesting \"{0}\"", suggestedFile.getCanonicalPath());
+                fileChooser.setSelectedFile(suggestedFile);
+            }
+            catch (IOException ex)
+            {
+                // suggested file likely doesn't exist yet but that's OK here. 
+            }
+            
+            if(fileChooser.showSaveDialog(CertificatesPanel.this) == JFileChooser.APPROVE_OPTION)
+            {
+                try
+                {
+                    File targetFile=fileChooser.getSelectedFile();
+                    if(!targetFile.getCanonicalPath().toLowerCase().endsWith(".der"))
+                    {
+                        logger.fine("File would not have correct extension, appending \".der\"");
+                        targetFile=new File(targetFile.getCanonicalPath() + ".der");
+                    }
+                    
+                    FileOutputStream outputStream=new FileOutputStream(targetFile);
+                    outputStream.write(exportingCertificate.getCertificate().getEncoded());
+                }
+                catch(IOException ex)
+                {
+                    logger.log(Level.SEVERE, "Problem getting Canonical Name For Filename Extension Correction", ex);
+                }
+                catch(CertificateEncodingException e)
+                {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+            }
+        }
+    }
+	
+	private class ExportChainAction extends DynamicLocaleAbstractAction
+    {
+		private static final long serialVersionUID = 7666947489811995693L;
+
+		public ExportChainAction(String text)
+        {
+            super(text); 
+        }
+        
+        public void actionPerformed(ActionEvent ae)
+        {
+            logger.severe("Export Chain action chosen..");
+        }
     }
 }

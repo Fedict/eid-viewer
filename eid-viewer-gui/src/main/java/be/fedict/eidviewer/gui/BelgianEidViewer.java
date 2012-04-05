@@ -488,22 +488,6 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View, Observ
         // other eID software picks up the language choice
         Version35LocalePrefs.writeUserLocaleChoice(locale);
     }
-    
-    private abstract class DynamicLocaleAbstractAction extends AbstractAction
-    {
-		private static final long	serialVersionUID	= -2017438927248089386L;
-       
-        public DynamicLocaleAbstractAction(String text)
-        {
-            super(text);
-        }
-        
-        public DynamicLocaleAbstractAction setName(String text)
-        {
-            super.putValue(NAME, text);
-            return this;
-        }
-    }
 
     private class AboutAction extends DynamicLocaleAbstractAction
     {
