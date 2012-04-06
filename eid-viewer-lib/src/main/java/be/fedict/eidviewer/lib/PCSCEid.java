@@ -246,6 +246,14 @@ public class PCSCEid
         authnCertificateChain.add(getRootCACert());
         return authnCertificateChain;
     }
+    
+    public List<X509Certificate> getCCACertificateChain() throws Exception
+    {
+        List<X509Certificate> ccaCertificateChain = new LinkedList<X509Certificate>();
+        ccaCertificateChain.add(getCitizenCACert());
+        ccaCertificateChain.add(getRootCACert());
+        return ccaCertificateChain;
+    }
 
     public List<X509Certificate> getAuthnCertificateChain() throws Exception
     {
