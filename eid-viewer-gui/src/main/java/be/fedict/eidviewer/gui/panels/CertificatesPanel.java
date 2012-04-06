@@ -17,20 +17,18 @@
  */
 package be.fedict.eidviewer.gui.panels;
 
-import be.fedict.eidviewer.gui.DynamicLocale;
-import be.fedict.eidviewer.gui.ViewerPrefs;
-import be.fedict.eidviewer.lib.PCSCEidController;
-import be.fedict.eidviewer.lib.X509CertificateAndTrust;
-import be.fedict.eidviewer.lib.X509CertificateChainAndTrust;
-import be.fedict.eidviewer.lib.file.helper.TextFormatHelper;
-import be.fedict.eidviewer.gui.helper.ImageUtilities;
-import be.fedict.eidviewer.lib.X509Utilities;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 import java.security.Principal;
+import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateExpiredException;
 import java.security.cert.CertificateNotYetValidException;
 import java.security.cert.X509Certificate;
@@ -40,18 +38,22 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Locale;
 import java.util.Map;
-import java.util.ResourceBundle;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
 import javax.swing.JTree;
@@ -65,11 +67,22 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
+import be.fedict.eidviewer.gui.DynamicLocale;
+import be.fedict.eidviewer.gui.DynamicLocaleAbstractAction;
+import be.fedict.eidviewer.gui.ViewerPrefs;
+import be.fedict.eidviewer.gui.helper.ImageUtilities;
+import be.fedict.eidviewer.lib.PCSCEidController;
+import be.fedict.eidviewer.lib.X509CertificateAndTrust;
+import be.fedict.eidviewer.lib.X509CertificateChainAndTrust;
+import be.fedict.eidviewer.lib.X509Utilities;
+import be.fedict.eidviewer.lib.file.gui.CertFileFilter;
+import be.fedict.eidviewer.lib.file.helper.TextFormatHelper;
+
 /**
  *
  * @author Frank Marien
  */
-public class CertificatesPanel extends JPanel implements Observer, TreeSelectionListener, DynamicLocale
+public class CertificatesPanel extends JPanel implements Observer, TreeSelectionListener, DynamicLocale, ActionListener
 {
 	private static final long	serialVersionUID	= 3873882498274610172L;
 	private static final Logger                     logger=Logger.getLogger(CertificatesPanel.class.getName());
@@ -93,13 +106,17 @@ public class CertificatesPanel extends JPanel implements Observer, TreeSelection
     private JSeparator trustServiceTrustErrorsSeparator;
     private JLabel trustStatus;
     private JLabel trustStatusLabel;
-    private JLabel validFrom;
-    private JLabel validFromLabel;
-    private JLabel validUntil;
-    private JLabel validUntilLabel;
-    private JButton validateNowButton;
-    private JSeparator validdUntilKeyUsageSeparator;
+    private JLabel 					validFrom;
+    private JLabel 					validFromLabel;
+    private JLabel 					validUntil;
+    private JLabel 					validUntilLabel;
+    private JButton 				validateNowButton;
+    private JSeparator 				validdUntilKeyUsageSeparator;
     
+    private ExportPEMAction			exportPEMAction;
+    private ExportDERAction			exportDERAction;
+    private	ExportChainPEMAction	exportChainPEMAction;
+    private X509CertificateAndTrust	exportingCertificate;
     
     private DateFormat                              dateFormat;
     private Map<Principal, DefaultMutableTreeNode>  certificatesInTree;
@@ -112,12 +129,20 @@ public class CertificatesPanel extends JPanel implements Observer, TreeSelection
     {
         bundle = ResourceBundle.getBundle("be/fedict/eidviewer/gui/resources/CertificatesPanel");
         dateFormat = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
+        initActions();
         initComponents();
         initI18N();
         trustErrors.setVisible(false);
         defaultLabelForeground = UIManager.getColor("Label.foreground");
         defaultLabelBackground = UIManager.getColor("Label.background");
         initCertsTree();  
+    }
+    
+    private void initActions()
+    {
+        exportPEMAction    	 	= new ExportPEMAction      ("Export to PEM..");
+        exportDERAction    	 	= new ExportDERAction      ("Export to DER..");
+        exportChainPEMAction    = new ExportChainPEMAction ("Export Chain to PEM..");
     }
 
     public CertificatesPanel setEidController(PCSCEidController eidController)
@@ -240,7 +265,9 @@ public class CertificatesPanel extends JPanel implements Observer, TreeSelection
                     for (int row = 0; row < certsTree.getRowCount(); row++)  // and auto-expand to display it
                         certsTree.expandRow(row);
                     X509CertificateAndTrust certAndTrust=(X509CertificateAndTrust)child.getUserObject();
-                    if(certAndTrust!=null && X509Utilities.keyHasDigitalSignatureConstraint(certAndTrust.getCertificate()))
+                    
+                    // auto-select the authentication certificate
+                    if(certAndTrust!=null && X509Utilities.hasDigitalSignatureConstraint(certAndTrust.getCertificate()))
                         certsTree.setSelectionPath(new TreePath(child.getPath()));
                 }
             }
@@ -423,6 +450,47 @@ public class CertificatesPanel extends JPanel implements Observer, TreeSelection
         trustPrefspanel = new JPanel();
         alwaysValidateCheckbox = new JCheckBox();
         validateNowButton = new JButton();
+        
+        MouseAdapter certContextMenuListener = new MouseAdapter()
+        {  
+        	private void maybeShowPopup(MouseEvent e)
+    	    {
+    	        if(e.isPopupTrigger())
+    	        {
+    	        	Point p=e.getPoint();  
+                	TreePath path=certsTree.getPathForLocation(p.x, p.y); 
+                	
+                	if(path!=null)
+                	{
+                		DefaultMutableTreeNode node = (DefaultMutableTreeNode)path.getLastPathComponent();  
+                		Object nodeInfo = node.getUserObject();  
+                		exportingCertificate=(X509CertificateAndTrust)nodeInfo;
+                		
+                		JPopupMenu certContextMenu=new JPopupMenu();
+            	        certContextMenu.add(new JMenuItem(exportPEMAction));  
+            	        certContextMenu.add(new JMenuItem(exportDERAction));  
+                		if(!X509Utilities.isSelfSigned(exportingCertificate.getCertificate()))
+                		{
+                			certContextMenu.addSeparator();
+                	        certContextMenu.add(new JMenuItem(exportChainPEMAction));
+                		}
+                	        
+                		certContextMenu.show(e.getComponent(),e.getX(), e.getY());
+                	}
+    	        }
+    	    }
+        	
+            public void mousePressed(MouseEvent e)
+            {  
+            	maybeShowPopup(e); 
+            }
+
+            public void mouseReleased(MouseEvent e)
+            {  
+            	maybeShowPopup(e);
+        	}
+       }; 
+       certsTree.addMouseListener(certContextMenuListener);  
 
         setBorder(ImageUtilities.getEIDBorder());
         setLayout(new java.awt.BorderLayout());
@@ -605,6 +673,10 @@ public class CertificatesPanel extends JPanel implements Observer, TreeSelection
         keyUsageLabel.setText(bundle.getString("keyUsageLabel")); // NOI18N
         alwaysValidateCheckbox.setText(bundle.getString("alwaysValidateCheckbox")); // NOI18N
         validateNowButton.setText(bundle.getString("validateNowButton")); // NOI18N 
+        
+        exportPEMAction.setName(bundle.getString("exportToPEM"));
+        exportDERAction.setName(bundle.getString("exportToDER"));
+        exportChainPEMAction.setName(bundle.getString("exportChainToPEM"));
         
         if(certificatesInTree==null)
         	return;
@@ -796,5 +868,178 @@ public class CertificatesPanel extends JPanel implements Observer, TreeSelection
         }
         html.append("</html>");
         return html.toString();
+    }
+
+	@Override
+	public void actionPerformed(ActionEvent actionEvent)
+	{
+		logger.fine(actionEvent.getActionCommand());
+	}
+	
+	private File suggestedExportFile(X509Certificate certificate, String extension, boolean isChain) throws IOException
+    {
+    	String commonName=X509Utilities.getCN(certificate).toLowerCase().replace(' ','_').replaceAll("[^a-z0-9_]","");
+        File suggestedFile=new File(new File(commonName + (isChain?"_chain.":".") + extension).getCanonicalPath());
+        logger.log(Level.FINE, "Suggesting \"{0}\"", suggestedFile.getCanonicalPath());
+        return suggestedFile;
+    }
+	
+	private File ensureFilenameExtension(File targetFile, String extension) throws IOException 
+	{
+		if(targetFile.getCanonicalPath().toLowerCase().endsWith("." + extension))
+			return targetFile;
+		logger.fine("File would not have correct extension, appending extension \"." + extension + "\"");
+		return new File(targetFile.getCanonicalPath() + "." + extension);
+	}
+
+	private class ExportPEMAction extends DynamicLocaleAbstractAction
+    {
+		private static final long serialVersionUID = 2751644027503348460L;
+
+		public ExportPEMAction(String text)
+        {
+            super(text);
+        }
+        
+        public void actionPerformed(ActionEvent ae)
+        {
+            logger.fine("Export PEM action chosen..");
+            
+            final JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setAcceptAllFileFilterUsed(false);
+            fileChooser.addChoosableFileFilter(new CertFileFilter(true,false,bundle.getString("pemFiles")));
+            fileChooser.addChoosableFileFilter(new CertFileFilter(false,true,bundle.getString("allFiles")));
+            
+            try
+            {
+                fileChooser.setSelectedFile(suggestedExportFile(exportingCertificate.getCertificate(),"pem",false));
+            }
+            catch (IOException ex)
+            {
+                // suggested file likely doesn't exist yet but that's OK here. 
+            }
+            
+            if(fileChooser.showSaveDialog(CertificatesPanel.this) == JFileChooser.APPROVE_OPTION)
+            {
+                try
+                {
+                    File targetFile= ensureFilenameExtension(fileChooser.getSelectedFile(),"pem");
+                    X509Utilities.certificateToPEMFile(exportingCertificate.getCertificate(), targetFile);
+                }
+                catch(IOException ioex)
+                {
+                    logger.log(Level.SEVERE, "Problem getting Canonical Name For Filename Extension Correction", ioex);
+                }
+                catch(CertificateEncodingException cex)
+                {
+                	logger.log(Level.SEVERE, "Can't Export Certificate to PEM Format", cex);
+				}
+            }
+        }
+    }
+	
+	private class ExportDERAction extends DynamicLocaleAbstractAction
+    {
+		private static final long serialVersionUID = 6701186462084833299L;
+
+		public ExportDERAction(String text)
+        {
+            super(text);
+        }
+        
+        public void actionPerformed(ActionEvent ae)
+        {
+            logger.fine("Export DER action chosen..");
+            
+            final JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setAcceptAllFileFilterUsed(false);
+            fileChooser.addChoosableFileFilter(new CertFileFilter(true,false,bundle.getString("derFiles")));
+            fileChooser.addChoosableFileFilter(new CertFileFilter(false,true,bundle.getString("allFiles")));
+            
+            try
+            {
+                fileChooser.setSelectedFile(suggestedExportFile(exportingCertificate.getCertificate(),"der",false));
+            }
+            catch (IOException ex)
+            {
+                // suggested file likely doesn't exist yet but that's OK here. 
+            }
+            
+            if(fileChooser.showSaveDialog(CertificatesPanel.this) == JFileChooser.APPROVE_OPTION)
+            {
+                try
+                {
+                    File targetFile= ensureFilenameExtension(fileChooser.getSelectedFile(),"der");
+                    X509Utilities.certificateToDERFile(exportingCertificate.getCertificate(), targetFile);
+                }
+                catch(IOException ioex)
+                {
+                    logger.log(Level.SEVERE, "Problem getting Canonical Name For Filename Extension Correction", ioex);
+                }
+                catch(CertificateEncodingException cex)
+                {
+                	logger.log(Level.SEVERE, "Can't Export Certificate to DER Format", cex);
+				}
+            }
+        }
+    }
+	
+	private class ExportChainPEMAction extends DynamicLocaleAbstractAction
+    {
+		private static final long serialVersionUID = 2751644027503348460L;
+
+		public ExportChainPEMAction(String text)
+        {
+            super(text);
+        }
+        
+        public void actionPerformed(ActionEvent ae)
+        {
+            logger.fine("Export PEM Chain action chosen..");
+            
+            final JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setAcceptAllFileFilterUsed(false);
+            fileChooser.addChoosableFileFilter(new CertFileFilter(true,false,bundle.getString("pemFiles")));
+            fileChooser.addChoosableFileFilter(new CertFileFilter(false,true,bundle.getString("allFiles")));
+            
+            try
+            {
+                fileChooser.setSelectedFile(suggestedExportFile(exportingCertificate.getCertificate(),"pem",true));
+            }
+            catch (IOException ex)
+            {
+                // suggested file likely doesn't exist yet but that's OK here. 
+            }
+            
+            if(fileChooser.showSaveDialog(CertificatesPanel.this) == JFileChooser.APPROVE_OPTION)
+            {
+                try
+                {
+                    File targetFile= ensureFilenameExtension(fileChooser.getSelectedFile(),"pem");
+                    String commonName=X509Utilities.getCN(exportingCertificate.getCertificate());
+                    
+                    if(commonName.endsWith("(Authentication)"))
+            		{
+                    	X509Utilities.certificateChainToPEMFile(eidController.getAuthCertChain().getCertificates(),targetFile);
+            		}
+                    else if(commonName.endsWith("(Signature)"))
+            		{
+                    	X509Utilities.certificateChainToPEMFile(eidController.getSignCertChain().getCertificates(),targetFile);
+            		}
+                    else if(commonName.startsWith("RRN"))
+            		{
+                    	X509Utilities.certificateChainToPEMFile(eidController.getRRNCertChain().getCertificates(),targetFile);
+            		}
+                    else if(commonName.startsWith("Citizen CA"))
+            		{
+                    	X509Utilities.certificateChainToPEMFile(eidController.getCitizenCACertChain(),targetFile);
+            		}
+                }
+                catch(IOException ioex)
+                {
+                    logger.log(Level.SEVERE, "Problem getting Canonical Name For Filename Extension Correction", ioex);
+                }
+            }
+        }
     }
 }

@@ -19,14 +19,24 @@
 package be.fedict.eidviewer.lib;
 
 import be.fedict.trust.client.TrustServiceDomains;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.security.Signature;
+import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.bouncycastle.openssl.PEMWriter;
 
 /**
  *
@@ -36,7 +46,9 @@ public class X509Utilities
 {
     private static final Logger logger=Logger.getLogger(X509Utilities.class.getName());
     private static final int            CONSTRAINT_DIGITALSIGNATURE=0;
+    private static final int 			CONSTRAINT_NONREPUDIATION = 1;
     private static final List<String>   keyUsageStringNames;
+	
 
     static
     {
@@ -102,10 +114,17 @@ public class X509Utilities
         return uses;
     }
 
-    public static boolean keyHasDigitalSignatureConstraint(X509Certificate certificate)
+    public static boolean hasDigitalSignatureConstraint(X509Certificate certificate)
     {
         return certificate.getKeyUsage()[CONSTRAINT_DIGITALSIGNATURE];
     }
+    
+    public static boolean hasNonRepudiationConstraint(X509Certificate certificate)
+    {
+        return certificate.getKeyUsage()[CONSTRAINT_NONREPUDIATION];
+    }
+    
+    
     
     public static void setCertificateChainsFromCertificates(EidData eidData, X509Certificate rootCert, X509Certificate citizenCert, X509Certificate authenticationCert, X509Certificate signingCert, X509Certificate rrnCert)
     {
@@ -142,7 +161,7 @@ public class X509Utilities
         }
     }
     
-     public static boolean isValidSignature(X509Certificate certificate, byte[] data, byte[] data2, byte[] signature )
+    public static boolean isValidSignature(X509Certificate certificate, byte[] data, byte[] data2, byte[] signature )
     {
         try
         {
@@ -163,4 +182,27 @@ public class X509Utilities
     {
         return isValidSignature(certificate, data, null, signature);
     }
+    
+    public static void certificateToDERFile(X509Certificate certificate, File file) throws CertificateEncodingException, IOException
+    {
+    	FileOutputStream outputStream=new FileOutputStream(file);
+    	outputStream.write(certificate.getEncoded());
+    }
+    
+    public static void certificateToPEMFile(X509Certificate certificate, File file) throws CertificateEncodingException, IOException
+    {
+    	FileOutputStream outputStream=new FileOutputStream(file);
+    	PEMWriter pemWriter=new PEMWriter(new OutputStreamWriter(outputStream));
+    			  pemWriter.writeObject(certificate);
+    			  pemWriter.close();
+    }
+
+	public static void certificateChainToPEMFile(List<X509Certificate> certificates, File file) throws IOException
+	{
+		FileOutputStream outputStream=new FileOutputStream(file);
+		PEMWriter pemWriter=new PEMWriter(new OutputStreamWriter(outputStream));
+		for(X509Certificate certificate : certificates)
+			pemWriter.writeObject(certificate);
+    	pemWriter.close();
+	}
 }

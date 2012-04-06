@@ -53,6 +53,7 @@ public class PCSCEidController extends Observable implements Runnable, Observer,
     private Address address;
     private byte[] photo;
     private boolean identityTrusted,addressTrusted,identityValidated,addressValidated;
+    private List<X509Certificate> 		 ccaCertChain;
     private X509CertificateChainAndTrust rrnCertChain;
     private X509CertificateChainAndTrust authCertChain;
     private X509CertificateChainAndTrust signCertChain;
@@ -263,6 +264,7 @@ public class PCSCEidController extends Observable implements Runnable, Observer,
         READING_ADDRESS     ("reading_address"),
         READING_PHOTO       ("reading_photo"),
         READING_RRN_CHAIN   ("reading_rrn_chain"),
+        READING_CCA_CHAIN   ("reading_cca_chain"),
         READING_AUTH_CHAIN  ("reading_auth_chain"),
         READING_SIGN_CHAIN  ("reading_sign_chain"),
         VALIDATING_IDENTITY ("validating_identity"),
@@ -412,6 +414,19 @@ public class PCSCEidController extends Observable implements Runnable, Observer,
 	                    logger.fine("enqueueing RRN chain for validation (auto-validate is on)");
 	                    trustServiceController.validateLater(rrnCertChain);
 	                }
+                }
+                finally
+                {
+                	endExclusive();
+                }
+                setState();
+                
+                logger.fine("reading cca chain from card..");
+                setActivity(ACTIVITY.READING_CCA_CHAIN);
+                try
+                {
+                	beginExclusive();
+	                ccaCertChain = eid.getCCACertificateChain();
                 }
                 finally
                 {
@@ -661,6 +676,11 @@ public class PCSCEidController extends Observable implements Runnable, Observer,
     {
         return rrnCertChain;
     }
+    
+    public List<X509Certificate> getCitizenCACertChain()
+	{
+    	return ccaCertChain;
+	}
 
     public PCSCEidController changePin()
     {
@@ -863,4 +883,6 @@ public class PCSCEidController extends Observable implements Runnable, Observer,
     		}
     	}
     }
+
+	
 }
