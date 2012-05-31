@@ -18,7 +18,7 @@ Obsoletes: eid-belgium
 Obsoletes: eid-mw-viewer
 
 BuildRequires: desktop-file-utils
-Requires: java-1.6.0-openjdk
+Requires: java >= 1:1.6.0
 Requires: pcsc-lite
 Requires: ccid
 
