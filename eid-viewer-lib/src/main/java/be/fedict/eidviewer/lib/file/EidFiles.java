@@ -251,7 +251,8 @@ public class EidFiles
             String headStr = new String(buffer, "utf-8");
            // System.err.println(headStr);
 
-            isTLVEid = (buffer[0] == 0 && buffer[1] == 1 && headStr != null && headStr.length() > 0 && headStr.contains("Belgium Root CA"));
+            isTLVEid = (buffer[0] == 0 && buffer[1] == 1 && headStr != null && headStr.length() > 0);
+            //isTLVEid = (buffer[0] == 0 && buffer[1] == 1 && headStr != null && headStr.length() > 0 && headStr.contains("Belgium Root CA"));
         }
         catch (IOException ex)
         {

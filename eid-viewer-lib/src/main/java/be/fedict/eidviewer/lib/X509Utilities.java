@@ -161,6 +161,7 @@ public class X509Utilities
         }
     }
     
+    // TODO, there are now cards with SHA2?
     public static boolean isValidSignature(X509Certificate certificate, byte[] data, byte[] data2, byte[] signature )
     {
         try
