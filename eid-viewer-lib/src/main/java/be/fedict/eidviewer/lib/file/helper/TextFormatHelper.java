@@ -131,17 +131,22 @@ public class TextFormatHelper
     
     public static String createFullNameString(String firstName, String givenNames, String familyName)
     {
-        StringBuilder builder=new StringBuilder(firstName);
+        StringBuilder builder=new StringBuilder();
+        
+        if(firstName!=null)
+        	builder.append(firstName);
         
         if(givenNames!=null)
         {
-            builder.append(' ');
+        	if(builder.length()>0)
+        		builder.append(' ');
             builder.append(givenNames);
         }
         
         if(familyName!=null)
         {
-            builder.append(' ');
+        	if(builder.length()>0)
+        		builder.append(' ');
             builder.append(familyName);
         }
         
@@ -150,11 +155,15 @@ public class TextFormatHelper
     
     public static int setFirstNamesFromStrings(Identity identity, String givenNames, String firstLetterOf3rdGivenName)
     {
-        StringBuilder builder=new StringBuilder(givenNames);
+        StringBuilder builder=new StringBuilder();
+        
+        if(givenNames!=null)
+        	builder.append(givenNames);
         
         if(firstLetterOf3rdGivenName!=null)
         {
-            builder.append(' ');
+        	if(builder.length()>0)
+        		builder.append(' ');
             builder.append(firstLetterOf3rdGivenName);
         }
         
@@ -163,6 +172,14 @@ public class TextFormatHelper
     
     public static int setFirstNamesFromString(Identity identity, String names)
     {
+    	if(names==null || names.length()==0)
+    	{
+    		logger.finest("First Name: null -> no firstname, no middleName");
+    		identity.firstName="";
+    		identity.middleName="";
+    		return 0;
+    	}
+    	
         String[] nameParts = names.split(" ");
         if(nameParts.length==1)
         {
