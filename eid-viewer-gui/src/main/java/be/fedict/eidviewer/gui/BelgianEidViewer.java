@@ -229,7 +229,7 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View, Observ
 
             public void run()
             {
-                printAction.setEnabled(eidController.hasIdentity() && eidController.hasAddress() && eidController.hasPhoto() && (PrinterJob.lookupPrintServices().length > 0));
+                printAction.setEnabled(eidController.hasIdentity() && eidController.hasAddress() && eidController.hasPhoto());
                 saveAction.setEnabled(eidController.hasIdentity() && eidController.hasAddress() && eidController.hasPhoto() && eidController.hasAuthCertChain());
                 openAction.setEnabled(eidController.getState() != PCSCEidController.STATE.EID_PRESENT && eidController.getState() != PCSCEidController.STATE.EID_YIELDED);
                 closeAction.setEnabled(eidController.isLoadedFromFile() && (eidController.hasAddress() || eidController.hasPhoto() || eidController.hasAuthCertChain() || eidController.hasSignCertChain()));
