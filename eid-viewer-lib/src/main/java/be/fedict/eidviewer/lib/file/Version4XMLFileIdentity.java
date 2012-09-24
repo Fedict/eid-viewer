@@ -18,19 +18,18 @@
 
 package be.fedict.eidviewer.lib.file;
 
-import be.fedict.eid.applet.service.Gender;
-import be.fedict.eid.applet.service.Identity;
-import be.fedict.eid.applet.service.SpecialStatus;
-import be.fedict.eidviewer.lib.file.helper.TextFormatHelper;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.GregorianCalendar;
-import java.util.List;
+
+import org.apache.commons.codec.binary.Base64;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
-import org.apache.commons.codec.binary.Base64;
+
+import be.fedict.eid.applet.service.Gender;
+import be.fedict.eid.applet.service.Identity;
+import be.fedict.eid.applet.service.SpecialStatus;
 
 /**
  *
@@ -91,17 +90,9 @@ public final class Version4XMLFileIdentity
                 setNobleCondition(nobleConditionString);
         }
            
-        if(eidIdentity.getSpecialStatus() != null && eidIdentity.getSpecialStatus() != SpecialStatus.NO_STATUS)
+        if(eidIdentity.getSpecialStatus() != null)
         {
-            SpecialStatus sStatus = eidIdentity.getSpecialStatus();
-            List<String> specials = new ArrayList<String>();
-            if (sStatus.hasWhiteCane())
-                specials.add("whitecane");
-            if (sStatus.hasYellowCane())
-                specials.add("yellowcane");
-            if (sStatus.hasExtendedMinority())
-                specials.add("extendedminority");
-            setSpecialStatus(TextFormatHelper.join(specials, ","));
+            setSpecialStatus(eidIdentity.getSpecialStatus().name());
         }
         
         if(eidIdentity.getDuplicate() != null)
