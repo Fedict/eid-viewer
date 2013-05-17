@@ -17,12 +17,14 @@
  */
 
 package be.fedict.eidviewer.lib.file.gui;
+
 import be.fedict.eid.applet.service.Address;
 import be.fedict.eid.applet.service.Identity;
 import be.fedict.eidviewer.lib.EidData;
 import be.fedict.eidviewer.lib.X509CertificateChainAndTrust;
 import be.fedict.eidviewer.lib.file.EidFiles;
 import java.io.IOException;
+import java.security.cert.X509Certificate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -35,110 +37,170 @@ import javax.imageio.ImageIO;
 import javax.swing.border.LineBorder;
 
 /**
- *
+ * 
  * @author Frank Marien
  */
-public class EidFilePreviewAccessory extends JPanel implements PropertyChangeListener,EidData
-{
-	private static final long	serialVersionUID	= 8414465750300108216L;
-	private static final Logger logger = Logger.getLogger(EidFilePreviewAccessory.class.getName());
-    private JLabel              photoLabel;
-    private JLabel              nameLabel;
-    private ResourceBundle      bundle;
+public class EidFilePreviewAccessory extends JPanel implements
+	PropertyChangeListener, EidData {
+    private static final long serialVersionUID = 8414465750300108216L;
+    private static final Logger logger = Logger
+	    .getLogger(EidFilePreviewAccessory.class.getName());
+    private JLabel photoLabel;
+    private JLabel nameLabel;
+    private ResourceBundle bundle;
 
-    public EidFilePreviewAccessory(ResourceBundle bundle)
-    { 
-        this.bundle=bundle;
-        setPreferredSize(new Dimension(320,320));
-        setMinimumSize(new Dimension(320,320));
-        setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(0,8,0,0), new LineBorder(new Color(204,255,204),24,true)));
+    public EidFilePreviewAccessory(ResourceBundle bundle) {
+	this.bundle = bundle;
+	setPreferredSize(new Dimension(320, 320));
+	setMinimumSize(new Dimension(320, 320));
+	setBorder(BorderFactory.createCompoundBorder(BorderFactory
+		.createEmptyBorder(0, 8, 0, 0), new LineBorder(new Color(204,
+		255, 204), 24, true)));
 
-        photoLabel=new JLabel();
-        photoLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        photoLabel.setVerticalAlignment(SwingConstants.CENTER);
-        photoLabel.setBorder(BorderFactory.createEmptyBorder(0,16,0,16));
-        nameLabel=new JLabel();
-        nameLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        nameLabel.setVerticalAlignment(SwingConstants.CENTER);
-        nameLabel.setBorder(BorderFactory.createEmptyBorder(0,0,16,0));
-        setLayout(new BorderLayout());
+	photoLabel = new JLabel();
+	photoLabel.setHorizontalAlignment(SwingConstants.CENTER);
+	photoLabel.setVerticalAlignment(SwingConstants.CENTER);
+	photoLabel.setBorder(BorderFactory.createEmptyBorder(0, 16, 0, 16));
+	nameLabel = new JLabel();
+	nameLabel.setHorizontalAlignment(SwingConstants.CENTER);
+	nameLabel.setVerticalAlignment(SwingConstants.CENTER);
+	nameLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 16, 0));
+	setLayout(new BorderLayout());
 
-        add(photoLabel,BorderLayout.CENTER);
-        add(nameLabel,BorderLayout.SOUTH);
-        
-        clear();
+	add(photoLabel, BorderLayout.CENTER);
+	add(nameLabel, BorderLayout.SOUTH);
+
+	clear();
     }
 
-    public void propertyChange(PropertyChangeEvent event)
-    {
-        if(!event.getPropertyName().equals(JFileChooser.SELECTED_FILE_CHANGED_PROPERTY))
-            return;
-      
-        File selection=(File)event.getNewValue();
-        if (selection==null || (!selection.canRead()) || (!selection.isFile()))
-        {
-            clear();
-        }
-        else
-        {
-            try
-            {
-                EidFiles.loadFromFile(selection, this);
-            }
-            catch (Exception ex)
-            {
-                logger.log(Level.SEVERE, "Failed To Load eID File", ex);
-            }
-       }   
-    }
-    
-    private void clear()
-    {
-        photoLabel.setIcon(null);
-        photoLabel.setText(bundle.getString("previewLabel"));
-        photoLabel.setEnabled(false);
-        nameLabel.setText("");
-        nameLabel.setEnabled(false);
+    public void propertyChange(PropertyChangeEvent event) {
+	if (!event.getPropertyName().equals(
+		JFileChooser.SELECTED_FILE_CHANGED_PROPERTY))
+	    return;
+
+	File selection = (File) event.getNewValue();
+	if (selection == null || (!selection.canRead())
+		|| (!selection.isFile())) {
+	    clear();
+	} else {
+	    try {
+		EidFiles.loadFromFile(selection, this);
+	    } catch (Exception ex) {
+		logger.log(Level.SEVERE, "Failed To Load eID File", ex);
+	    }
+	}
     }
 
-    public EidData setIdentity(Identity identity)
-    {
-        nameLabel.setText(identity.getFirstName() + " " + identity.getName());
-        return this;
+    private void clear() {
+	photoLabel.setIcon(null);
+	photoLabel.setText(bundle.getString("previewLabel"));
+	photoLabel.setEnabled(false);
+	nameLabel.setText("");
+	nameLabel.setEnabled(false);
     }
-    
-    public EidData setPhoto(byte[] photo)
-    {
-        try
-        {
-            photoLabel.setIcon(new ImageIcon(ImageIO.read(new ByteArrayInputStream(photo))));
-            photoLabel.setEnabled(true);
-            photoLabel.setText("");
-        }
-        catch (IOException ex)
-        {
-            Logger.getLogger(EidFilePreviewAccessory.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        return this;
+
+    public EidData setIdentity(Identity identity) {
+	nameLabel.setText(identity.getFirstName() + " " + identity.getName());
+	return this;
+    }
+
+    public EidData setPhoto(byte[] photo) {
+	try {
+	    photoLabel.setIcon(new ImageIcon(ImageIO
+		    .read(new ByteArrayInputStream(photo))));
+	    photoLabel.setEnabled(true);
+	    photoLabel.setText("");
+	} catch (IOException ex) {
+	    Logger.getLogger(EidFilePreviewAccessory.class.getName()).log(
+		    Level.SEVERE, null, ex);
+	}
+
+	return this;
     }
 
     // other stuff from the EidFile Interface we don't need here
-    public EidData setAddress(Address address)                                  { return this; }
-    public EidData setAuthCertChain(X509CertificateChainAndTrust authCertChain) { return this; }
-    public EidData setSignCertChain(X509CertificateChainAndTrust signCertChain) { return this; }
-    public EidData setRRNCertChain(X509CertificateChainAndTrust rrnCertChain)   { return this; }
-    public Identity getIdentity()                                               { return null; }
-    public Address getAddress()                                                 { return null; }
-    public byte[] getPhoto()                                                    { return null; }
-    public X509CertificateChainAndTrust getAuthCertChain()                      { return null; }
-    public X509CertificateChainAndTrust getSignCertChain()                      { return null; }
-    public X509CertificateChainAndTrust getRRNCertChain()                       { return null; }
-    public boolean hasAddress()                                                 { return false; }
-    public boolean hasIdentity()                                                { return false; }
-    public boolean hasPhoto()                                                   { return false; }
-    public boolean hasAuthCertChain()                                           { return false; }
-    public boolean hasSignCertChain()                                           { return false; }
-    public boolean hasRRNCertChain()                                            { return false; }
-  
+    public EidData setAddress(Address address) {
+	return this;
+    }
+
+    public EidData setAuthCertChain(X509CertificateChainAndTrust authCertChain) {
+	return this;
+    }
+
+    public EidData setSignCertChain(X509CertificateChainAndTrust signCertChain) {
+	return this;
+    }
+
+    public EidData setRRNCertChain(X509CertificateChainAndTrust rrnCertChain) {
+	return this;
+    }
+
+    public Identity getIdentity() {
+	return null;
+    }
+
+    public Address getAddress() {
+	return null;
+    }
+
+    public byte[] getPhoto() {
+	return null;
+    }
+
+    public X509CertificateChainAndTrust getAuthCertChain() {
+	return null;
+    }
+
+    public X509CertificateChainAndTrust getSignCertChain() {
+	return null;
+    }
+
+    public X509CertificateChainAndTrust getRRNCertChain() {
+	return null;
+    }
+
+    public boolean hasAddress() {
+	return false;
+    }
+
+    public boolean hasIdentity() {
+	return false;
+    }
+
+    public boolean hasPhoto() {
+	return false;
+    }
+
+    public boolean hasAuthCertChain() {
+	return false;
+    }
+
+    public boolean hasSignCertChain() {
+	return false;
+    }
+
+    public boolean hasRRNCertChain() {
+	return false;
+    }
+
+    public X509Certificate getAuthCert() {
+	return null;
+    }
+
+    public X509Certificate getSignCert() {
+	return null;
+    }
+
+    public X509Certificate getRRNCert() {
+	return null;
+    }
+
+    public X509Certificate getCACert() {
+	return null;
+    }
+
+    public X509Certificate getRootCert() {
+	return null;
+    }
+
 }

@@ -18,10 +18,7 @@
 
 package be.fedict.eidviewer.lib;
 
-import be.fedict.trust.client.TrustServiceDomains;
-
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -33,10 +30,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.codec.binary.Base64;
 import org.bouncycastle.openssl.PEMWriter;
+
+import be.fedict.trust.client.TrustServiceDomains;
 
 /**
  *
@@ -188,6 +187,7 @@ public class X509Utilities
     {
     	FileOutputStream outputStream=new FileOutputStream(file);
     	outputStream.write(certificate.getEncoded());
+    	outputStream.close();
     }
     
     public static void certificateToPEMFile(X509Certificate certificate, File file) throws CertificateEncodingException, IOException
@@ -206,4 +206,26 @@ public class X509Utilities
 			pemWriter.writeObject(certificate);
     	pemWriter.close();
 	}
+	
+	public static String eidBase64Encode(byte[] data)
+	    {
+	        Base64 encoder=new Base64(60,new byte[]{' '},false);
+	        return new String(encoder.encode(data)).trim();
+	    }
+	       
+	        public static String X509CertToBase64String(X509Certificate certificate)
+	        {
+	                if(certificate==null)
+	                        return null;
+	               
+	                try
+	                {
+	                        return eidBase64Encode(certificate.getEncoded());
+	                }
+	                catch (CertificateEncodingException e)
+	                {
+	                        return null;
+	                }
+	        }
+
 }

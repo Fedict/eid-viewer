@@ -18,6 +18,8 @@
 
 package be.fedict.eidviewer.lib;
 
+import java.security.cert.X509Certificate;
+
 import be.fedict.eid.applet.service.Address;
 import be.fedict.eid.applet.service.Identity;
 
@@ -27,24 +29,31 @@ import be.fedict.eid.applet.service.Identity;
  */
 public interface EidData
 {
-    public EidData  setIdentity(Identity identity);
-    public EidData  setAddress(Address address);
-    public EidData  setPhoto(byte[] photo);
-    public EidData  setAuthCertChain(X509CertificateChainAndTrust authCertChain);
-    public EidData  setSignCertChain(X509CertificateChainAndTrust signCertChain);
-    public EidData  setRRNCertChain(X509CertificateChainAndTrust rrnCertChain);
+    public EidData                                      setIdentity(Identity identity);
+    public EidData                                      setAddress(Address address);
+    public EidData                                      setPhoto(byte[] photo);
+    public EidData                                      setAuthCertChain(X509CertificateChainAndTrust authCertChain);
+    public EidData                                      setSignCertChain(X509CertificateChainAndTrust signCertChain);
+    public EidData                                      setRRNCertChain(X509CertificateChainAndTrust rrnCertChain);
 
     public Identity                     getIdentity();
     public Address                      getAddress();
     public byte[]                       getPhoto();
+   
+    public X509Certificate                              getAuthCert();
+    public X509Certificate                              getSignCert();
+    public X509Certificate                              getRRNCert();
+    public X509Certificate                              getCACert();
+    public X509Certificate                              getRootCert();
+   
     public X509CertificateChainAndTrust getAuthCertChain();
     public X509CertificateChainAndTrust getSignCertChain();
     public X509CertificateChainAndTrust getRRNCertChain();
 
-    public boolean hasAddress();
-    public boolean hasIdentity();
-    public boolean hasPhoto();
-    public boolean hasAuthCertChain();
-    public boolean hasSignCertChain();
-    public boolean hasRRNCertChain();
+    public boolean                                              hasAddress();
+    public boolean                                              hasIdentity();
+    public boolean                                              hasPhoto();
+    public boolean                                              hasAuthCertChain();
+    public boolean                                              hasSignCertChain();
+    public boolean                                              hasRRNCertChain();
 }

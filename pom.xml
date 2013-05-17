@@ -49,6 +49,30 @@
                 <module>eid-viewer-osx</module>
             </modules>
         </profile>
+
+    <profile>
+      <id>graph</id>
+      <pluginRepositories>
+        <pluginRepository>
+          <id>mvnplugins.fusesource.org</id>
+          <url>http://mvnplugins.fusesource.org/repo/release</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+        </pluginRepository>
+      </pluginRepositories>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.fusesource.mvnplugins</groupId>
+            <artifactId>maven-graph-plugin</artifactId>
+            <version>1.4</version>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+
     </profiles>
 
 
@@ -79,7 +103,7 @@
             <dependency>
                 <groupId>commons-codec</groupId>
                 <artifactId>commons-codec</artifactId>
-                <version>20041127.091804</version>
+								<version>1.6</version>
             </dependency>
             <dependency>
                 <groupId>junit</groupId>

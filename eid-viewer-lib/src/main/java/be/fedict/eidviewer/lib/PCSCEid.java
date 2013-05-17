@@ -277,27 +277,27 @@ public class PCSCEid
         return authnCertificateChain;
     }
 
-    private X509Certificate getAuthCert() throws Exception
+    public X509Certificate getAuthCert() throws Exception
     {
         return getCertificate(PcscEid.AUTHN_CERT_FILE_ID);
     }
 
-    private X509Certificate getSignCert() throws Exception
+    public X509Certificate getSignCert() throws Exception
     {
         return getCertificate(PcscEid.SIGN_CERT_FILE_ID);
     }
 
-    private X509Certificate getRRNCert() throws Exception
+    public X509Certificate getRRNCert() throws Exception
     {
         return getCertificate(PcscEid.RRN_CERT_FILE_ID);
     }
 
-    private X509Certificate getRootCACert() throws Exception
+    public X509Certificate getRootCACert() throws Exception
     {
         return getCertificate(PcscEid.ROOT_CERT_FILE_ID);
     }
 
-    private X509Certificate getCitizenCACert() throws Exception
+    public X509Certificate getCitizenCACert() throws Exception
     {
         return getCertificate(PcscEid.CA_CERT_FILE_ID);
     }

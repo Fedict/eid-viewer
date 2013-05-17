@@ -43,7 +43,7 @@ public final class Version4XMLFileIdentity
     private String dateOfBirth;
     @Attribute(name="gender")
     private String gender;
-    
+   
     @Attribute(name="noblecondition",required=false)
     private String nobleCondition;
     @Attribute(name="specialstatus",required=false)
@@ -94,7 +94,7 @@ public final class Version4XMLFileIdentity
         {
             setSpecialStatus(eidIdentity.getSpecialStatus().name());
         }
-        
+       
         if(eidIdentity.getDuplicate() != null)
         {
             String duplicateString=eidIdentity.getDuplicate().trim();
@@ -104,10 +104,10 @@ public final class Version4XMLFileIdentity
 
         setName(                eidIdentity.getName().trim());
         setFirstName(           eidIdentity.getFirstName().trim());
-        
+       
         if(eidIdentity.getMiddleName()!=null)
             setMiddleNames(eidIdentity.getMiddleName().trim());
-        
+       
         setNationality(         eidIdentity.getNationality().trim());
         setPlaceOfBirth(        eidIdentity.getPlaceOfBirth().trim());
         setPhotoJPEG(           eidPhoto);
@@ -280,3 +280,4 @@ public final class Version4XMLFileIdentity
         setPhoto(new String(Base64.encodeBase64(photo,false)));
     }
 }
+
