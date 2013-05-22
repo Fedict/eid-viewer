@@ -1,6 +1,6 @@
 This work was packaged for Debian by:
 
-    Frank Mariën <frank.marien@fedict.be> on Thu, 23 Sep 2010 15:17:52 +0200
+    Frank Marien <frank.marien@fedict.be> on Thu, 23 Sep 2010 15:17:52 +0200
 
 Upstream Author(s):
 
@@ -8,7 +8,7 @@ Upstream Author(s):
 
 Copyright:
 
-    Copyright (C) 2010-2012 FedICT
+    Copyright (C) 2010-2013 FedICT
 
 License:
 
@@ -21,7 +21,7 @@ License version 3 can be found in `/usr/share/common-licenses/LGPL-3'.
 
 The Debian packaging is:
 
-    Copyright (C) 2010 FedICT <frank.marien@fedict.be>
+    Copyright (C) 2010-2013 FedICT <frank.marien@fedict.be>
 
 you can redistribute it and/or modify it under the terms of the GNU
 General Public License as published by the Free Software Foundation;

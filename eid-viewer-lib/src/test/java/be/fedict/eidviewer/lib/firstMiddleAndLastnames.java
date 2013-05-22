@@ -56,7 +56,7 @@ public class firstMiddleAndLastnames
 		for(int i=0;i<testStrings.length;i++)
 		{
 			Identity identity=new Identity();
-			int howMany=TextFormatHelper.setFirstNamesFromStrings(identity, testStrings[i][0], testStrings[i][1]);
+			TextFormatHelper.setFirstNamesFromStrings(identity, testStrings[i][0], testStrings[i][1]);
 			assertTrue(identity.firstName.equals(testStrings[i][2]) && identity.middleName.equals(testStrings[i][3]));
 		}
 	}
@@ -76,7 +76,7 @@ public class firstMiddleAndLastnames
 		for(int i=0;i<testStrings.length;i++)
 		{
 			Identity identity=new Identity();
-			int howMany=TextFormatHelper.setFirstNamesFromString(identity, testStrings[i][0]);
+			TextFormatHelper.setFirstNamesFromString(identity, testStrings[i][0]);
 			assertTrue(identity.firstName.equals(testStrings[i][1]) && identity.middleName.equals(testStrings[i][2]));
 		}
 	}

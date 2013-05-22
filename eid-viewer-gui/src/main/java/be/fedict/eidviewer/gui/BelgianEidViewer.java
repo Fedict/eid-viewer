@@ -44,8 +44,10 @@ import be.fedict.eidviewer.lib.file.gui.EidFileFilter;
 import be.fedict.eidviewer.lib.file.gui.EidFilePreviewAccessory;
 import be.fedict.eidviewer.lib.file.gui.EidFileView;
 import be.fedict.eidviewer.gui.helper.ImageUtilities;
+import be.fedict.eidviewer.gui.helper.LogHelper;
 import be.fedict.eidviewer.gui.helper.ProxyUtils;
 import be.fedict.eidviewer.lib.PCSCEid;
+import be.fedict.eidviewer.lib.file.helper.LibJ2PCSCGNULinuxFix;
 import be.fedict.eidviewer.lib.file.helper.Version35LocalePrefs;
 import java.awt.Component;
 import java.awt.Image;
@@ -150,6 +152,7 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View,
 	initPanels();
 	initIcons();
 	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	LibJ2PCSCGNULinuxFix.fixNativeLibrary();
     }
 
     private void initActions() {
@@ -167,17 +170,8 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View,
 		KeyEvent.VK_L));
     }
 
-    private void logJavaSpecs() {
-	Properties properties = System.getProperties();
-	Set<String> labels = properties.stringPropertyNames();
-	for (String label : labels) {
-	    logger.log(Level.INFO, "{0}={1}",
-		    new Object[] { label, properties.getProperty(label) });
-	}
-    }
-
     private void start() {
-	logJavaSpecs();
+	LogHelper.logJavaSpecs(logger);
 	logger.fine("starting..");
 
 	// get ProxyUtils class instantiated early because it needs to detect
@@ -689,6 +683,8 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View,
 	public void actionPerformed(ActionEvent ae) {
 	    ViewerPrefs.setShowLogTab(showLogMenuItem.getState());
 	    showLog(ViewerPrefs.getShowLogTab());
+	    if(ViewerPrefs.getShowLogTab())
+		LogHelper.logJavaSpecs(logger);
 	}
     }
 
@@ -702,7 +698,7 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View,
 
 	public void actionPerformed(ActionEvent ae) {
 	    logger.fine("Open action chosen..");
-	    final JFileChooser fileChooser = new JFileChooser();
+	    final JFileChooser fileChooser = new JFileChooser(ViewerPrefs.getLastOpenLocation());
 
 	    fileChooser
 		    .setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
@@ -730,6 +726,8 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View,
 		if (file.isFile()) {
 		    eidController.loadFromFile(file);
 		}
+		
+		ViewerPrefs.setLastOpenLocation(file.getParentFile());
 	    }
 	}
     }
