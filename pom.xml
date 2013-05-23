@@ -4,7 +4,7 @@
     <name>eID Viewer</name>
     <groupId>be.fedict</groupId>
     <artifactId>eid-viewer</artifactId>
-    <version>4.0.4</version>
+    <version>4.0.5</version>
     <packaging>pom</packaging>
     <inceptionYear>2010</inceptionYear>
     <licenses>
@@ -289,7 +289,7 @@
         </repository>
     </repositories>
     <properties>
-        <eid-applet.version>1.0.5.Beta5</eid-applet.version>
+        <eid-applet.version>1.1.0.RC2</eid-applet.version>
         <trustservice.version>1.0.1.RC2</trustservice.version>
         <win32-executable.version>${project.version}.${project.revision}</win32-executable.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
