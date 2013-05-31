@@ -17,54 +17,31 @@
  */
 package be.fedict.eidviewer.gui;
 
-import be.fedict.eidviewer.gui.printing.IDPrintout;
-import be.fedict.eidviewer.gui.panels.LogPanel;
-import be.fedict.eidviewer.gui.panels.AboutPanel;
-import be.fedict.eidviewer.gui.panels.IdentityPanel;
-import be.fedict.eidviewer.gui.panels.CardPanel;
-import be.fedict.eidviewer.gui.panels.PreferencesPanel;
-import be.fedict.eidviewer.gui.panels.CertificatesPanel;
-import be.fedict.eidviewer.lib.PCSCEidController;
-import be.fedict.eidviewer.lib.TrustServiceController;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.io.File;
-import java.io.IOException;
-import java.util.ResourceBundle;
-
-import be.fedict.eid.applet.DiagnosticTests;
-import be.fedict.eid.applet.Messages.MESSAGE_ID;
-import be.fedict.eid.applet.Status;
-import be.fedict.eid.applet.View;
-import be.fedict.eidviewer.lib.file.gui.EidFileFilter;
-import be.fedict.eidviewer.lib.file.gui.EidFilePreviewAccessory;
-import be.fedict.eidviewer.lib.file.gui.EidFileView;
-import be.fedict.eidviewer.gui.helper.ImageUtilities;
-import be.fedict.eidviewer.gui.helper.LogHelper;
-import be.fedict.eidviewer.gui.helper.ProxyUtils;
-import be.fedict.eidviewer.lib.PCSCEid;
-import be.fedict.eidviewer.lib.file.helper.LibJ2PCSCGNULinuxFix;
-import be.fedict.eidviewer.lib.file.helper.Version35LocalePrefs;
-import java.awt.Component;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
+import java.io.File;
+import java.io.IOException;
 import java.net.Proxy;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.Locale;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Properties;
-import java.util.Set;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
@@ -81,6 +58,29 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
+
+import be.fedict.eid.applet.DiagnosticTests;
+import be.fedict.eid.applet.Messages.MESSAGE_ID;
+import be.fedict.eid.applet.Status;
+import be.fedict.eid.applet.View;
+import be.fedict.eidviewer.gui.helper.ImageUtilities;
+import be.fedict.eidviewer.gui.helper.LogHelper;
+import be.fedict.eidviewer.gui.helper.ProxyUtils;
+import be.fedict.eidviewer.gui.panels.AboutPanel;
+import be.fedict.eidviewer.gui.panels.CardPanel;
+import be.fedict.eidviewer.gui.panels.CertificatesPanel;
+import be.fedict.eidviewer.gui.panels.IdentityPanel;
+import be.fedict.eidviewer.gui.panels.LogPanel;
+import be.fedict.eidviewer.gui.panels.PreferencesPanel;
+import be.fedict.eidviewer.gui.printing.IDPrintout;
+import be.fedict.eidviewer.lib.PCSCEid;
+import be.fedict.eidviewer.lib.PCSCEidController;
+import be.fedict.eidviewer.lib.TrustServiceController;
+import be.fedict.eidviewer.lib.file.gui.EidFileFilter;
+import be.fedict.eidviewer.lib.file.gui.EidFilePreviewAccessory;
+import be.fedict.eidviewer.lib.file.gui.EidFileView;
+import be.fedict.eidviewer.lib.file.helper.LibJ2PCSCGNULinuxFix;
+import be.fedict.eidviewer.lib.file.helper.Version35LocalePrefs;
 
 /**
  * 
@@ -110,6 +110,8 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View,
 
     private JMenu helpMenu;
     private JMenuItem aboutMenuItem;
+    private JMenuItem faqMenuItem;
+    private JMenuItem testMenuItem;
     private JCheckBoxMenuItem showLogMenuItem;
 
     private JMenu languageMenu;
@@ -140,11 +142,15 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View,
     private SaveFileAsCSVAction saveAsCSVAction;
     private CloseFileAction closeAction;
     private AboutAction aboutAction;
+    private FAQAction faqAction;
+    private TestAction testAction;
     private QuitAction quitAction;
     private PreferencesAction preferencesAction;
     private ShowHideLogAction showHideLogAction;
+    private Desktop desktop;
 
     public BelgianEidViewer() {
+	initDesktop();
 	initActions();
 	initTexts();
 	initComponents();
@@ -153,6 +159,22 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View,
 	initIcons();
 	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	LibJ2PCSCGNULinuxFix.fixNativeLibrary();
+    }
+
+    private void initDesktop()
+    {
+	if(!java.awt.Desktop.isDesktopSupported()) {
+
+            logger.severe("Desktop not supported. Browser-based operations not available.");
+            return;
+        }
+	
+	this.desktop = Desktop.getDesktop();
+	
+	if( !desktop.isSupported( Desktop.Action.BROWSE ) ) {
+	    logger.severe("Desktop BROWSE action not supported. Browser-based operations not available.");
+	    this.desktop=null;
+	}
     }
 
     private void initActions() {
@@ -166,6 +188,8 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View,
 	preferencesAction = new PreferencesAction("Preferences");
 	aboutAction = new AboutAction("About");
 	quitAction = new QuitAction("Quit", new Integer(KeyEvent.VK_Q));
+	faqAction = new FAQAction("FAQ");
+	testAction = new TestAction("Test");
 	showHideLogAction = new ShowHideLogAction("Show Log", new Integer(
 		KeyEvent.VK_L));
     }
@@ -250,6 +274,9 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View,
 
 		preferencesAction.setEnabled(!trustServiceController
 			.isValidating());
+		
+		faqAction.setEnabled(BelgianEidViewer.this.desktop!=null);
+		testAction.setEnabled(BelgianEidViewer.this.desktop!=null);
 
 		statusIcon.setIcon(cardStatusIcons.get(eidController.getState()));
 
@@ -281,8 +308,8 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View,
 	fileMenu = new JMenu();
 	openMenuItem = new JMenuItem();
 	saveAsMenu = new JMenu();
-        saveAsXMLMenuItem = new JMenuItem();
-        saveAsCSVMenuItem = new JMenuItem();
+	saveAsXMLMenuItem = new JMenuItem();
+	saveAsCSVMenuItem = new JMenuItem();
 	closeMenuItem = new JMenuItem();
 	preferencesMenuItem = new JMenuItem();
 	printMenuItem = new JMenuItem();
@@ -296,6 +323,8 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View,
 
 	helpMenu = new JMenu();
 	aboutMenuItem = new JMenuItem();
+	faqMenuItem = new JMenuItem();
+	testMenuItem = new JMenuItem();
 	showLogMenuItem = new JCheckBoxMenuItem();
 
 	setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -403,8 +432,15 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View,
 	menuBar.add(languageMenu);
 
 	aboutMenuItem.setAction(aboutAction);
+	faqMenuItem.setAction(faqAction);
+	testMenuItem.setAction(testAction);
+	
 	helpMenu.add(aboutMenuItem);
 	helpMenu.addSeparator();
+	helpMenu.add(faqMenuItem);
+	helpMenu.add(testMenuItem);
+	helpMenu.addSeparator();
+	
 	showLogMenuItem.setAction(showHideLogAction);
 	showLogMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L,
 		Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
@@ -449,6 +485,8 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View,
 	closeAction.setName(bundle.getString("closeFile.Action.text")); // NOI18N
 	printAction.setName(bundle.getString("print.Action.text")); // NOI18N
 	aboutAction.setName(bundle.getString("about.Action.text")); // NOI18N
+	faqAction.setName(bundle.getString("faq.Action.text")); // NOI18N
+	testAction.setName(bundle.getString("test.Action.text")); // NOI18N
 	preferencesAction.setName(bundle.getString("prefs.Action.text")); // NOI18N
 	showHideLogAction.setName(bundle.getString("showLogTab")); // NOI18N
 	cardStatusTexts = new EnumMap<PCSCEidController.STATE, String>(
@@ -683,7 +721,7 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View,
 	public void actionPerformed(ActionEvent ae) {
 	    ViewerPrefs.setShowLogTab(showLogMenuItem.getState());
 	    showLog(ViewerPrefs.getShowLogTab());
-	    if(ViewerPrefs.getShowLogTab())
+	    if (ViewerPrefs.getShowLogTab())
 		LogHelper.logJavaSpecs(logger);
 	}
     }
@@ -698,7 +736,8 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View,
 
 	public void actionPerformed(ActionEvent ae) {
 	    logger.fine("Open action chosen..");
-	    final JFileChooser fileChooser = new JFileChooser(ViewerPrefs.getLastOpenLocation());
+	    final JFileChooser fileChooser = new JFileChooser(
+		    ViewerPrefs.getLastOpenLocation());
 
 	    fileChooser
 		    .setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
@@ -726,7 +765,7 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View,
 		if (file.isFile()) {
 		    eidController.loadFromFile(file);
 		}
-		
+
 		ViewerPrefs.setLastOpenLocation(file.getParentFile());
 	    }
 	}
@@ -850,6 +889,45 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View,
 	public void actionPerformed(ActionEvent ae) {
 	    logger.fine("Close action chosen..");
 	    eidController.closeFile();
+	}
+    }
+
+    private class FAQAction extends DynamicLocaleAbstractAction {
+	private static final long serialVersionUID = -8609609883790744461L;
+
+	public FAQAction(String text) {
+	    super(text);
+	}
+
+	public void actionPerformed(ActionEvent ae) {
+	    logger.log(Level.FINE, "FAQ action chosen");
+
+	    try
+	    {
+		BelgianEidViewer.this.desktop.browse(ViewerPrefs.getFAQURI(Locale.getDefault()));
+	    }
+	    catch (IOException ioex) {
+		logger.log(Level.SEVERE, "Failed to browse to FAQ",ioex);
+	    }
+	}
+    }
+    
+    private class TestAction extends DynamicLocaleAbstractAction {
+	private static final long serialVersionUID = 3506188458464209588L;
+
+	public TestAction(String text) {
+	    super(text);
+	}
+
+	public void actionPerformed(ActionEvent ae) {
+	    logger.log(Level.FINE, "TEST action chosen");
+	    try
+	    {
+		BelgianEidViewer.this.desktop.browse(ViewerPrefs.getTestURI());
+	    }
+	    catch (IOException ioex) {
+		logger.log(Level.SEVERE, "Failed to browse to TEST",ioex);
+	    }
 	}
     }
 
