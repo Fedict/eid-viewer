@@ -104,7 +104,7 @@ public class LogPanel extends JPanel {
 		StringBuilder message = new StringBuilder();
 
 		if (currentAttr == null)
-		    currentAttr = attributes.get(Level.INFO);
+		    currentAttr = attributes.get(Level.ALL);
 
 		String className = logRecord.getSourceClassName();
 		if (className == null)
