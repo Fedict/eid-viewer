@@ -28,14 +28,13 @@ import javax.swing.filechooser.FileFilter;
  */
 public class EidFileFilter extends FileFilter
 {
-    private boolean acceptXML,acceptTLV,acceptCSV;
+    private boolean acceptEID,acceptCSV;
     private String  description;
 
-    public EidFileFilter(boolean acceptXML, boolean acceptTLV, boolean acceptCSV, String description)
+    public EidFileFilter(boolean acceptEID, boolean acceptCSV, String description)
     {
         super();
-        this.acceptXML =    acceptXML;
-        this.acceptTLV =    acceptTLV;
+        this.acceptEID =    acceptEID;
         this.acceptCSV =    acceptCSV;
         this.description =  description;
     }
@@ -45,17 +44,15 @@ public class EidFileFilter extends FileFilter
         if(file.isDirectory())
             return true;
 
-        if(acceptXML)
+        if(acceptEID)
         {
             int xmlVersion=EidFiles.getXMLFileVersion(file);
-            if(xmlVersion==3 || xmlVersion==4)
+            if(xmlVersion==3 || xmlVersion==4 || xmlVersion==-2)
                 return true;
-        }
-
-        if(acceptTLV)
-        {
-           if(EidFiles.isTLVEidFile(file))
-               return true;
+            if(EidFiles.isTLVEidFile(file))
+                return true;
+            if(EidFiles.getCSVFileVersion(file)==1)
+                return true;
         }
 
         if(acceptCSV)

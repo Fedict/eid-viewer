@@ -415,7 +415,7 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View,
 	languageEnglishMenuItem.setAccelerator(KeyStroke.getKeyStroke(
 		KeyEvent.VK_E, Toolkit.getDefaultToolkit()
 			.getMenuShortcutKeyMask()));
-	languageFrenchMenuItem.setAction(new LanguageAction("Français",
+	languageFrenchMenuItem.setAction(new LanguageAction("Fran��ais",
 		new Integer(KeyEvent.VK_F), new Locale("fr", "BE"), this));
 	languageFrenchMenuItem.setAccelerator(KeyStroke.getKeyStroke(
 		KeyEvent.VK_F, Toolkit.getDefaultToolkit()
@@ -743,15 +743,8 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View,
 		    .setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 	    fileChooser.setAcceptAllFileFilterUsed(false);
 
-	    fileChooser.addChoosableFileFilter(new EidFileFilter(true, true,
-		    true, bundle.getString("allEIDFiles")));
-	    fileChooser.addChoosableFileFilter(new EidFileFilter(true, false,
-		    false, bundle.getString("xmlEIDFiles")));
-	    fileChooser.addChoosableFileFilter(new EidFileFilter(false, false,
-		    true, bundle.getString("csvEIDFiles")));
-	    fileChooser.addChoosableFileFilter(new EidFileFilter(false, true,
-		    false, bundle.getString("tlvEIDFiles")));
-
+	    fileChooser.addChoosableFileFilter(new EidFileFilter(true,true, bundle.getString("allEIDFiles")));
+	    fileChooser.addChoosableFileFilter(new EidFileFilter(false,true,bundle.getString("csvEIDFiles")));
 	    fileChooser.setFileView(new EidFileView(bundle));
 
 	    EidFilePreviewAccessory preview = new EidFilePreviewAccessory(
@@ -784,8 +777,7 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View,
 	    final JFileChooser fileChooser = new JFileChooser(
 		    ViewerPrefs.getLastSaveLocation());
 	    fileChooser.setAcceptAllFileFilterUsed(false);
-	    fileChooser.addChoosableFileFilter(new EidFileFilter(true, false,
-		    false, bundle.getString("xmlEIDFiles")));
+	    fileChooser.addChoosableFileFilter(new EidFileFilter(true,true,bundle.getString("allEIDFiles")));
 	    fileChooser.setCurrentDirectory(ViewerPrefs.getLastSaveLocation());
 
 	    File suggestedFile = null;
@@ -793,7 +785,7 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View,
 	    try {
 		suggestedFile = (new File(fileChooser.getCurrentDirectory(),
 			eidController.getIdentity().getNationalNumber()
-				+ ".xml"));
+				+ ".eid"));
 		logger.log(Level.FINE, "Suggesting \"{0}\"",
 			suggestedFile.getCanonicalPath());
 		fileChooser.setSelectedFile(suggestedFile);
@@ -805,10 +797,10 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View,
 		try {
 		    File targetFile = fileChooser.getSelectedFile();
 		    if (!targetFile.getCanonicalPath().toLowerCase()
-			    .endsWith(".xml")) {
-			logger.fine("File would not have correct extension, appending \".xml\"");
+			    .endsWith(".eid")) {
+			logger.fine("File would not have correct extension, appending \".eid\"");
 			targetFile = new File(targetFile.getCanonicalPath()
-				+ ".xml");
+				+ ".eid");
 		    }
 
 		    eidController.saveToXMLFile(targetFile);
@@ -837,8 +829,7 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View,
 	    logger.fine("Save action chosen..");
 	    final JFileChooser fileChooser = new JFileChooser();
 	    fileChooser.setAcceptAllFileFilterUsed(false);
-	    fileChooser.addChoosableFileFilter(new EidFileFilter(false, false,
-		    true, bundle.getString("csvEIDFiles")));
+	    fileChooser.addChoosableFileFilter(new EidFileFilter(false, true,bundle.getString("csvEIDFiles")));
 	    fileChooser.setCurrentDirectory(ViewerPrefs.getLastSaveLocation());
 
 	    File suggestedFile = null;

@@ -50,13 +50,24 @@ public class EidFiles
         {
             if(file.getName().toLowerCase().endsWith(".eid"))
             {
-                Version35EidFile.load(file, eidData);
+        	if(isXMLEidFile(file))
+        	{
+        	    loadFromXMLFile(file, eidData);
+        	}
+        	else if(isTLVEidFile(file))
+        	{
+        	    Version35EidFile.load(file, eidData);
+        	}
+        	else if(isCSVEidFile(file))
+        	{
+        	    Version35CSVFile.load(file, eidData);
+        	}
             }
-            else if(file.getName().toLowerCase().endsWith(".csv"))
+            else if(file.getName().toLowerCase().endsWith(".csv") && isCSVEidFile(file))
             {
-                Version35CSVFile.load(file, eidData);
+        	Version35CSVFile.load(file, eidData);
             }
-            else if(file.getName().toLowerCase().endsWith(".xml"))
+            else if(file.getName().toLowerCase().endsWith(".xml") && isXMLEidFile(file))
             {
                 loadFromXMLFile(file, eidData);
             }
@@ -74,6 +85,8 @@ public class EidFiles
             Logger.getLogger(EidFiles.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+   
 
     public static void loadFromXMLFile(File file, EidData eidData) throws FileNotFoundException, IOException, Exception
     {
@@ -104,11 +117,15 @@ public class EidFiles
             logger.fine("3.5.x XML data loaded ok");
             break;
 
-            case -1:
+            case -2:
             logger.fine("parsing as eID Quick Keys Toolset XML file");
             EidQuickKeyXMLFile eidqkxmlFile = new EidQuickKeyXMLFile(eidData);
             eidqkxmlFile.load(file);
             logger.fine("eID Quick Keys Toolset XML data loaded ok");
+            break;
+            
+            case -1:
+            logger.severe("Unknown XML format. Ignoring.");
             break;
         }
     }
@@ -154,7 +171,7 @@ public class EidFiles
 
     public static int getXMLFileVersion(File file)
     {
-        int             version =0;
+        int             version =-1;
         FileInputStream fis     =null;
 
         try
@@ -162,15 +179,11 @@ public class EidFiles
             if (!file.canRead())
                 return 0;
 
-            if (!file.getName().toLowerCase().endsWith(".xml"))
-                return 0;
-
             byte[] buffer = new byte[512];
             fis = new FileInputStream(file);
             fis.read(buffer);
             fis.close();
             String headStr = new String(buffer, "utf-8");
-            //System.err.println(headStr);
             if (headStr.contains("<eid>"))
             {
                 version = 4;
@@ -183,7 +196,7 @@ public class EidFiles
             }
             else if (headStr.contains("<BelPicDirectory>"))
             {
-                version = -1;
+                version = -2;
                 logger.finest("Found eID Quick Key Toolset XML file");
             }
             return version;
@@ -210,7 +223,7 @@ public class EidFiles
 
     public static int getCSVFileVersion(File file)
     {
-        int             version = 0;
+        int             version = -1;
         FileInputStream fis     = null;
 
         try
@@ -218,15 +231,11 @@ public class EidFiles
             if (!file.canRead())
                 return 0;
 
-            if (!file.getName().toLowerCase().endsWith(".csv"))
-                return 0;
-
             byte[] buffer = new byte[16];
             fis = new FileInputStream(file);
             fis.read(buffer);
             fis.close();
             String headStr = new String(buffer, "utf-8");
-            //System.err.println(headStr);
             String[] fields = headStr.split(";");
             if (fields.length >= 2 && fields[1].equalsIgnoreCase("eid"))
             {
@@ -260,6 +269,16 @@ public class EidFiles
 
         return version;
     }
+    
+    private static boolean isXMLEidFile(File file)
+    {
+   	return getXMLFileVersion(file)>0;
+    }
+    
+    private static boolean isCSVEidFile(File file)
+    {
+   	return getCSVFileVersion(file)>0;
+    }
 
     public static boolean isTLVEidFile(File file)
     {
@@ -267,9 +286,6 @@ public class EidFiles
         boolean isTLVEid = false;
 
         if (!file.canRead())
-            return false;
-
-        if (!file.getName().toLowerCase().endsWith(".eid"))
             return false;
 
         try
