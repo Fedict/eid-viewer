@@ -20,6 +20,9 @@ package be.fedict.eidviewer.gui.panels;
 
 import java.awt.Color;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.MessageFormat;
@@ -31,6 +34,7 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
+import javax.swing.BorderFactory;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -38,6 +42,7 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
+import javax.swing.border.Border;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
@@ -58,6 +63,7 @@ public class LogPanel extends JPanel {
 
     private JPanel bottomPanel;
     private JButton clearButton;
+    private JButton copyButton;
     private JScrollPane jScrollPane1;
     private JComboBox levelCombo;
     private JTextPane logTextPanel;
@@ -93,6 +99,16 @@ public class LogPanel extends JPanel {
 	clearButton.addActionListener(new ActionListener() {
 	    public void actionPerformed(ActionEvent ae) {
 		logTextPanel.setText("");
+	    }
+	});
+
+	copyButton.addActionListener(new ActionListener() {
+	    public void actionPerformed(ActionEvent ae) {
+		Clipboard clipBoard = Toolkit.getDefaultToolkit()
+			.getSystemClipboard();
+		StringSelection all = new StringSelection(logTextPanel
+			.getText());
+		clipBoard.setContents(all, all);
 	    }
 	});
 
@@ -283,6 +299,7 @@ public class LogPanel extends JPanel {
 	bottomPanel = new JPanel();
 	levelCombo = new JComboBox();
 	clearButton = new JButton();
+	copyButton = new JButton();
 	jScrollPane1 = new JScrollPane();
 	logTextPanel = new JTextPane();
 
@@ -303,6 +320,10 @@ public class LogPanel extends JPanel {
 	clearButton.setText("Clear Log");
 	clearButton.setName("clearButton"); // NOI18N
 	bottomPanel.add(clearButton);
+
+	copyButton.setText("Copy Log To Clipboard");
+	copyButton.setName("copyButton"); // NOI18N
+	bottomPanel.add(copyButton);
 
 	add(bottomPanel, java.awt.BorderLayout.PAGE_END);
 

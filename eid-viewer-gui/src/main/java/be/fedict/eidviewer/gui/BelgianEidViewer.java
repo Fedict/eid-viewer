@@ -544,6 +544,7 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View,
 	initTabsI18N();
 
 	if (ViewerPrefs.getShowLogTab()) {
+	    showLogMenuItem.setSelected(true);
 	    showLog(true);
 	}
     }
