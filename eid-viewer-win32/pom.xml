@@ -1,103 +1,117 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>be.fedict</groupId>
-        <artifactId>eid-viewer</artifactId>
-        <version>4.0.6</version>
-    </parent>
-    <name>eID Viewer MS Windows Executable</name>
-    <groupId>be.fedict.eid-viewer</groupId>
-    <artifactId>eid-viewer-win32</artifactId>
-    <version>4.0.6</version>
-    <packaging>jar</packaging>
-    <build>
-        <plugins>
-            <!-- copy just the eid-viewer jar ; it's a shaded jar with all depdendencies included -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>unpack-dependencies</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <includes>.jar</includes>
-                            <outputDirectory>${project.build.directory}</outputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <!-- our own output is not relevant, disable the jar plugin -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>default-jar</id>
-                        <phase>none</phase>
-                    </execution>
-                </executions>
-                <inherited>false</inherited>
-            </plugin>
-            <!-- create an MS Windows executable wrapper around the shaded jar -->
-            <plugin>
-                <groupId>org.bluestemsoftware.open.maven.plugin</groupId>
-                <artifactId>launch4j-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>launch4j</goal>
-                        </goals>
-                        <configuration>
-                            <jar>${project.build.directory}/eid-viewer-gui-${project.version}.jar</jar>
-                            <headerType>gui</headerType>
-                            <jre>
-                                <minVersion>1.6.0</minVersion>
-                            </jre>
-                            <classPath>
-                                <mainClass>be.fedict.eidviewer.gui.BelgianEidViewer</mainClass>
-                                <addDependencies>true</addDependencies>
-                            </classPath>
-                            <singleInstance>
-                                <mutexName>be.fedict.eidviewer.gui.BelgianEidViewer</mutexName>
-                                <windowTitle>Belgian eID Viewer</windowTitle>
-                            </singleInstance>
-                            <dontWrapJar>false</dontWrapJar>
-                            <icon>src/main/assembly/eid-viewer.ico</icon>
-                            <versionInfo>
-                                <fileVersion>${project.version}.0</fileVersion>
-                                <productVersion>${project.version}.0</productVersion>
-                                <fileDescription>${project.parent.name}</fileDescription>
-                                <copyright>Copyright (C) ${project.inceptionYear}-${copyrightPeriodTo} ${project.organization.name}</copyright>
-                                <txtProductVersion>${project.parent.name} ${project.version} ${eid-viewer-win32.revision}</txtProductVersion>
-                                <companyName>${project.organization.name}</companyName>
-                                <txtFileVersion>${project.version} ${eid-viewer-win32.revision}</txtFileVersion>
-                                <productName>${project.parent.name}</productName>
-                                <internalName>${project.parent.artifactId}</internalName>
-                                <originalFilename>${project.parent.name}.exe</originalFilename>
-                            </versionInfo>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
-
-    <properties>
-        <project.revision>${eid-viewer-win32.revision}</project.revision>
-    </properties>
-
-
-    <dependencies>
-        <dependency>
-            <groupId>be.fedict.eid-viewer</groupId>
-            <artifactId>eid-viewer-gui</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-    </dependencies>
+ <modelVersion>4.0.0</modelVersion>
+ <parent>
+  <groupId>be.fedict</groupId>
+  <artifactId>eid-viewer</artifactId>
+  <version>4.0.6</version>
+ </parent>
+ <name>eID Viewer MS Windows Executable</name>
+ <groupId>be.fedict.eid-viewer</groupId>
+ <artifactId>eid-viewer-win32</artifactId>
+ <version>4.0.6</version>
+ <packaging>jar</packaging>
+ <build>
+  <plugins>
+<!--
+			require path to local launch4j installation 
+            this is undesirable, to say the least.
+            If someone can find me a publically accessible launch4j 3.x maven artifact, I may be able to remove this.
+			For now, you need to install launch4j and pass -Dlaunch4j-base=<the-path-where-you-installed-launch4j>.
+		-->
+   <plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-enforcer-plugin</artifactId>
+    <version>1.3.1</version>
+    <executions>
+     <execution>
+      <id>enforce-property</id>
+      <goals>
+       <goal>enforce</goal>
+      </goals>
+      <configuration>
+       <rules>
+        <requireProperty>
+         <property>launch4j-base</property>
+         <message>***** You must set a launch4j-base property! *****</message>
+         <regex>^/[^ ]*</regex>
+         <regexMessage>The launch4j-base property must be an abolute path and may not contain spaces</regexMessage>
+        </requireProperty>
+       </rules>
+       <fail>true</fail>
+      </configuration>
+     </execution>
+    </executions>
+   </plugin>
+<!-- our own output is not relevant, disable the jar plugin -->
+   <plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-jar-plugin</artifactId>
+    <executions>
+     <execution>
+      <id>default-jar</id>
+      <phase>none</phase>
+     </execution>
+    </executions>
+    <inherited>false</inherited>
+   </plugin>
+<!-- create an MS Windows executable wrapper around the shaded jar 
+                 changed to wrapped ant task because the launch4j maven plugins
+                 are not actively maintained and e.g. singleInstance no longer
+                 functioned. This also requires a local launch4j install -->
+   <plugin>
+    <artifactId>maven-antrun-plugin</artifactId>
+    <version>1.7</version>
+    <executions>
+     <execution>
+      <phase>package</phase>
+      <configuration>
+       <target>
+        <taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${launch4j-base}/launch4j.jar:${launch4j-base}/lib/xstream.jar"/> -->
+		<launch4j>
+         <config 			headerType="gui"
+							downloadURL="http://java.com/download"
+							supportURL="http://eid.belgium.be/en/contact/contactform.jsp"
+							outfile="target/eid-viewer-${project.version}.exe"
+							icon="src/main/assembly/eid-viewer.ico"
+							dontWrapJar="false"
+							jarPath="../eid-viewer-gui/target/eid-viewer-gui-${project.version}.jar">
+          <jre 				minVersion="1.6.0_00"
+							maxVersion="1.7.0_40" />
+          <versionInfo 		fileDescription="Viewer for Belgian eID Cards"
+							copyright="Copyright (C) 2010-2013 FedICT"
+							productName="Belgian eID Viewer"
+							companyName="FedICT"
+							originalFilename="eid-viewer-${project.version}.exe"
+							internalName="eID Viewer"
+							fileVersion="${project.version}.0"
+							txtFileVersion="${project.version}.0 (${eid-viewer-win32.revision})"
+							productVersion="${project.version}.0"
+                        	txtProductVersion="${project.version}.0 (${eid-viewer-win32.revision})"/>
+          <singleInstance 	mutexName="be.fedict.eidviewer.gui.BelgianEidViewer"
+							windowTitle="eID Viewer"/>
+         </config>
+        </launch4j>
+        <attachartifact file="target/eid-viewer-${project.version}.exe" type="exe"/>
+       </target>
+      </configuration>
+      <goals>
+       <goal>run</goal>
+      </goals>
+     </execution>
+    </executions>
+    <dependencies/>
+   </plugin>
+  </plugins>
+ </build>
+ <properties>
+  <project.revision>${eid-viewer-win32.revision}</project.revision>
+ </properties>
+ <dependencies>
+  <dependency>
+   <groupId>be.fedict.eid-viewer</groupId>
+   <artifactId>eid-viewer-gui</artifactId>
+   <version>${project.version}</version>
+  </dependency>
+ </dependencies>
 </project>
