@@ -415,7 +415,7 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View,
 	languageEnglishMenuItem.setAccelerator(KeyStroke.getKeyStroke(
 		KeyEvent.VK_E, Toolkit.getDefaultToolkit()
 			.getMenuShortcutKeyMask()));
-	languageFrenchMenuItem.setAction(new LanguageAction("Fran��ais",
+	languageFrenchMenuItem.setAction(new LanguageAction("Français",
 		new Integer(KeyEvent.VK_F), new Locale("fr", "BE"), this));
 	languageFrenchMenuItem.setAccelerator(KeyStroke.getKeyStroke(
 		KeyEvent.VK_F, Toolkit.getDefaultToolkit()
