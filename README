@@ -39,10 +39,12 @@ produces:
 - a shaded, runnable jar file in eid-viewer-gui/target:
 	e.g. eid-viewer-gui/target/eid-viewer-gui-4.0.6.jar
 	run with java -jar eid-viewer-gui/target/eid-viewer-gui-4.0.6.jar
+	on many platforms, this jar can be ran directly, e.g.
+	double-clicked or used as an executable.
 
 - a zipped OSX Application Bundle in eid-viewer-osx/target
 	e.g. eid-viewer-osx/target/eid-viewer-osx-4.0.6-bundle.zip
-	copy to an OSX system and unzipping will awake it's bundle nature:
+	copy to an OSX system and unzipping will awake its bundle nature:
 	It will become a runnable application. Double-click to run.
 
 There are autoconf/automake files in the distribution root dir,
@@ -65,6 +67,8 @@ $ mvn -Dlaunch4j-base=/opt/launch4j clean package
 
 (We used the launch4j maven plugin, in previous versions, eliminating
 the need for a local launch4j installation, but this plugin is unmaintained,
-while launch4j itself is alive and kicking).
+while launch4j itself is alive and kicking. The resulting .exe was no longer
+fully functional. This compromise is slightly more difficult to build,
+but much better for the end-user).
 
 EOF
