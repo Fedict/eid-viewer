@@ -23,3 +23,48 @@ http://www.gnu.org/licenses/.
 Official releases and support are available on http://eid.belgium.be/.
 Source code and other files are available on http://code.google.com/p/eid-viewer/.
 Source code for eID Applet is available on http://code.google.com/p/eid-applet/
+
+BUILD:
+
+Requires a recent Maven installation, with dependencies.
+Tested only on GNU/Linux systems, but should work on any Maven-enabled system
+
+for all Platforms Except MS Windows:
+------------------------------------
+
+$ mvn clean package
+
+produces:
+
+- a shaded, runnable jar file in eid-viewer-gui/target:
+	e.g. eid-viewer-gui/target/eid-viewer-gui-4.0.6.jar
+	run with java -jar eid-viewer-gui/target/eid-viewer-gui-4.0.6.jar
+
+- a zipped OSX Application Bundle in eid-viewer-osx/target
+	e.g. eid-viewer-osx/target/eid-viewer-osx-4.0.6-bundle.zip
+	copy to an OSX system and unzipping will awake it's bundle nature:
+	It will become a runnable application. Double-click to run.
+
+There are autoconf/automake files in the distribution root dir,
+to facilitate packaging/running on GNU/Linux systems. These assume the
+presence of the shaded jar described above. See comments in Makefile.am
+
+for MS Windows:
+---------------
+
+In addition, if you have a local launch4j installation, add it as a
+property: e.g. 
+
+$ mvn -Dlaunch4j-base=/opt/launch4j clean package
+
+.. this produces, additionally to the 2 artifacts described above,
+
+- a 32-bit MS Windows Executable file, in eid-viewer-win32/target
+	e.g. eid-viewer-win32/target/eid-viewer-4.0.6.exe
+	copy to an MS-Windows system, and double-click.
+
+(We used the launch4j maven plugin, in previous versions, eliminating
+the need for a local launch4j installation, but this plugin is unmaintained,
+while launch4j itself is alive and kicking).
+
+EOF

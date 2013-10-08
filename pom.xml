@@ -17,7 +17,7 @@
         <name>FedICT</name>
         <url>http://www.fedict.belgium.be/</url>
     </organization>
-    <url>http://code.google.com/p/eid-mw/</url>
+    <url>http://code.google.com/p/eid-viewer/</url>
     <developers>
         <developer>
             <id>fcorneli</id>
@@ -30,26 +30,23 @@
             <email>frank.marien@fedict.be</email>
         </developer>
     </developers>
-
-
     <modules>
         <module>eid-viewer-gui</module>
         <module>eid-viewer-lib</module>
+        <module>eid-viewer-osx</module>
     </modules>
     <profiles>
         <profile>
-            <id>package</id>
+            <id>win32-packaging-requires-local-tools</id>
             <activation>
                 <property>
-                    <name>!skip.package</name>
+                    <name>launch4j-base</name>
                 </property>
             </activation>
             <modules>
                 <module>eid-viewer-win32</module>
-                <module>eid-viewer-osx</module>
             </modules>
         </profile>
-
     <profile>
       <id>graph</id>
       <pluginRepositories>
@@ -140,7 +137,7 @@
             </plugin>
 			<plugin>
 			    <groupId>com.google.code.maven-svn-revision-number-plugin</groupId>
-			    <artifactId>svn-revision-number-maven-plugin</artifactId> <!-- artifactId has changed! -->
+			    <artifactId>svn-revision-number-maven-plugin</artifactId>
 			    <version>1.8-SVN7</version>
 			    <executions>
 				    <execution>
@@ -205,11 +202,6 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-deploy-plugin</artifactId>
                     <version>2.5</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.bluestemsoftware.open.maven.plugin</groupId>
-                    <artifactId>launch4j-plugin</artifactId>
-                    <version>1.5.0.0</version>
                 </plugin>
             </plugins>
         </pluginManagement>
