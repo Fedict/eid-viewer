@@ -37,13 +37,13 @@ $ mvn clean package
 produces:
 
 - a shaded, runnable jar file in eid-viewer-gui/target:
-	e.g. eid-viewer-gui/target/eid-viewer-gui-4.0.6.jar
-	run with java -jar eid-viewer-gui/target/eid-viewer-gui-4.0.6.jar
+	e.g. eid-viewer-gui/target/eid-viewer-gui-4.0.7.jar
+	run with java -jar eid-viewer-gui/target/eid-viewer-gui-4.0.7.jar
 	on many platforms, this jar can be ran directly, e.g.
 	double-clicked or used as an executable.
 
 - a zipped OSX Application Bundle in eid-viewer-osx/target
-	e.g. eid-viewer-osx/target/eid-viewer-osx-4.0.6-bundle.zip
+	e.g. eid-viewer-osx/target/eid-viewer-osx-4.0.7-bundle.zip
 	copy to an OSX system and unzipping will awake its bundle nature:
 	It will become a runnable application. Double-click to run.
 
@@ -62,7 +62,7 @@ $ mvn -Dlaunch4j-base=/opt/launch4j clean package
 .. this produces, additionally to the 2 artifacts described above,
 
 - a 32-bit MS Windows Executable file, in eid-viewer-win32/target
-	e.g. eid-viewer-win32/target/eid-viewer-4.0.6.exe
+	e.g. eid-viewer-win32/target/eid-viewer-4.0.7.exe
 	copy to an MS-Windows system, and double-click.
 
 (We used the launch4j maven plugin, in previous versions, eliminating
