@@ -268,14 +268,6 @@
             </snapshots>
         </repository>
         <repository>
-            <id>openqa-snapshots</id>
-            <name>OpenQA Snapshots</name>
-            <url>http://archiva.openqa.org/repository/snapshots</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-        <repository>
             <id>caucho</id>
             <name>Caucho Repository</name>
             <url>http://caucho.com/m2/</url>
