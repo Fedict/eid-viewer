@@ -124,7 +124,9 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View,
     private JPanel printPanel;
     private JLabel statusIcon;
     private JPanel statusPanel;
+    private JPanel versionStatusContainer;
     private JLabel statusText;
+    private JLabel versionText;
     private JTabbedPane tabPanel;
     private PCSCEid eid;
     private PCSCEidController eidController;
@@ -148,6 +150,7 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View,
     private PreferencesAction preferencesAction;
     private ShowHideLogAction showHideLogAction;
     private Desktop desktop;
+    private VersionChecker versionChecker;
 
     public BelgianEidViewer() {
 	initDesktop();
@@ -226,6 +229,10 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View,
 	eidController.addObserver(certificatesPanel);
 	eidController.addObserver(this);
 	eidController.start();
+	
+	versionChecker = new VersionChecker(bundle.getString("curr_version"));
+	versionChecker.addObserver(this);
+	versionChecker.start();
 
 	setVisible(true);
     }
@@ -291,6 +298,11 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View,
 		    statusText.setText(cardStatusTexts.get(eidController
 			    .getState()));
 		}
+	    if(versionChecker.hasNewVersion()) {
+	    	versionText.setText(bundle.getString("new_version_msg") + " " + versionChecker.getLatestVersion());
+	    } else {
+	    	versionText.setText("");
+	    }
 	    }
 	});
     }
@@ -299,7 +311,9 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View,
 	tabPanel = new JTabbedPane();
 	statusPanel = new JPanel();
 	statusIcon = new JLabel();
+	versionStatusContainer = new JPanel();
 	statusText = new JLabel();
+	versionText = new JLabel();
 	printPanel = new JPanel();
 	printButton = new JButton();
 
@@ -347,8 +361,12 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View,
 	statusIcon.setPreferredSize(new Dimension(90, 72));
 	statusPanel.add(statusIcon, BorderLayout.EAST);
 
+	versionStatusContainer.setLayout(new BorderLayout());
 	statusText.setHorizontalAlignment(SwingConstants.RIGHT);
-	statusPanel.add(statusText, BorderLayout.CENTER);
+	versionStatusContainer.add(statusText, BorderLayout.EAST);
+	versionText.setHorizontalAlignment(SwingConstants.LEFT);
+	versionStatusContainer.add(versionText, BorderLayout.WEST);
+	statusPanel.add(versionStatusContainer, BorderLayout.CENTER);
 
 	printPanel.setMinimumSize(new Dimension(72, 72));
 	printPanel.setPreferredSize(new Dimension(72, 72));
