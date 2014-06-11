@@ -304,10 +304,10 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View,
 	    } else {
 	    	versionText.setText("");
 	    }
-		if(defaultFile.isFile()) {
+		if(defaultFile != null && defaultFile.isFile()) {
 			eidController.loadFromFile(defaultFile);
-			defaultFile = null;
 		}
+		defaultFile = null;
 	    }
 	});
     }
