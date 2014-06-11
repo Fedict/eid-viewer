@@ -151,6 +151,7 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View,
     private ShowHideLogAction showHideLogAction;
     private Desktop desktop;
     private VersionChecker versionChecker;
+    private File defaultFile;
 
     public BelgianEidViewer() {
 	initDesktop();
@@ -303,6 +304,10 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View,
 	    } else {
 	    	versionText.setText("");
 	    }
+		if(defaultFile.isFile()) {
+			eidController.loadFromFile(defaultFile);
+			defaultFile = null;
+		}
 	    }
 	});
     }
@@ -1029,7 +1034,11 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View,
 	    logger.log(Level.WARNING, "Can't Set SystemLookAndFeel", e);
 	}
 
-	new BelgianEidViewer().start();
+	BelgianEidViewer viewer = new BelgianEidViewer();
+	if(args.length > 0) {
+		viewer.defaultFile = new File(args[0]);
+	}
+	viewer.start();
     }
 
     public void showLog(boolean show) {
