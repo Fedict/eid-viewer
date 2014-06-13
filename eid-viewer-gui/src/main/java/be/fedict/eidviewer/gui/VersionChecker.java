@@ -58,7 +58,7 @@ public class VersionChecker extends Observable implements Runnable {
 		log.fine("Checking for new viewer version");
 		URL u = null;
 		try {
-			u = new URL("https://files.eid.belgium.be/versions");
+			u = new URL("https://dist.eid.belgium.be/versions");
 		} catch (MalformedURLException e) {
 			// can not happen (bar documentation or implementation errors)
 			return;
