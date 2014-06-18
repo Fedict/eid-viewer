@@ -24,7 +24,7 @@ Requires: pcsc-lite
 Requires: pcsc-ccid
 %else
 Requires: ccid
-%end
+%endif
 
 %description
 The eid-viewer application allows the user to read out any information from
