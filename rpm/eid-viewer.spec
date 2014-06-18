@@ -20,7 +20,11 @@ Obsoletes: eid-mw-viewer
 BuildRequires: desktop-file-utils
 Requires: java >= 1:1.6.0
 Requires: pcsc-lite
-Requires: ccid | pcsc-ccid
+%if 0%{?suse_version}
+Requires: pcsc-ccid
+%else
+Requires: ccid
+%end
 
 %description
 The eid-viewer application allows the user to read out any information from
