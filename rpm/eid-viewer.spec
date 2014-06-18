@@ -18,7 +18,11 @@ Obsoletes: eid-belgium
 Obsoletes: eid-mw-viewer
 
 BuildRequires: desktop-file-utils
+%if 0%{?suse_version}
+Requires: java >= 1.6.0
+%else
 Requires: java >= 1:1.6.0
+%endif
 Requires: pcsc-lite
 %if 0%{?suse_version}
 Requires: pcsc-ccid
