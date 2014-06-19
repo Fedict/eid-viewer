@@ -242,6 +242,7 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View,
 	logger.fine("stopping..");
 	eidController.stop();
 	trustServiceController.stop();
+	versionChecker.stop();
 	this.dispose();
     }
 

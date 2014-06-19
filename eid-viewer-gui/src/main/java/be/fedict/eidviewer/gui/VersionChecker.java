@@ -15,6 +15,9 @@ import be.fedict.eidviewer.gui.ViewerPrefs;
 
 public class VersionChecker extends Observable implements Runnable {
 	private static final Logger log = Logger.getLogger(VersionChecker.class.getName());
+	private boolean running = false;
+	private Thread t;
+	
 	private class Version implements Comparable<Version> {
 		private int[] components;
 		private String presentation;
@@ -88,7 +91,8 @@ public class VersionChecker extends Observable implements Runnable {
 	}
 
 	public void run() {
-		while(true) {
+		running = true;
+		while(running) {
 			doCheckVersions();
 			try {
 				Thread.sleep(60*60*1000); // one hour
@@ -99,8 +103,13 @@ public class VersionChecker extends Observable implements Runnable {
 	}
 
 	public void start() {
-		Thread t = new Thread(this);
+		t = new Thread(this);
 		t.start();
+	}
+	
+	public void stop() {
+		running = false;
+		t.interrupt();
 	}
 	
 	public boolean hasNewVersion() {
