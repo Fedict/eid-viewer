@@ -45,7 +45,7 @@ checks the certificate against the government's Trust Service.
 
 %{__cat} <<EOF >eid-viewer.sh
 #!/bin/bash
-java -jar %{_datadir}/eid-viewer/eid-viewer.jar
+java -jar %{_datadir}/eid-viewer/eid-viewer.jar "$@"
 EOF
 
 %{__cat} <<EOF >eid-viewer.desktop
