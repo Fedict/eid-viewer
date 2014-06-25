@@ -2,13 +2,14 @@
 
 SVNREV=$(cat svn_revision)
 MAINVER=$(./configure --version|grep ^eid-viewer|cut -d' ' -f3 | cut -d "-" -f 1)
+DIST=$(lsb_release -c -s)
 
 if [ "$MAINVER" == "0.0.0" ]; then 
 	echo "TRUNK"
-	dch -b -v ${MAINVER}r${SVNREV} "Snapshot build"
+	yes | dch -b -v ${MAINVER}r${SVNREV}-0${DIST}1 -D ${DIST} "Snapshot build"
 else
 	echo "BRANCH"
-	dch -v ${MAINVER}r${SVNREV} "Release build"
+	yes | dch -v ${MAINVER}r${SVNREV}-0${DIST}1 -D${DIST} "Release build"
 fi
 
 # Build
