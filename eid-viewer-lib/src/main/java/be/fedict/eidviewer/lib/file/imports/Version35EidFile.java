@@ -193,5 +193,6 @@ public class Version35EidFile {
 
 	    }
 	}
+	fis.close();
     }
 }

@@ -339,6 +339,7 @@ public class Version35CSVFile
                 eidData.setSignCertChain(new X509CertificateChainAndTrust(TrustServiceDomains.BELGIAN_EID_NON_REPUDIATION_TRUST_DOMAIN, signChain));
             }
         }
+	inputStreamReader.close();
     }
    
     public void fromIdentityAddressPhotoAndCertificates(Identity identity, Address address, byte[] photo, X509Certificate authCert, X509Certificate signCert, X509Certificate citizenCert, X509Certificate rrnCert, X509Certificate rootCert) throws Exception
