@@ -185,28 +185,41 @@ public class X509Utilities
     
     public static void certificateToDERFile(X509Certificate certificate, File file) throws CertificateEncodingException, IOException
     {
-    	FileOutputStream outputStream=new FileOutputStream(file);
-    	outputStream.write(certificate.getEncoded());
-    	outputStream.close();
+    	FileOutputStream outputStream=null;
+    	try {
+    		outputStream=new FileOutputStream(file);
+    		outputStream.write(certificate.getEncoded());
+    	} finally {
+    		if(outputStream != null)
+    			outputStream.close();
+    	}
     }
     
     public static void certificateToPEMFile(X509Certificate certificate, File file) throws CertificateEncodingException, IOException
     {
-    	FileOutputStream outputStream=new FileOutputStream(file);
-    	PEMWriter pemWriter=new PEMWriter(new OutputStreamWriter(outputStream));
-    			  pemWriter.writeObject(certificate);
-    			  pemWriter.close();
+    	PEMWriter pemWriter=null;
+    	try {
+    		pemWriter=new PEMWriter(new OutputStreamWriter(new FileOutputStream(file)));
+    		pemWriter.writeObject(certificate);
+    	} finally {
+    		if(pemWriter != null)
+    			pemWriter.close();
+    	}
     }
 
 	public static void certificateChainToPEMFile(List<X509Certificate> certificates, File file) throws IOException
 	{
-		FileOutputStream outputStream=new FileOutputStream(file);
-		PEMWriter pemWriter=new PEMWriter(new OutputStreamWriter(outputStream));
-		for(X509Certificate certificate : certificates)
-			pemWriter.writeObject(certificate);
-    	pemWriter.close();
+		PEMWriter pemWriter=null;
+		try {
+			pemWriter=new PEMWriter(new OutputStreamWriter(new FileOutputStream(file)));
+			for(X509Certificate certificate : certificates)
+				pemWriter.writeObject(certificate);
+		} finally {
+			if(pemWriter != null)
+				pemWriter.close();
+		}
 	}
-	
+
 	public static String eidBase64Encode(byte[] data)
 	    {
 	        Base64 encoder=new Base64(60,new byte[]{' '},false);
