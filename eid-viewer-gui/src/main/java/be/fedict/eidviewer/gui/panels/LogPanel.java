@@ -272,13 +272,13 @@ public class LogPanel extends JPanel {
 		if (++repeatCount % 1000 == 0) {
 		    logDocument.insertString(logDocument.getLength(),
 			    "(Last Message Repeated " + repeatCount
-				    + " Times)\n", attributes);
+				    + " Times)%n", attributes);
 		    scrollToBottom();
 		}
 	    } else {
 		logDocument.insertString(logDocument.getLength(), message,
 			attributes);
-		logDocument.insertString(logDocument.getLength(), "\n", null);
+		logDocument.insertString(logDocument.getLength(), "%n", null);
 		scrollToBottom();
 		lastMessage = message;
 		repeatCount = 0;
