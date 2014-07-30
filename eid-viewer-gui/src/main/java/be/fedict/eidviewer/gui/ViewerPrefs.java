@@ -197,13 +197,12 @@ public class ViewerPrefs {
 	    return getDefaultLocale();
 
 	String language = prefs.get(LOCALE_LANGUAGE, DEFAULT_LOCALE_LANGUAGE);
-	String country = prefs.get(LOCALE_COUNTRY, DEFAULT_LOCALE_COUNTRY);
 
-	if (language == null || country == null)
+	if (language == null)
 	    return getDefaultLocale();
 
-	if (isLocaleSupported(language, country))
-	    return new Locale(language, country);
+	if (isLanguageBelgian(language))
+	    return new Locale(language, "BE");
 	else
 	    return Locale.US;
     }
@@ -328,17 +327,15 @@ public class ViewerPrefs {
 	}
     }
 
-    private static boolean isLocaleSupported(String language, String country) {
-	String localeStr = language + "_" + country;
-	return (localeStr.equals("en_US") || localeStr.equals("nl_BE")
-		|| localeStr.equals("fr_BE") || localeStr.equals("de_BE"));
+    private static boolean isLanguageBelgian(String language) {
+	return (language.equals("nl")
+		|| language.equals("fr") || language.equals("de"));
     }
-
+    
     private static Locale getDefaultLocale() {
 	String language = System.getProperty("user.language");
-	String country = System.getProperty("user.country");
-	if (isLocaleSupported(language, country))
-	    return new Locale(language, country);
+	if (isLanguageBelgian(language))
+		return new Locale(language, "BE");
 	else
 	    return Locale.US;
     }
