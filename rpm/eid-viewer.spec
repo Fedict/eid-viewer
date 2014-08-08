@@ -18,6 +18,7 @@ Obsoletes: eid-belgium
 Obsoletes: eid-mw-viewer
 
 BuildRequires: desktop-file-utils
+Requires: eid-mw
 %if 0%{?suse_version}
 Requires: java >= 1.6.0
 %else
