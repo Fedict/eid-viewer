@@ -77,7 +77,7 @@
 							dontWrapJar="false"
 							jarPath="../eid-viewer-gui/target/eid-viewer-gui-${project.version}.jar">
           <jre 				minVersion="1.6.0_00"
-							maxVersion="1.7.0_40" />
+							maxVersion="1.8.0_40" />
           <versionInfo 		fileDescription="Viewer for Belgian eID Cards"
 							copyright="Copyright (C) 2010-2013 FedICT"
 							productName="Belgian eID Viewer"
