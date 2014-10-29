@@ -69,8 +69,8 @@ public class Version35PrefsFile
         {
             prefsFile.createNewFile();
             PrintWriter writer=new PrintWriter(prefsFile, "UTF-8");
-                        writer.printf("[%s]%n",key);  
-                        writer.printf("%s=%s%n",valueName,value);
+                        writer.printf("[%s]\n",key);  
+                        writer.printf("%s=%s\n",valueName,value);
                         writer.flush();
                         writer.close();
             return true;
