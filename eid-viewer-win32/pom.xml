@@ -9,7 +9,7 @@
  <name>eID Viewer MS Windows Executable</name>
  <groupId>be.fedict.eid-viewer</groupId>
  <artifactId>eid-viewer-win32</artifactId>
- <version>4.0.7.1</version>
+ <version>4.0.7</version>
  <packaging>jar</packaging>
  <build>
   <plugins>
@@ -84,10 +84,10 @@
 							companyName="FedICT"
 							originalFilename="eid-viewer-${project.version}.exe"
 							internalName="eID Viewer"
-							fileVersion="${project.version}.0"
-							txtFileVersion="${project.version}.0 (${eid-viewer-win32.revision})"
-							productVersion="${project.version}.0"
-                        	txtProductVersion="${project.version}.0 (${eid-viewer-win32.revision})"/>
+							fileVersion="${project.version}.1"
+							txtFileVersion="${project.version}.1 (${eid-viewer-win32.revision})"
+							productVersion="${project.version}.1"
+                        	txtProductVersion="${project.version}.1 (${eid-viewer-win32.revision})"/>
           <singleInstance 	mutexName="be.fedict.eidviewer.gui.BelgianEidViewer"
 							windowTitle="eID Viewer"/>
          </config>
