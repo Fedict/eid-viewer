@@ -4,7 +4,7 @@
  <parent>
   <groupId>be.fedict</groupId>
   <artifactId>eid-viewer</artifactId>
-  <version>4.0.7.1</version>
+  <version>4.0.7</version>
  </parent>
  <name>eID Viewer MS Windows Executable</name>
  <groupId>be.fedict.eid-viewer</groupId>
