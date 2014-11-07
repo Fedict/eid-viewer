@@ -66,6 +66,7 @@ Terminal=false
 Type=Application
 Icon=eid-viewer
 Categories=Utility;Security;
+EOF
 %else
 %{__cat} <<EOF >eid-viewer.desktop
 [Desktop Entry]
