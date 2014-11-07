@@ -50,6 +50,23 @@ checks the certificate against the government's Trust Service.
 java -jar %{_datadir}/eid-viewer/eid-viewer.jar "$@"
 EOF
 
+%if 0%{?suse_version} >= 1302
+%{__cat} <<EOF >eid-viewer.desktop
+[Desktop Entry]
+Encoding=UTF-8
+Name=eID Viewer
+Comment=Display and administer your eID card
+Name[nl]=eID Kaart Lezer
+Comment[nl]=Weergeven en beheren van uw eID kaart
+Name[fr]=Lecteur de Carte eID
+Comment[fr]=Affichage et gestion de votre carte eID
+GenericName=eid-viewer
+Exec=%{_bindir}/eid-viewer
+Terminal=false
+Type=Application
+Icon=eid-viewer
+Categories=Utility;Security;
+%else
 %{__cat} <<EOF >eid-viewer.desktop
 [Desktop Entry]
 Encoding=UTF-8
@@ -66,6 +83,7 @@ Type=Application
 Icon=eid-viewer
 Categories=Application;Utility;
 EOF
+%endif
 
 %build
 
