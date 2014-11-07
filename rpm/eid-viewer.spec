@@ -9,7 +9,7 @@ License: LGPL
 Group: Applications/Communications
 URL: http://eid.belgium.be/
 
-Source0: http://eidfiles.be/continuous/sources/eid-viewer-4.0.7-%{revision}.src.tar.gz
+Source0: http://dist.eid.belgium.be/continuous/sources/eid-viewer-4.0.7-%{revision}.src.tar.gz
 Source1: eid-viewer.png
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -47,7 +47,7 @@ checks the certificate against the government's Trust Service.
 
 %{__cat} <<EOF >eid-viewer.sh
 #!/bin/bash
-java -jar %{_datadir}/eid-viewer/eid-viewer.jar "$@"
+java -jar %{_datadir}/eid-viewer/eid-viewer.jar '"$@"'
 EOF
 
 %if 0%{?suse_version} >= 1302
@@ -94,10 +94,9 @@ EOF
 %{__install} -Dp -m0755 eid-viewer.sh %{buildroot}%{_bindir}/eid-viewer
 %{__install} -d -m0755 %{buildroot}%{_datadir}/eid-viewer/
 %{__cp} -av *.jar %{buildroot}%{_datadir}/eid-viewer/
-
 %{__install} -Dp -m0644 %{SOURCE1} %{buildroot}%{_datadir}/icons/eid-viewer.png
 %{__install} -d -m0755 %{buildroot}%{_datadir}/applications/
-desktop-file-install --dir %{buildroot}%{_datadir}/applications --vendor fedict eid-viewer.desktop
+desktop-file-install --dir %{buildroot}%{_datadir}/applications --vendor fedict eid-viewer.desktop || true
 
 %clean
 %{__rm} -rf %{buildroot}
