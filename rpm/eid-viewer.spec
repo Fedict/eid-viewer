@@ -130,7 +130,11 @@ fi
 %{_bindir}/eid-viewer
 %{_datadir}/applications/fedict-eid-viewer.desktop
 %{_datadir}/eid-viewer/
+%if 0%{?suse_version} >= 1302
+%{_datadir}/pixmaps/eid-viewer.png
+%else
 %{_datadir}/icons/eid-viewer.png
+%endif
 
 %changelog
 * Tue Mar 25 2014 Frank Marien <frank@apsu.be> - 4.0.7-0.R
