@@ -94,7 +94,11 @@ EOF
 %{__install} -Dp -m0755 eid-viewer.sh %{buildroot}%{_bindir}/eid-viewer
 %{__install} -d -m0755 %{buildroot}%{_datadir}/eid-viewer/
 %{__cp} -av *.jar %{buildroot}%{_datadir}/eid-viewer/
+%if 0%{?suse_version} >= 1302
+%{__install} -Dp -m0644 %{SOURCE1} %{buildroot}%{_datadir}/pixmaps/eid-viewer.png
+%else
 %{__install} -Dp -m0644 %{SOURCE1} %{buildroot}%{_datadir}/icons/eid-viewer.png
+%endif
 %{__install} -d -m0755 %{buildroot}%{_datadir}/applications/
 desktop-file-install --dir %{buildroot}%{_datadir}/applications --vendor fedict eid-viewer.desktop || true
 
