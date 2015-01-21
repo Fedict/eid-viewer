@@ -29,7 +29,7 @@ install-data-local: eid-viewer eid-viewer.desktop eid-viewer.jar
 #######################################################################################################################
 
 svn_revision:
-		svnversion > svn_revision
+	git describe > svn_revision
 
 eid-viewer.desktop: eid-viewer.desktop.sh
 	sh eid-viewer.desktop.sh
