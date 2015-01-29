@@ -13,7 +13,7 @@
 
     <dependencySets>
         <dependencySet>
-            <outputDirectory>eID Viewer.app/Contents/Resources/Java</outputDirectory>
+            <outputDirectory>eID Viewer.app/Contents/Java</outputDirectory>
             <scope>runtime</scope>
             <useTransitiveDependencies>false</useTransitiveDependencies>
             <useProjectArtifact>false</useProjectArtifact>
@@ -28,7 +28,7 @@
             <directory>src/main/resources</directory>
             <outputDirectory>eID Viewer.app/Contents/MacOS</outputDirectory>
             <includes>
-                <include>JavaApplicationStub</include>
+                <include>JavaAppLauncher</include>
             </includes>
         </fileSet>
 

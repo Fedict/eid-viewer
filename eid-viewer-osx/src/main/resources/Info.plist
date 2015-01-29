@@ -13,7 +13,7 @@
     <key>CFBundleAllowMixedLocalizations</key>
     <string>true</string>
     <key>CFBundleExecutable</key>
-    <string>JavaApplicationStub</string>
+    <string>JavaAppLauncher</string>
     <key>CFBundleDevelopmentRegion</key>
     <string>English</string>
     <key>CFBundlePackageType</key>
@@ -29,22 +29,8 @@
         <string>i386</string>
         <string>x86_64</string>
     </array>
-    <key>Java</key>
-    <dict>
-      <key>MainClass</key>
-      <string>be.fedict.eidviewer.gui.BelgianEidViewer</string>
-      <key>JVMVersion</key>
-      <string>1.6+</string>
-	  <key>Properties</key>
-	  <dict>
-		<key>apple.laf.useScreenMenuBar</key>
-		<string>true</string>
-      </dict>
-      <key>ClassPath</key>
-      <array>
-          <string>$JAVAROOT/eid-viewer-gui-${project.version}.jar</string>
-      </array>
-    </dict>
+    <key>JVMMainClassName</key>
+    <string>be.fedict.eidviewer.gui.BelgianEidViewer</string>
   </dict>
 </plist>
 
