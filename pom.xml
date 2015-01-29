@@ -135,36 +135,26 @@
                     <skip>true</skip>
                 </configuration>
             </plugin>
-			 <plugin>
-                        <groupId>com.google.code.maven-svn-revision-number-plugin</groupId>
-                        <artifactId>svn-revision-number-maven-plugin</artifactId>
-                        <version>1.13</version>
+		<plugin>
+                        <groupId>com.lukegb.mojo</groupId>
+                        <artifactId>gitdescribe-maven-plugin</artifactId>
+                        <version>2.1-SNAPSHOT</version>
                             <executions>
                                     <execution>
-                                            <goals>
-                                        <goal>revision</goal>
+                                    <goals>
+                                        <goal>gitdescribe</goal>
                                     </goals>
+				    <id>git-describe</id>
+				    <phase>initialize</phase>
+				    <configuration>
+				      <descriptionProperty>eid-viewer-gui.revision</descriptionProperty>
+				      <outputPrefix></outputPrefix>
+				      <setReactorProjectsProperties>true</setReactorProjectsProperties>
+				      <extraArguments><param>--dirty</param></extraArguments>
+				    </configuration>
                                 </execution>
                             </executions>
-						<dependencies>
-					<dependency>
-						<groupId>org.tmatesoft.svnkit</groupId>
-						<artifactId>svnkit</artifactId>
-						<version>1.8.0-SNAPSHOT</version>
-					</dependency>
-					<dependency>
-						<groupId>org.tmatesoft.sqljet</groupId>
-						<artifactId>sqljet</artifactId>
-						<version>1.1.6</version>
-					</dependency>
-					<dependency>
-						<groupId>de.regnis.q.sequence</groupId>
-						<artifactId>sequence-library</artifactId>
-						<version>1.0.2</version>
-					</dependency>
-				</dependencies>
-                        </plugin>
-
+                </plugin>
         </plugins>
         <pluginManagement>
             <plugins>
