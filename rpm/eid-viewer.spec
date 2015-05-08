@@ -3,7 +3,7 @@
 
 Summary: Belgium electronic identity card viewer
 Name: eid-viewer
-Version: 4.0.7
+Version: 4.1.3
 Release: 0.%{revision}%{?dist}
 License: LGPL
 Group: Applications/Communications
