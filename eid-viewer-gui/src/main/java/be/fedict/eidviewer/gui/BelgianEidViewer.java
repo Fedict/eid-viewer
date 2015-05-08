@@ -73,6 +73,7 @@ import be.fedict.eidviewer.gui.panels.IdentityPanel;
 import be.fedict.eidviewer.gui.panels.LogPanel;
 import be.fedict.eidviewer.gui.panels.PreferencesPanel;
 import be.fedict.eidviewer.gui.printing.IDPrintout;
+import be.fedict.eidviewer.lib.EidTransferHandler;
 import be.fedict.eidviewer.lib.PCSCEid;
 import be.fedict.eidviewer.lib.PCSCEidController;
 import be.fedict.eidviewer.lib.TrustServiceController;
@@ -209,6 +210,7 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View,
 
 	eid = new PCSCEid(this, ViewerPrefs.getLocale());
 	eidController = new PCSCEidController(eid);
+	identityPanel.setTransferHandler(new EidTransferHandler(eidController));
 	trustServiceController = new TrustServiceController(
 		ViewerPrefs.getTrustServiceURL());
 	trustServiceController.start();

@@ -38,11 +38,16 @@ import java.util.Observer;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.swing.DefaultListModel;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
+import javax.swing.TransferHandler;
 
 /**
  *
@@ -72,7 +77,9 @@ public class IdentityPanel extends JPanel implements Observer, DynamicLocale
     private JLabel nationalNumberLabel;
     private JLabel nationality;
     private JLabel nationalityLabel;
-    private JLabel photo;
+    // JLabel doesn't support being a source for drag-and-drop operations, so make it a JList instead.
+    private JList<Icon> photo;
+    private DefaultListModel<Icon> photoModel;
     private JLabel placeOfBirth;
     private JLabel placeOfBirthLabel;
     private JLabel postalCode;
@@ -336,14 +343,26 @@ public class IdentityPanel extends JPanel implements Observer, DynamicLocale
 
             public void run()
             {
+            	Icon i;
                 if (image != null)
                 {
-                    photo.setIcon(new ImageIcon(image));
+                	i = new ImageIcon(image);
                 }
                 else
                 {
-                    photo.setIcon(loading ? largeBusyIcon : null);
+                	i = loading ? largeBusyIcon : null;
                 }
+            	try {
+            		photoModel.set(0, i);
+            	} catch (ArrayIndexOutOfBoundsException ex) {
+            		// there is no photo currently, so add rather than replace
+            		photoModel.add(0, i);
+            	} catch (NullPointerException ex) {
+            		// we probably don't have a photo currently
+            		if(photoModel.size() > 0) {
+            			photoModel.remove(0);
+            		}
+            	}
             }
         });
     }
@@ -352,7 +371,8 @@ public class IdentityPanel extends JPanel implements Observer, DynamicLocale
 	{
         java.awt.GridBagConstraints gridBagConstraints;
 
-        photo = new JLabel();
+        photoModel = new DefaultListModel<Icon>();
+        photo = new JList<Icon>(photoModel);
         type = new JLabel();
         givenNamesLabel = new JLabel();
         placeOfBirthLabel = new JLabel();
@@ -390,7 +410,6 @@ public class IdentityPanel extends JPanel implements Observer, DynamicLocale
         setLayout(new java.awt.GridBagLayout());
 
         photo.setBackground(new java.awt.Color(255, 255, 255));
-        photo.setHorizontalAlignment(SwingConstants.CENTER);
         photo.setMaximumSize(new java.awt.Dimension(140, 200));
         photo.setMinimumSize(new java.awt.Dimension(140, 200));
         photo.setOpaque(true);
@@ -662,6 +681,11 @@ public class IdentityPanel extends JPanel implements Observer, DynamicLocale
         add(identityTrustedIcon, gridBagConstraints);
     }
 
+    @Override
+    public void setTransferHandler(TransferHandler hndlr) {
+    	photo.setTransferHandler(hndlr);
+    	photo.setDragEnabled(hndlr != null);
+    }
 
     private void initI18N()
 	{

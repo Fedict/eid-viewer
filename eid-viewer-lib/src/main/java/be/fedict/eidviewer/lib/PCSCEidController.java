@@ -26,6 +26,7 @@ import java.awt.Image;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.security.cert.X509Certificate;
 import java.util.List;
 import java.util.Observable;
@@ -237,6 +238,10 @@ public class PCSCEidController extends Observable implements Runnable, Observer,
     public void saveToCSVFile(File selectedFile)
     {
         EidFiles.saveToCSVFile(selectedFile, this);
+    }
+    
+    public void saveToXMLFile(OutputStream output) {
+    	EidFiles.saveToXMLFile(output,  this);
     }
 
 

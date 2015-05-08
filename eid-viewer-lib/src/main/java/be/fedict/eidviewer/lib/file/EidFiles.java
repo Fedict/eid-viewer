@@ -30,6 +30,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.List;
@@ -130,7 +131,7 @@ public class EidFiles
         }
     }
 
-    public static void saveToXMLFile(File file, EidData eidData)
+    public static void saveToXMLFile(OutputStream file, EidData eidData)
     {
         try
         {
@@ -141,12 +142,19 @@ public class EidFiles
                                                                                                                                                                         eidData.getCACert(),
                                                                                                                                                                         eidData.getRRNCert(),
                                                                                                                                                                         eidData.getRootCert());
-                         Version4XMLFile.toXML(version4file, new FileOutputStream(file));
+                         Version4XMLFile.toXML(version4file, file);
         }
         catch (Exception ex)
         {
             logger.log(Level.SEVERE, "Failed To Save To Version 4.x.x XML-Based eID File", ex);
         }
+    }
+    public static void saveToXMLFile(File file, EidData eidData) {
+    	try {
+    		saveToXMLFile(new FileOutputStream(file), eidData);
+    	} catch (Exception ex) {
+    		logger.log(Level.SEVERE, "Failed to save to Version 4.x.x XML-Base eID File", ex);
+    	}
     }
    
     public static void saveToCSVFile(File file, EidData eidData)
