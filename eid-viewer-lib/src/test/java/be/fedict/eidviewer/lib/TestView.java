@@ -18,7 +18,6 @@
 
 package be.fedict.eidviewer.lib;
 
-import be.fedict.eid.applet.DiagnosticTests;
 import be.fedict.eid.applet.Status;
 import be.fedict.eid.applet.View;
 import java.awt.Component;
@@ -49,11 +48,6 @@ public class TestView implements View
         System.err.println("setStatusMessage [" + status.name() + "]");
     }
 
-    public void addTestResult(DiagnosticTests diagnosticTest, boolean success, String description)
-    {
-        System.err.println("addTestResult [" + description + "]");
-    }
-
     public void setProgressIndeterminate()
     {
         System.err.println("setProgressIndeterminate");
@@ -68,4 +62,15 @@ public class TestView implements View
     {
         System.err.println("increaseProgress");
     }
+
+	@Override
+	public void confirmAuthenticationSignature(String message) {
+		System.err.println("confirmAuthenticationSignature[" + message + "]");
+	}
+
+	@Override
+	public int confirmSigning(String description, String digestAlgo) {
+		System.err.println("confirmSigning[" + description + ", " + digestAlgo + "]");
+		return 0;
+	}
 }

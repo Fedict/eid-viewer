@@ -36,7 +36,6 @@ import java.util.Observer;
 import java.util.Timer;
 import java.util.TimerTask;
 import javax.imageio.ImageIO;
-import javax.smartcardio.CardException;
 
 /**
  *
@@ -859,7 +858,7 @@ public class PCSCEidController extends Observable implements Runnable, Observer,
 	    			setYielding(false);
 	    			logger.fine("exclusive access obtained");
 	    		}
-	    		catch(CardException cax)
+			catch(Exception cax)
 	    		{
 	    			setYielding(true);
 	    			logger.fine("exclusive access deferred");

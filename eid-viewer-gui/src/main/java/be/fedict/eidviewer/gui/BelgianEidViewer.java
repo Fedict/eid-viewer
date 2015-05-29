@@ -59,7 +59,6 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 
-import be.fedict.eid.applet.DiagnosticTests;
 import be.fedict.eid.applet.Messages.MESSAGE_ID;
 import be.fedict.eid.applet.Status;
 import be.fedict.eid.applet.View;
@@ -1009,10 +1008,6 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View,
      * ------------------------Unused from Applet Core
      * ----------------------------------------------------------------
      */
-    public void addTestResult(DiagnosticTests diagnosticTest, boolean success,
-	    String description) {
-    }
-
     public void resetProgress(int max) {
     }
 
@@ -1059,4 +1054,27 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View,
 	    }
 	}
     }
+
+	@Override
+	public void confirmAuthenticationSignature(String message) {
+		int response = JOptionPane.showConfirmDialog(this.getParentComponent(),
+				message, "eID Authentication Signature",
+				JOptionPane.YES_NO_OPTION);
+		if (response != JOptionPane.YES_OPTION) {
+			throw new SecurityException("user cancelled");
+		}
+	}
+
+	@Override
+	public int confirmSigning(String description, String digestAlgo) {
+		// TODO Auto-generated method stub
+		String signatureCreationLabel = eid.getMessageString(MESSAGE_ID.SIGNATURE_CREATION);
+		String signQuestionLabel = eid.getMessageString(MESSAGE_ID.SIGN_QUESTION);
+		String signatureAlgoLabel = eid.getMessageString(MESSAGE_ID.SIGNATURE_ALGO);
+		int response = JOptionPane.showConfirmDialog(this.getParentComponent(),
+				signQuestionLabel + " \"" + description + "\"?\n"
+						+ signatureAlgoLabel + ": " + digestAlgo + " with RSA",
+				signatureCreationLabel, JOptionPane.YES_NO_OPTION);
+		return response;
+	}
 }

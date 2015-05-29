@@ -41,7 +41,6 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
-import javax.smartcardio.CardException;
 import javax.swing.JOptionPane;
 
 public class PCSCEid
@@ -203,7 +202,7 @@ public class PCSCEid
     	{
     		pcscEidImpl.yieldExclusive(true);
     	}
-    	catch(CardException cex)
+	catch(Exception cex)
     	{
     		//
     	}
