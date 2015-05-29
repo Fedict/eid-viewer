@@ -77,9 +77,11 @@ public class IdentityPanel extends JPanel implements Observer, DynamicLocale
     private JLabel nationalNumberLabel;
     private JLabel nationality;
     private JLabel nationalityLabel;
-    // JLabel doesn't support being a source for drag-and-drop operations, so make it a JList instead.
-    private JList<Icon> photo;
-    private DefaultListModel<Icon> photoModel;
+    // using JList<Icon> requires JDK7+
+    @SuppressWarnings("rawtypes")
+	private JList photo;
+    @SuppressWarnings("rawtypes")
+	private DefaultListModel photoModel;
     private JLabel placeOfBirth;
     private JLabel placeOfBirthLabel;
     private JLabel postalCode;
@@ -367,12 +369,13 @@ public class IdentityPanel extends JPanel implements Observer, DynamicLocale
         });
     }
 
-    private void initComponents()
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	private void initComponents()
 	{
         java.awt.GridBagConstraints gridBagConstraints;
 
-        photoModel = new DefaultListModel<Icon>();
-        photo = new JList<Icon>(photoModel);
+        photoModel = new DefaultListModel();
+        photo = new JList(photoModel);
         type = new JLabel();
         givenNamesLabel = new JLabel();
         placeOfBirthLabel = new JLabel();
