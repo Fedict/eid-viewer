@@ -294,8 +294,14 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View,
 
 		switch (eidController.getState()) {
 		case EID_PRESENT:
-		    statusText.setText(activityTexts.get(eidController
-			    .getActivity()));
+		    PCSCEidController.ACTIVITY act = eidController.getActivity();
+		    statusText.setText(activityTexts.get(act));
+		    if(act == PCSCEidController.ACTIVITY.IDLE) {
+		        resetProgress(100);
+		    } else {
+		        progressBar.setMaximum(PCSCEidController.ACTIVITY.getActivityCount());
+		        setProgress(act.ordinal());
+		    }
 		    break;
 
 		case FILE_LOADED:
