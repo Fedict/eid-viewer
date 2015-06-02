@@ -276,10 +276,10 @@ public class PCSCEidController extends Observable implements Runnable, Observer,
         READING_PHOTO       ("reading_photo"),
         READING_RRN_CHAIN   ("reading_rrn_chain"),
         READING_CCA_CHAIN   ("reading_cca_chain"),
-        READING_AUTH_CHAIN  ("reading_auth_chain"),
-        READING_SIGN_CHAIN  ("reading_sign_chain"),
         VALIDATING_IDENTITY ("validating_identity"),
-        VALIDATING_ADDRESS  ("validating_address");
+        VALIDATING_ADDRESS  ("validating_address"),
+        READING_AUTH_CHAIN  ("reading_auth_chain"),
+        READING_SIGN_CHAIN  ("reading_sign_chain");
         
         private final String state;
 
