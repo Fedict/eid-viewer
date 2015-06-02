@@ -293,6 +293,10 @@ public class PCSCEidController extends Observable implements Runnable, Observer,
         {
             return this.state;
         }
+
+        public static int getActivityCount() {
+	    return ACTIVITY.values().length - 1;
+        }
     }
 
     public static enum ACTION
