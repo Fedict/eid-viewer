@@ -1010,20 +1010,27 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View,
 	return this;
     }
 
-    /*
-     * ------------------------Unused from Applet Core
-     * ----------------------------------------------------------------
-     */
     public void resetProgress(int max) {
+        progressBar.setVisible(false);
+        progressBar.setMaximum(max);
+        progressBar.setValue(0);
     }
 
     public void increaseProgress() {
+        progressBar.setIndeterminate(false);
+        progressBar.setVisible(true);
+        progressBar.setValue(progressBar.getValue() + 1);
     }
 
     public void setProgress(final int progress) {
+        progressBar.setIndeterminate(false);
+        progressBar.setVisible(true);
+        progressBar.setValue(progress);
     }
 
     public void setProgressIndeterminate() {
+        progressBar.setVisible(true);
+        progressBar.setIndeterminate(true);
     }
 
     /*
