@@ -53,6 +53,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
@@ -128,6 +129,7 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View,
     private JLabel statusText;
     private JLabel versionText;
     private JTabbedPane tabPanel;
+    private JProgressBar progressBar;
     private PCSCEid eid;
     private PCSCEidController eidController;
     private TrustServiceController trustServiceController;
@@ -368,13 +370,17 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View,
 	statusIcon.setPreferredSize(new Dimension(90, 72));
 	statusPanel.add(statusIcon, BorderLayout.EAST);
 
+	progressBar = new JProgressBar();
+	
 	versionStatusContainer.setLayout(new BorderLayout());
 	statusText.setHorizontalAlignment(SwingConstants.RIGHT);
 	versionStatusContainer.add(statusText, BorderLayout.EAST);
 	versionText.setHorizontalAlignment(SwingConstants.LEFT);
 	versionStatusContainer.add(versionText, BorderLayout.WEST);
 	statusPanel.add(versionStatusContainer, BorderLayout.CENTER);
-
+	statusPanel.add(progressBar, BorderLayout.SOUTH);
+	progressBar.setVisible(false);
+	
 	printPanel.setMinimumSize(new Dimension(72, 72));
 	printPanel.setPreferredSize(new Dimension(72, 72));
 	printPanel.setLayout(new GridBagLayout());
