@@ -146,9 +146,9 @@ public class IDPrintout implements Printable,ImageObserver
 
         // calculate some sizes that need to take into account the scaling of the graphics, to avoid dragging
         // those non-intuitive "/2" further along in the code.
-        float headerHeight=coatOfArms.getHeight(this)/2;
-        float coatOfArmsWidth=coatOfArms.getWidth(this)/2;
-        float photoWidth=photo.getWidth(this)/2;
+        float headerHeight=(float)(coatOfArms.getHeight(this))/2;
+        float coatOfArmsWidth=(float)(coatOfArms.getWidth(this))/2;
+        float photoWidth=(float)(photo.getWidth(this))/2;
         float headerSpaceBetweenImages = imageableWidth - (coatOfArmsWidth + photoWidth + (SPACE_BETWEEN_ITEMS * 2));
        
         logger.finest(new ToStringBuilder(this,
