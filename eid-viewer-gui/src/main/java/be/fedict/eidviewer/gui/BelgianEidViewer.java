@@ -1086,7 +1086,6 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View,
 
 	@Override
 	public int confirmSigning(String description, String digestAlgo) {
-		// TODO Auto-generated method stub
 		String signatureCreationLabel = eid.getMessageString(MESSAGE_ID.SIGNATURE_CREATION);
 		String signQuestionLabel = eid.getMessageString(MESSAGE_ID.SIGN_QUESTION);
 		String signatureAlgoLabel = eid.getMessageString(MESSAGE_ID.SIGNATURE_ALGO);
