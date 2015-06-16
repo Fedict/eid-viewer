@@ -3,6 +3,7 @@ package be.fedict.eidviewer.lib;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.io.ByteArrayOutputStream;
+import java.util.logging.Logger;
 
 import javax.swing.JComponent;
 import javax.swing.TransferHandler;
@@ -39,7 +40,7 @@ public class EidTransferHandler extends TransferHandler {
 	}
 	@Override
 	public int getSourceActions(JComponent c) {
-		if(eid.equals(null)) {
+		if(ctrl.equals(null)) {
 			return javax.swing.TransferHandler.NONE;
 		}
 		logger.fine("enabling drag-and-drop");
