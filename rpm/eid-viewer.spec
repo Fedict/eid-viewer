@@ -9,7 +9,7 @@ License: LGPL
 Group: Applications/Communications
 URL: http://eid.belgium.be/
 
-Source0: http://dist.eid.belgium.be/continuous/sources/eid-viewer-4.1.3-%{revision}.src.tar.gz
+Source0: http://dist.eid.belgium.be/continuous/sources/eid-viewer-4.1.4-%{revision}.src.tar.gz
 Source1: eid-viewer.png
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -137,6 +137,9 @@ fi
 %endif
 
 %changelog
+* Fri Jul 17 2015 Wouter Verhelst <wouter.verhelst@fedict.be> - 4.1.4-0.R
+- Upgrade to 4.1.4
+
 * Fri May 8 2015 Wouter Verhelst <wouter.verhelst@fedict.be> - 4.1.3-0.R
 - Upgrade to 4.1.3
 
