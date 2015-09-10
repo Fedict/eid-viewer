@@ -23,13 +23,15 @@ public class LibJ2PCSCGNULinuxFix {
     private static final String PCSC_LIBRARY_NAME = "pcsclite";
     private static final String UBUNTU_MULTILIB_32_PATH = "/lib/i386-linux-gnu";
     private static final String UBUNTU_MULTILIB_64_PATH = "/lib/x86_64-linux-gnu";
+    private static final String UBUNTU_MULTILIB_ARMHF_PATH = "/lib/arm-linux-gnueabihf";
     private static final String JRE_BITNESS_PROPERTY = "os.arch";
     private static final String OS_NAME_PROPERTY = "os.name";
     private static final String JRE_BITNESS_32_VALUE = "i386";
     private static final String JRE_BITNESS_64_VALUE = "amd64";
+    private static final String JRE_BITNESS_ARMHF_VALUE = "arm";
 
     private static enum UbuntuBitness {
-	NA, PURE32, PURE64, MULTILIB
+	NA, PURE32, PURE64, ARM, MULTILIB
     };
 
     /**
@@ -72,11 +74,13 @@ public class LibJ2PCSCGNULinuxFix {
      * Determine Ubuntu-type multilib configuration
      */
     private static UbuntuBitness getUbuntuBitness() {
-	boolean has32 = false, has64 = false;
+	boolean has32 = false, has64 = false, hasarm = false;
 	File multilibdir = new File(UBUNTU_MULTILIB_32_PATH);
 	has32 = (multilibdir != null && multilibdir.isDirectory());
 	multilibdir = new File(UBUNTU_MULTILIB_64_PATH);
 	has64 = (multilibdir != null && multilibdir.isDirectory());
+	multilibdir = new File(UBUNTU_MULTILIB_ARMHF_PATH);
+	hasarm = (multilibdir != null && multilibdir.isDirectory());
 
 	if (has32 && (!has64)) {
 	    return UbuntuBitness.PURE32;
@@ -84,6 +88,8 @@ public class LibJ2PCSCGNULinuxFix {
 	    return UbuntuBitness.PURE64;
 	} else if (has32 && has64) {
 	    return UbuntuBitness.MULTILIB;
+	} else if (hasarm) {
+	    return UbuntuBitness.ARM;
 	} else {
 	    return UbuntuBitness.NA;
 	}
@@ -149,6 +155,10 @@ public class LibJ2PCSCGNULinuxFix {
 	    }
 	}
 	    break;
+	case ARM:
+	    logger.fine("ARM Debian/Ubuntu detected, using multilib path: "
+		    + UBUNTU_MULTILIB_ARMHF_PATH);
+	    return extendLibraryPath(libraryPath, UBUNTU_MULTILIB_ARMHF_PATH);
 
 	default: {
 	    logger.fine("Did not find Ubuntu-style multilib.");
