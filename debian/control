@@ -11,7 +11,7 @@ Section: misc
 Provides: beidgui
 Replaces: beidgui
 Conflicts: beidgui
-Architecture: any
+Architecture: all
 Depends: ${shlibs:Depends}, ${misc:Depends}, default-jre | java2-runtime, eid-mw, pcscd
 Description: Graphical interface to Belgian Electronic Identity Card
  This package contains a graphical application to read data from the

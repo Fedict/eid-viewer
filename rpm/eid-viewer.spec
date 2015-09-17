@@ -12,6 +12,7 @@ URL: http://eid.belgium.be/
 Source0: http://dist.eid.belgium.be/continuous/sources/eid-viewer-4.1.5-%{revision}.src.tar.gz
 Source1: eid-viewer.png
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildArch: noarch
 
 Obsoletes: beid-mw
 Obsoletes: eid-belgium
