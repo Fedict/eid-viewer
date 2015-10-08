@@ -1,3 +1,3 @@
 [submodule "eid-viewer-osx/stub"]
-	path = eid-viewer-osx/stub
+	path = eid-viewer-osx/src/main/resources/stub
 	url = https://github.com/Fedict/universalJavaApplicationStub

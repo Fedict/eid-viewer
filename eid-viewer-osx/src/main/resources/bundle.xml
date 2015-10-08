@@ -25,10 +25,10 @@
         <!-- Copy Application Stub -->
 
         <fileSet>
-            <directory>src/main/resources</directory>
+            <directory>src/main/resources/stub/src</directory>
             <outputDirectory>eID Viewer.app/Contents/MacOS</outputDirectory>
             <includes>
-                <include>JavaAppLauncher</include>
+                <include>universalJavaApplicationStub</include>
             </includes>
         </fileSet>
 
