@@ -30,6 +30,7 @@
             <includes>
                 <include>universalJavaApplicationStub</include>
             </includes>
+            <fileMode>0755</fileMode>
         </fileSet>
 
         <!-- Copy Bundle Descriptor -->
@@ -40,6 +41,7 @@
             <includes>
                 <include>Info.plist</include>
             </includes>
+	    <fileMode>0644</fileMode>
         </fileSet>
 
         <!-- Copy Icons -->
@@ -50,6 +52,7 @@
             <includes>
                 <include>eid-viewer.icns</include>
             </includes>
+	    <fileMode>0644</fileMode>
         </fileSet>
 
         <!-- Copy License Files -->
@@ -60,6 +63,7 @@
             <includes>
                 <include>COPYING*</include>
             </includes>
+	    <fileMode>0644</fileMode>
         </fileSet>
 
     </fileSets>
