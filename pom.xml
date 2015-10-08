@@ -4,7 +4,7 @@
     <name>eID Viewer</name>
     <groupId>be.fedict</groupId>
     <artifactId>eid-viewer</artifactId>
-    <version>4.1.5</version>
+    <version>4.1.7</version>
     <packaging>pom</packaging>
     <inceptionYear>2010</inceptionYear>
     <licenses>
