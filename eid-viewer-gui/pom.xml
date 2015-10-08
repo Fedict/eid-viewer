@@ -4,12 +4,12 @@
     <parent>
         <artifactId>eid-viewer</artifactId>
         <groupId>be.fedict</groupId>
-        <version>4.1.7</version>
+        <version>4.1.8</version>
     </parent>
     <groupId>be.fedict.eid-viewer</groupId>
     <artifactId>eid-viewer-gui</artifactId>
     <packaging>jar</packaging>
-    <version>4.1.7</version>
+    <version>4.1.8</version>
     <name>eID Viewer GUI</name>
     <build>
 
