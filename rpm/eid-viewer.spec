@@ -138,6 +138,9 @@ fi
 %endif
 
 %changelog
+* Thu Oct 21 2015 Wouter Verhelst <wouter.verhelst@fedict.be> - 4.1.9-0.R
+- Upgrade to 4.1.9
+
 * Thu Oct 08 2015 Wouter Verhelst <wouter.verhelst@fedict.be> - 4.1.8-0.R
 - Upgrade to 4.1.8
 
