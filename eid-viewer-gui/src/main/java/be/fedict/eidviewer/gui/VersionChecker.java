@@ -75,7 +75,7 @@ public class VersionChecker extends Observable implements Runnable {
 			p.load(i);
 		} catch (IOException e) {
 			// try again later
-			log.warning("Could not reach eID software repository website");
+			log.warning("Could not reach eID software repository website: " + e.getMessage());
 			return;
 		}
 		Version v = new Version(p.getProperty("eid-viewer"));
