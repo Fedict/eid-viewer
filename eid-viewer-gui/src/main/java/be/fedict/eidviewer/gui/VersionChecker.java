@@ -62,7 +62,7 @@ public class VersionChecker extends Observable implements Runnable {
 		final String osName = System.getProperty("os.name");
 		if(osName.startsWith("Linux")) {
 			verProp = "eid-viewer-linux";
-		} else if(osName.startWith("Mac")) {
+		} else if(osName.startsWith("Mac")) {
 			verProp = "eid-viewer-mac";
 		} else if(osName.startsWith("Windows")) {
 			verProp = "eid-viewer-windows";
