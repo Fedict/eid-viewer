@@ -58,6 +58,15 @@ public class VersionChecker extends Observable implements Runnable {
 	}
 
 	private void doCheckVersions() {
+		String verProp = "eid-viewer";
+		final String osName = System.getProperty("os.name");
+		if(osName.startsWith("Linux")) {
+			verProp = "eid-viewer-linux";
+		} else if(osName.startWith("Mac")) {
+			verProp = "eid-viewer-mac";
+		} else if(osName.startsWith("Windows")) {
+			verProp = "eid-viewer-windows";
+		}
 		log.fine("Checking for new viewer version");
 		URL u = null;
 		try {
@@ -78,7 +87,7 @@ public class VersionChecker extends Observable implements Runnable {
 			log.warning("Could not reach eID software repository website: " + e.getMessage());
 			return;
 		}
-		Version v = new Version(p.getProperty("eid-viewer"));
+		Version v = new Version(p.getProperty(verProp));
 		if(latestVersion.compareTo(v) != 0) {
 			if(myVersion.compareTo(v) != 0) {
 				log.info("new version found: " + v.toString());
