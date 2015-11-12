@@ -832,21 +832,28 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View,
 	    }
 
 	    if (fileChooser.showSaveDialog(BelgianEidViewer.this) == JFileChooser.APPROVE_OPTION) {
+		File targetFile;
 		try {
-		    File targetFile = fileChooser.getSelectedFile();
+		    targetFile = fileChooser.getSelectedFile();
 		    if (!targetFile.getCanonicalPath().toLowerCase()
 			    .endsWith(".eid")) {
 			logger.fine("File would not have correct extension, appending \".eid\"");
 			targetFile = new File(targetFile.getCanonicalPath()
 				+ ".eid");
 		    }
-
-		    eidController.saveToXMLFile(targetFile);
 		} catch (IOException ex) {
 		    logger.log(
 			    Level.SEVERE,
 			    "Problem getting Canonical Name For Filename Extension Correction",
 			    ex);
+		    return;
+		}
+		try {
+		    eidController.saveToXMLFile(targetFile);
+		} catch (IOException ex) {
+			logger.log(Level.SEVERE, "Could not save file", ex);
+			JOptionPane.showMessageDialog(fileChooser, ex.getLocalizedMessage(), "error", JOptionPane.ERROR_MESSAGE);
+			return;
 		}
 
 		ViewerPrefs.setLastSaveLocation(fileChooser.getSelectedFile()
@@ -884,21 +891,28 @@ public class BelgianEidViewer extends javax.swing.JFrame implements View,
 	    }
 
 	    if (fileChooser.showSaveDialog(BelgianEidViewer.this) == JFileChooser.APPROVE_OPTION) {
+		File targetFile;
 		try {
-		    File targetFile = fileChooser.getSelectedFile();
+		    targetFile = fileChooser.getSelectedFile();
 		    if (!targetFile.getCanonicalPath().toLowerCase()
 			    .endsWith(".csv")) {
 			logger.fine("File would not have correct extension, appending \".csv\"");
 			targetFile = new File(targetFile.getCanonicalPath()
 				+ ".csv");
 		    }
-
-		    eidController.saveToCSVFile(targetFile);
 		} catch (IOException ex) {
 		    logger.log(
 			    Level.SEVERE,
 			    "Problem getting Canonical Name For Filename Extension Correction",
 			    ex);
+		    return;
+		}
+		try {
+		    eidController.saveToCSVFile(targetFile);
+		} catch (IOException ex) {
+			logger.log(Level.SEVERE, "Could not save file", ex);
+			JOptionPane.showMessageDialog(fileChooser, ex.getLocalizedMessage(), "error", JOptionPane.ERROR_MESSAGE);
+			return;
 		}
 
 		ViewerPrefs.setLastSaveLocation(fileChooser.getSelectedFile()

@@ -131,7 +131,7 @@ public class EidFiles
         }
     }
 
-    public static void saveToXMLFile(OutputStream file, EidData eidData)
+    public static void saveToXMLFile(OutputStream file, EidData eidData) throws IOException
     {
         try
         {
@@ -144,20 +144,26 @@ public class EidFiles
                                                                                                                                                                         eidData.getRootCert());
                          Version4XMLFile.toXML(version4file, file);
         }
+	catch (IOException ex)
+	{
+		throw ex;
+	}
         catch (Exception ex)
         {
             logger.log(Level.SEVERE, "Failed To Save To Version 4.x.x XML-Based eID File", ex);
         }
     }
-    public static void saveToXMLFile(File file, EidData eidData) {
+    public static void saveToXMLFile(File file, EidData eidData) throws IOException {
     	try {
     		saveToXMLFile(new FileOutputStream(file), eidData);
+	} catch (IOException ex) {
+		throw ex;
     	} catch (Exception ex) {
     		logger.log(Level.SEVERE, "Failed to save to Version 4.x.x XML-Base eID File", ex);
     	}
     }
    
-    public static void saveToCSVFile(File file, EidData eidData)
+    public static void saveToCSVFile(File file, EidData eidData) throws IOException
     {
         try
         {
@@ -171,6 +177,10 @@ public class EidFiles
            
             Version35CSVFile.toCSV(version3file, new FileOutputStream(file));
         }
+	catch (IOException ex)
+	{
+		throw ex;
+	}
         catch (Exception ex)
         {
             logger.log(Level.SEVERE, "Failed To Save To Version 3.5.x CSV-Based eID File", ex);

@@ -229,17 +229,17 @@ public class PCSCEidController extends Observable implements Runnable, Observer,
         }
     }
 
-    public void saveToXMLFile(File selectedFile)
+    public void saveToXMLFile(File selectedFile) throws IOException
     {
         EidFiles.saveToXMLFile(selectedFile, this);
     }
     
-    public void saveToCSVFile(File selectedFile)
+    public void saveToCSVFile(File selectedFile) throws IOException
     {
         EidFiles.saveToCSVFile(selectedFile, this);
     }
     
-    public void saveToXMLFile(OutputStream output) {
+    public void saveToXMLFile(OutputStream output) throws IOException {
     	EidFiles.saveToXMLFile(output,  this);
     }
 
