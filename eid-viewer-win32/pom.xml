@@ -4,12 +4,12 @@
  <parent>
   <groupId>be.fedict</groupId>
   <artifactId>eid-viewer</artifactId>
-  <version>4.1.9</version>
+  <version>4.1.10</version>
  </parent>
  <name>eID Viewer MS Windows Executable</name>
  <groupId>be.fedict.eid-viewer</groupId>
  <artifactId>eid-viewer-win32</artifactId>
- <version>4.1.9</version>
+ <version>4.1.10</version>
  <packaging>jar</packaging>
  <build>
   <plugins>
