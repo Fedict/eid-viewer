@@ -209,13 +209,6 @@
                 <enabled>false</enabled>
             </snapshots>
         </pluginRepository>
-        <pluginRepository>
-            <id>codehaus</id>
-            <url>http://repository.codehaus.org/</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </pluginRepository>
  <pluginRepository>
         <id>maven-svn-revision-number-plugin.googlecode.com</id>
         <url>http://maven-svn-revision-number-plugin.googlecode.com/svn/m2/releases</url>
@@ -267,10 +260,6 @@
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
-        </repository>
-        <repository>
-            <id>Codehaus SVN Repository</id>
-            <url>http://svn.codehaus.org/fest/m2/repo/</url>
         </repository>
         <repository>
             <id>jboss-snapshot</id>
