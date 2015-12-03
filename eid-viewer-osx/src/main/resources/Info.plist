@@ -31,6 +31,8 @@
     </array>
     <key>JVMMainClassName</key>
     <string>be.fedict.eidviewer.gui.BelgianEidViewer</string>
+    <key>JVMVersion</key>
+    <string>1.8+</string>
   </dict>
 </plist>
 
