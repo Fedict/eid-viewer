@@ -4,12 +4,12 @@
  <parent>
   <groupId>be.fedict</groupId>
   <artifactId>eid-viewer</artifactId>
-  <version>4.1.11</version>
+  <version>4.1.13</version>
  </parent>
  <name>eID Viewer MS Windows Executable</name>
  <groupId>be.fedict.eid-viewer</groupId>
  <artifactId>eid-viewer-win32</artifactId>
- <version>4.1.11</version>
+ <version>4.1.13</version>
  <packaging>jar</packaging>
  <build>
   <plugins>
@@ -77,9 +77,9 @@
 							dontWrapJar="false"
 							jarPath="../eid-viewer-gui/target/eid-viewer-gui-${project.version}.jar">
           <jre 				minVersion="1.6.0_00"
-							maxVersion="1.8.0_40" />
+							maxVersion="1.8.9_99" />
           <versionInfo 		fileDescription="Viewer for Belgian eID Cards"
-							copyright="Copyright (C) 2010-2013 FedICT"
+							copyright="Copyright (C) 2010-2016 FedICT"
 							productName="Belgian eID Viewer"
 							companyName="FedICT"
 							originalFilename="eid-viewer-${project.version}.exe"
