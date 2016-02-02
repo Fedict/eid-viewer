@@ -4,11 +4,11 @@
     <parent>
         <artifactId>eid-viewer</artifactId>
         <groupId>be.fedict</groupId>
-        <version>4.1.11</version>
+        <version>4.1.13</version>
     </parent>
     <groupId>be.fedict.eid-viewer</groupId>
     <artifactId>eid-viewer-lib</artifactId>
-    <version>4.1.11</version>
+    <version>4.1.13</version>
     <name>eID Viewer Library</name>
     <dependencies>
         <dependency>
