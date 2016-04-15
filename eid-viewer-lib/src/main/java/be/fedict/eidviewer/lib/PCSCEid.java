@@ -214,7 +214,11 @@ public class PCSCEid
         try
         {
             logger.finest("isValidSignature");
-            return X509Utilities.isValidSignature(getRRNCert(), getFile(PcscEid.IDENTITY_FILE_ID), getIdentitySignature());
+            boolean rv = X509Utilities.isValidSignature(getRRNCert(), getFile(PcscEid.IDENTITY_FILE_ID), getIdentitySignature());
+            if(!rv) {
+                logger.log(Level.SEVERE, "Identity Signature fails verification!");
+            }
+            return rv;
         }
         catch (Exception ex)
         {
@@ -229,7 +233,11 @@ public class PCSCEid
         try
         {
             logger.finest("isValidSignature");
-            return X509Utilities.isValidSignature(getRRNCert(), trimRight(getFile(PcscEid.ADDRESS_FILE_ID)), getIdentitySignature(), getAddressSignature());
+            boolean rv = X509Utilities.isValidSignature(getRRNCert(), trimRight(getFile(PcscEid.ADDRESS_FILE_ID)), getIdentitySignature(), getAddressSignature());
+            if(!rv) {
+                logger.log(Level.SEVERE, "Address Signature fails verification!");
+            }
+            return rv;
         }
         catch (Exception ex)
         {
