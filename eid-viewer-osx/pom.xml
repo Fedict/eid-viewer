@@ -4,12 +4,12 @@
     <parent>
         <groupId>be.fedict</groupId>
         <artifactId>eid-viewer</artifactId>
-        <version>4.1.16</version>
+        <version>4.1.17</version>
     </parent>
     <name>eID Viewer OSX Bundle</name>
     <groupId>be.fedict.eid-viewer</groupId>
     <artifactId>eid-viewer-osx</artifactId>
-    <version>4.1.16</version>
+    <version>4.1.17</version>
     <packaging>jar</packaging>
     <build>
 
