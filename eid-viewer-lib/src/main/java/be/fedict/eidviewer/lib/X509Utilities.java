@@ -36,6 +36,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.bouncycastle.openssl.PEMWriter;
 
 import be.fedict.trust.client.TrustServiceDomains;
+import java.security.SignatureException;
 
 /**
  *
@@ -160,7 +161,6 @@ public class X509Utilities
         }
     }
     
-    // TODO, there are now cards with SHA2?
     public static boolean isValidSignature(X509Certificate certificate, byte[] data, byte[] data2, byte[] signature )
     {
         try
@@ -169,8 +169,21 @@ public class X509Utilities
                         verifier.initVerify(certificate);
                         verifier.update(data);
                         if(data2!=null)
-                            verifier.update(data2);      
+                            verifier.update(data2);
                  return verifier.verify(signature);
+        }
+        catch (SignatureException e) {
+            try {
+                Signature verifier = Signature.getInstance("SHA256withRSA");
+                          verifier.initVerify(certificate);
+                          verifier.update(data);
+                          if(data2!=null)
+                              verifier.update(data2);
+                return verifier.verify(signature);
+            }
+            catch(Exception ex) {
+                return false;
+            }
         }
         catch (Exception e)
         {
