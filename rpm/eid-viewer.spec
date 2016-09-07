@@ -3,13 +3,13 @@
 
 Summary: Belgium electronic identity card viewer
 Name: eid-viewer
-Version: 4.1.18
+Version: 4.1.19
 Release: 0.%{revision}%{?dist}
 License: LGPL
 Group: Applications/Communications
 URL: http://eid.belgium.be/
 
-Source0: http://dist.eid.belgium.be/continuous/sources/eid-viewer-4.1.18-%{revision}.src.tar.gz
+Source0: http://dist.eid.belgium.be/continuous/sources/eid-viewer-4.1.19-%{revision}.src.tar.gz
 Source1: eid-viewer.png
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -138,6 +138,9 @@ fi
 %endif
 
 %changelog
+* Wed Sep 07 2016 Wouter Verhelst <wouter.verhelst@fedict.be> - 4.1.19-0.R
+- Upgrade to 4.1.19
+
 * Wed May 18 2016 Wouter Verhelst <wouter.verhelst@fedict.be> - 4.1.18-0.R
 - Upgrade to 4.1.18
 
