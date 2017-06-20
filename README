@@ -1,3 +1,20 @@
+########
+# NOTE #
+########
+
+THIS CODE IS NO LONGER MAINTAINED
+
+The older, Java-based, implementation of the eID viewer has now been
+replaced by native versions for Windows, OSX, and GTK, and its code is
+found in the Fedict/eid-mw repository (plugins_tools/eid-viewer) in here
+on GitHub.
+
+Please go there for any issues you may have with the eid-viewer.
+
+########
+# NOTE #
+########
+
 eID-Viewer is a graphical interface to the Belgian Electronic Identity Card
 use it to view, print, save data from the Belgian electronic identity card.
 
