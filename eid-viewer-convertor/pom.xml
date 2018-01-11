@@ -9,5 +9,53 @@
     <groupId>be.fedict.eid-viewer</groupId>
     <artifactId>eid-viewer-convertor</artifactId>
     <packaging>jar</packaging>
+    <version>4.1.20</version>
     <name>eID Viewer Convertor</name>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>1.5</version>
+                <configuration>
+                    <transformers>
+                        <!-- set main class -->
+                        <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                            <mainClass>be.fedict.eidviewer.convertor.BelgianEidConvertor</mainClass>
+                        </transformer>
+                    </transformers>
+                    <filters>
+                        <filter>
+                            <artifact>*:*</artifact>
+                            <excludes>
+                                <!-- exclude signatures, shade plugin alters bytecode, hashes will not match anyway.
+                                     We'll verify dependencies' signatures in our maven repo, and resign the shaded jar ourselves -->
+                                <exclude>META-INF/*.SF</exclude>
+                                <exclude>META-INF/*.DSA</exclude>
+                                <exclude>META-INF/*.RSA</exclude>
+                            </excludes>
+                        </filter>
+                    </filters>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+    <properties>
+        <project.revision>${eid-viewer-convertor.revision}</project.revision>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>eid-viewer-lib</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 </project>
