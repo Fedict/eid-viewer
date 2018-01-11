@@ -39,6 +39,7 @@
         <module>eid-viewer-gui</module>
         <module>eid-viewer-lib</module>
         <module>eid-viewer-osx</module>
+        <module>eid-viewer-convertor</module>
     </modules>
     <profiles>
         <profile>
