@@ -26,7 +26,7 @@ public class BelgianEidConvertor implements View {
      * @throws java.io.IOException
      */
     public static void main(String[] args) throws IOException, Exception {
-        if(args.length < 2) {
+        if(args.length != 2) {
             throw new Exception("Need two arguments: input filename and output filename");
         }
         View v = new BelgianEidConvertor();
