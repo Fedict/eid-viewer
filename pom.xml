@@ -14,10 +14,10 @@
         </license>
     </licenses>
     <organization>
-        <name>FedICT</name>
-        <url>http://www.fedict.belgium.be/</url>
+        <name>fod BOSA DG/DT</name>
+        <url>http://bosa.belgium.be/</url>
     </organization>
-    <url>http://code.google.com/p/eid-viewer/</url>
+    <url>http://github.com/Fedict/eid-viewer/</url>
     <developers>
         <developer>
             <id>fcorneli</id>
@@ -28,6 +28,11 @@
             <id>frank@apsu.be</id>
             <name>Frank Marien</name>
             <email>frank.marien@fedict.be</email>
+        </developer>
+        <developer>
+            <id>wouter</id>
+            <name>Wouter Verhelst</name>
+            <email>w@uter.be</email>
         </developer>
     </developers>
     <modules>
