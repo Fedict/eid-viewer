@@ -4,12 +4,12 @@
     <parent>
         <groupId>be.fedict</groupId>
         <artifactId>eid-viewer</artifactId>
-        <version>4.1.20</version>
+        <version>4.3.0</version>
     </parent>
     <groupId>be.fedict.eid-viewer</groupId>
     <artifactId>eid-viewer-convertor</artifactId>
     <packaging>jar</packaging>
-    <version>4.1.20</version>
+    <version>4.3.0</version>
     <name>eID Viewer Convertor</name>
     <build>
         <plugins>
