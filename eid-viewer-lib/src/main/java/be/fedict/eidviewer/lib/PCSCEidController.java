@@ -903,66 +903,86 @@ public class PCSCEidController extends Observable implements Runnable, Observer,
     @Override
     public X509Certificate getAuthCert()
     {
-            try
-            {
-                    return eid.getAuthCert();
+        try
+        {
+            if(getState() == STATE.FILE_LOADED) {
+                return getAuthCertChain().getCertificates().get(0);
+            } else {
+                return eid.getAuthCert();
             }
-            catch (Exception e)
-            {
-                    return null;
-            }
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
     }
 
     @Override
     public X509Certificate getSignCert()
     {
-            try
-            {
+        try
+        {
+            if(getState() == STATE.FILE_LOADED) {
+                return getSignCertChain().getCertificates().get(0);
+            } else {
                     return eid.getSignCert();
             }
-            catch (Exception e)
-            {
-                    return null;
-            }
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
     }
 
     @Override
     public X509Certificate getRRNCert()
     {
-            try
-            {
-                    return eid.getRRNCert();
+        try
+        {
+            if(getState() == STATE.FILE_LOADED) {
+                return getRRNCertChain().getCertificates().get(0);
+            } else {
+                return eid.getRRNCert();
             }
-            catch (Exception e)
-            {
-                    return null;
-            }
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
     }
 
     @Override
     public X509Certificate getCACert()
     {
-            try
-            {
-                    return eid.getCitizenCACert();
+        try
+        {
+            if(getState() == STATE.FILE_LOADED) {
+                return getAuthCertChain().getCertificates().get(1);
+            } else {
+                return eid.getCitizenCACert();
             }
-            catch (Exception e)
-            {
-                    return null;
-            }
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
     }
 
     @Override
     public X509Certificate getRootCert()
     {
-            try
-            {
-                    return eid.getRootCACert();
+        try
+        {
+            if(getState() == STATE.FILE_LOADED) {
+                return getAuthCertChain().getCertificates().get(2);
+            } else {
+                return eid.getRootCACert();
             }
-            catch (Exception e)
-            {
-                    return null;
-            }
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
     }
 
   
